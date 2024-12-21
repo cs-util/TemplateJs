@@ -29,11 +29,17 @@
       stroke-width: 2px;
       cursor: pointer;
     }
-    .node text {
+    .node .caption {
       font-size: 12px;
       text-anchor: middle;
       fill: #ffffff;
-      pointer-events: none; /* So the text doesn’t block circle clicks/drags */
+      pointer-events: none;
+    }
+    .node .weeks {
+      font-size: 10px;
+      text-anchor: middle;
+      fill: #cccccc;
+      pointer-events: none;
     }
   </style>
 </head>
@@ -66,7 +72,7 @@
         title: "Follows Objects with Eyes",
         description: "Baby can track moving objects with their eyes. Use colorful toys to help develop visual tracking skills.",
         typical_achievement_weeks: 8,
-        follow_up_ids: [], // Problematic reference if 5 isn't in data
+        follow_up_ids: [],
         achievement_time_weeks: null,
         comment: ""
       },
@@ -75,7 +81,7 @@
         title: "Coos and Gurgles",
         description: "Baby makes cooing and gurgling sounds. Talk and sing to your baby to encourage early language skills.",
         typical_achievement_weeks: 8,
-        follow_up_ids: [], // Problematic reference if 6 isn't in data
+        follow_up_ids: [],
         achievement_time_weeks: null,
         comment: ""
       }
@@ -86,16 +92,15 @@
       id: d.id,
       title: d.title,
       description: d.description,
-      followUps: d.follow_up_ids
+      followUps: d.follow_up_ids,
+      typical_achievement_weeks: d.typical_achievement_weeks
     }));
 
-    // Filter out follow-ups that don't exist in the data --
-    const validIds = new Set(babyData.map(d => d.id));
     // 2) Create the links
+    const validIds = new Set(babyData.map(d => d.id));
     const links = [];
     babyData.forEach(d => {
       d.follow_up_ids.forEach(fuId => {
-        // Only link to fuId if we actually have a node with that ID
         if (validIds.has(fuId)) {
           links.push({ source: d.id, target: fuId });
         }
@@ -104,28 +109,39 @@
 
     // 3) Select svg and set dimensions
     const svg = d3.select("#graph");
-    const width = window.innerWidth ;
-    const height = window.innerHeight ;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    svg.attr("width", width).attr("height", height);
 
-    // Apply these dimensions to the svg
-    svg
-      .attr("width", width)
-      .attr("height", height);
+    // Define arrow marker in <defs>
+    const defs = svg.append("defs");
+    defs.append("marker")
+      .attr("id", "arrowhead")
+      .attr("viewBox", "0 -5 10 10")
+      .attr("refX", 90)       // Increase this to place arrow outside the large node circle
+      .attr("refY", 0)
+      .attr("markerWidth", 6)
+      .attr("markerHeight", 6)
+      .attr("orient", "auto")
+      .attr("markerUnits", "strokeWidth")  // Helps with consistent sizing
+      .append("path")
+      .attr("d", "M0,-5L10,0L0,5")
+      .attr("fill", "#888");
 
     // 4) Initialize the simulation
     const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(200))
       .force("charge", d3.forceManyBody().strength(-5000))
       .force("center", d3.forceCenter(width / 2, height / 2))
-      // Helps keep nodes from overlapping
-      .force("collision", d3.forceCollide().radius(35)); 
+      .force("collision", d3.forceCollide().radius(35));
 
     // 5) Link elements
     const link = svg.selectAll(".link")
       .data(links)
       .enter()
       .append("line")
-      .attr("class", "link");
+      .attr("class", "link")
+      .attr("marker-end", "url(#arrowhead)"); // Attach the arrow
 
     // 6) Node groups
     const node = svg.selectAll(".node")
@@ -134,24 +150,31 @@
       .append("g")
       .attr("class", "node")
       .call(d3.drag()
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", dragended)
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended)
       );
 
-    // 7) Circle
+    // 7) Circles
     node.append("circle")
       .attr("r", 80)
       .on("click", (event, d) => {
         alert(`Title: ${d.title}\nDescription: ${d.description}`);
       });
 
-    // 8) Text labels
+    // 8) Captions
     node.append("text")
+      .attr("class", "caption")
       .attr("dy", -8)
       .text(d => d.title);
 
-    // 9) On each tick, update the link and node positions
+    // Second line showing "~ week X"
+    node.append("text")
+      .attr("class", "weeks")
+      .attr("dy", 10)
+      .text(d => `~ week ${d.typical_achievement_weeks}`);
+
+    // 9) On each tick
     simulation.on("tick", () => {
       link
         .attr("x1", d => d.source.x)
@@ -159,8 +182,7 @@
         .attr("x2", d => d.target.x)
         .attr("y2", d => d.target.y);
 
-      node
-        .attr("transform", d => `translate(${d.x},${d.y})`);
+      node.attr("transform", d => `translate(${d.x},${d.y})`);
     });
 
     // 10) Drag functions
