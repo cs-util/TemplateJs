@@ -181,21 +181,21 @@ Simplify the code if possible (without removing the functionality described abov
       stroke-width: 1.5px; 
       cursor: pointer;
       /* Default locked color */
-      fill: #b5ad5b;
+      fill: #a88615c5;
       rx: 10;  /* Rounded corners */
       ry: 10;
     }
     /* Overdue color */
     .node-rect.overdue {
-      fill: #a83232;
+      fill: #cc5a5ad7;
     }
     /* Next color */
     .node-rect.next {
-      fill: #5c50d0;
+      fill: #5d50d0c7;
     }
     /* Unlocked color */
     .node-rect.unlocked {
-      fill: rgb(9, 126, 19);
+      fill: rgba(9, 126, 19, 0.856);
     }
 
     /* Title text inside node */
@@ -207,15 +207,15 @@ Simplify the code if possible (without removing the functionality described abov
     /* Weeks info text inside node */
     .weeks-text {
       font-size: 10px; 
-      fill: #cccccc; 
+      fill: #ececec; 
       pointer-events: none;
     }
     /* Icon, large and semi-transparent behind text */
     .node-icon {
       font-family: "Material Icons";
       font-size: 36px;
-      fill: #b6b6b6;      /* grayish color */
-      fill-opacity: 0.7;  /* more transparent */
+      fill: #ffffff;      
+      fill-opacity: 0.65;  /* more transparent */
       pointer-events: none; /* don’t block clicks */
     }
   </style>
@@ -378,8 +378,8 @@ Simplify the code if possible (without removing the functionality described abov
     // 2) Icon (right center, behind text)
     nodeGroup.append("text")
       .attr("class", "node-icon")
-      .attr("x", (NODE_WIDTH / 2) - 30)  // 30px in from right edge
-      .attr("y", 0)                     // center vertically
+      .attr("x", (NODE_WIDTH / 2) - 24)  // 30px in from right edge
+      .attr("y", 16)                     // center vertically
       .attr("text-anchor", "middle")
       .attr("dominant-baseline", "middle")
       .text(d => d.icon ? d.icon : "");
