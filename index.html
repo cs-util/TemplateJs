@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BabyStepsJs</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -29,13 +29,13 @@
       stroke-width: 2px;
       cursor: pointer;
     }
-    .node .caption {
+    .caption {
       font-size: 12px;
       text-anchor: middle;
       fill: #ffffff;
       pointer-events: none;
     }
-    .node .weeks {
+    .weeks {
       font-size: 10px;
       text-anchor: middle;
       fill: #cccccc;
@@ -47,7 +47,7 @@
 <body>
   <svg id="graph"></svg>
   <script>
-    // Original data
+    // Example data
     const babyData = [
       {
         id: 1,
@@ -107,10 +107,10 @@
       });
     });
 
-    // 3) Select svg and set dimensions
-    const svg = d3.select("#graph");
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const svg = d3.select("#graph"),
+          width = window.innerWidth,
+          height = window.innerHeight;
+
     svg.attr("width", width).attr("height", height);
 
     // Define arrow marker in <defs>
@@ -141,7 +141,7 @@
       .enter()
       .append("line")
       .attr("class", "link")
-      .attr("marker-end", "url(#arrowhead)"); // Attach the arrow
+      .attr("marker-end", "url(#arrowhead)");
 
     // 6) Node groups
     const node = svg.selectAll(".node")
