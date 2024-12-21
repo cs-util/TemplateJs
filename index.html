@@ -1,3 +1,40 @@
+<!-- Use the following User Stories / Requirements for the Web App “BabyStepsJs” to improve the code if needed:
+
+- As a father I want to have a web app where I can playfully note down every time my newborn learns a new skill. I want to do this in form of a predefined "tech tree" that my baby unlocks
+- I want in the tech tree to see the typical achievements my baby will unlock and also how they are connected. For example I want to see one tree item that says "Plays with her hands" with a time point of "Typically unlocked at month 3"
+- I want to educate myself on what the next items in the tech tree will be that my baby will most likely start doing 
+- I want to enter my babies birth date at the top center of the app so that when I unlock achievements it can automatically compare the typical achievement date vs mine and in case my baby unlocked something earlier then the typical baby display something on the tree item like "Unlocked 3 weeks early" 
+- I want the web app to be a single page html file that has at the top a json with all the achievement elements of the tech tree. 
+- An entry in that json probably requires these fields:
+    - id (number)
+    - title (string)
+    - description (string)
+    - icon (string, optional, if e.g. "face" -> uses the Material Icon "face")
+    - typical_achievement_weeks (time in weeks when it's typically achieved)
+    - follow_up_ids (array of id numbers, can be empty, follow up item that can be unlocked afterwards)
+    - achievement_time_weeks (number, allow null & not in json, time in weeks when my baby unlocked the item)
+    - comment (string, allow null & not in json, comment that I can make when I complete the tree item)
+- the description of the tree entries should typically contain brief, research-backed tips or activity suggestions to support my baby's development related to that specific milestone.
+- I want the web app to not have any backend, everything should be stored locally in my browsers local storage 
+- I should be able to dump a json text file to back up my data on my computer. the content of the json text file should be formatted so that I can edit it with a text editor
+- I should be able to re-import that backup and since in the backup the entire tech tree is contained  I should also be able to modify the entries or add new ones. so the entire used state of the tech tree should be in the file. This should be the only way to modify the tech tree content 
+- As a father, I want to visualize my baby's progress on the tech tree, with unlocked achievements highlighted and connected pathways illuminated, so I can easily see which milestones have been reached and what lies ahead.
+- I want the app to be minimalistic and contain mainly the birth date at the top center and the rest of the app should be the interactive tech tree that I can pan around, zoom in and out of and interact with the tree items
+- I want the tech tree UI to automatically arrange itself 
+- If there is an item that is typically achieved after 3 weeks but the birth date is already 4 weeks ago then color the related node in a different color
+- Make sure the text in the nodes stays inside of the nodes
+- Highlight nodes that will be unlocked next in a different color. A node will likely be unlocked next if the previous node is already unlocked. 
+- Once the user completes an achievement, the colors are refreshed to highlight the next unlockable node. 
+- If a node is clicked the UI with details should show in a side panel (not a popup) and the user should be able to enter the date when it was achieved and an optional comment 
+- When the user clicks a node and the side panel opens fill in the current date for the date when the achievement was unlocked
+- If the side panel is open and the user clicks somewhere outside of the side panel, close it. This way also no dedicated “close” button is needed 
+- The birth date the user enters at the top center should also be stored into the local storage and reloaded on app start 
+- When the user selects a node that is already completed, load the date and comment from the data when it was unlocked into the side panel ui that opens
+- Based on the entered birthdate show also the current week the baby is in in the top header bar (right next to the date) 
+- The UI for each node should not be a circle, it should be a rounded rectangle with the caption on the top left, the week info on the bottom left and the optional icon on the right center (being quite large and if overlap happens behind the text). The icon should be grayish to not distract too much
+
+(Please keep this comment block in the code)
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -102,21 +139,6 @@
 </head>
 <body>
 
-<!--
-  1) JSON DATA at the top. Note the optional "icon" field.
-  Example:
-  "icon": "face"  -> uses the Material Icon "face"
-
-  Fields:
-  - id (number)
-  - title (string)
-  - description (string)
-  - icon (string, optional)
-  - typical_achievement_weeks (number)
-  - follow_up_ids (array of id numbers)
-  - achievement_time_weeks (number or null)
-  - comment (string or null)
--->
 <script>
   // Default data: can be overridden by localStorage or imports
   let babyData = [
