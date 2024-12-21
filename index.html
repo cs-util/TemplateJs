@@ -6,29 +6,78 @@
   <title>BabyStepsJs</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <style>
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #1e1e2f;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Container for birth date and import/export buttons */
+    .top-panel {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      top: 10px;
+      z-index: 999;
+      color: white;
+      font-size: 14px;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #1e1e2f;
-      height: 100vh;
+      flex-wrap: wrap;
+      gap: 20px;
     }
+
+    .top-panel input[type="date"] {
+      color: black; /* for contrast with white text */
+      padding: 5px 8px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    .top-panel button {
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 5px;
+      border: none;
+      background-color: #4caf50;
+      color: white;
+      font-weight: bold;
+    }
+    .top-panel button:hover {
+      background-color: #388e3c;
+    }
+
+    /* Main SVG container */
     svg {
       width: 100%;
-      height: 90%;
+      height: 100vh;
       border: 1px solid #ccc;
+      box-sizing: border-box;
     }
+
     .link {
       stroke: #888;
       stroke-width: 2px;
     }
+
+    /* Default (locked) node style */
     .node circle {
-      fill: #4caf50;
+      fill: hwb(60 15% 79%);
       stroke: #fff;
       stroke-width: 2px;
       cursor: pointer;
     }
+
+    /* Unlocked node style */
+    .node.unlocked circle {
+      fill: rgb(9, 126, 19);
+      stroke: #fff;
+      stroke-width: 2px;
+    }
+
     .caption {
       font-size: 12px;
       text-anchor: middle;
@@ -45,136 +94,177 @@
 </head>
 
 <body>
+
+  <!-- TOP PANEL: Birth date input, import/export buttons -->
+  <div class="top-panel">
+    <div>
+      Baby's Birth Date:
+      <input type="date" id="birthDate" />
+    </div>
+    <div>
+      <button id="exportBtn">Export JSON</button>
+      <button id="importBtn">Import JSON</button>
+      <input id="importFile" type="file" accept=".json" style="display:none" />
+    </div>
+  </div>
+
   <svg id="graph"></svg>
+
   <script>
-    // Example data
-    const babyData = [
+    /***********************************************
+     * 1) INITIAL DATA — included at the top 
+     *    This JSON can be replaced by import.
+     ************************************************/
+    let babyData = [
       {
-        id: 1,
-        title: "Lifts Head",
-        description: "Baby can lift their head briefly when placed on their tummy. Encourage tummy time daily to strengthen neck muscles.",
-        typical_achievement_weeks: 4,
-        follow_up_ids: [2, 3],
-        achievement_time_weeks: null,
-        comment: ""
+        "id": 1,
+        "title": "Lifts Head",
+        "description": "Baby can lift their head briefly when placed on their tummy. Encourage tummy time daily to strengthen neck muscles.",
+        "typical_achievement_weeks": 4,
+        "follow_up_ids": [2, 3],
+        "achievement_time_weeks": null,
+        "comment": ""
       },
       {
-        id: 2,
-        title: "Smiles Responsively",
-        description: "Baby smiles in response to your smile or voice. Engage in frequent face-to-face interactions to promote social development.",
-        typical_achievement_weeks: 6,
-        follow_up_ids: [3, 4],
-        achievement_time_weeks: null,
-        comment: ""
+        "id": 2,
+        "title": "Smiles Responsively",
+        "description": "Baby smiles in response to your smile or voice. Engage in frequent face-to-face interactions to promote social development.",
+        "typical_achievement_weeks": 6,
+        "follow_up_ids": [3, 4],
+        "achievement_time_weeks": null,
+        "comment": ""
       },
       {
-        id: 3,
-        title: "Follows Objects with Eyes",
-        description: "Baby can track moving objects with their eyes. Use colorful toys to help develop visual tracking skills.",
-        typical_achievement_weeks: 8,
-        follow_up_ids: [],
-        achievement_time_weeks: null,
-        comment: ""
+        "id": 3,
+        "title": "Follows Objects with Eyes",
+        "description": "Baby can track moving objects with their eyes. Use colorful toys to help develop visual tracking skills.",
+        "typical_achievement_weeks": 8,
+        "follow_up_ids": [],
+        "achievement_time_weeks": null,
+        "comment": ""
       },
       {
-        id: 4,
-        title: "Coos and Gurgles",
-        description: "Baby makes cooing and gurgling sounds. Talk and sing to your baby to encourage early language skills.",
-        typical_achievement_weeks: 8,
-        follow_up_ids: [],
-        achievement_time_weeks: null,
-        comment: ""
+        "id": 4,
+        "title": "Coos and Gurgles",
+        "description": "Baby makes cooing and gurgling sounds. Talk and sing to your baby to encourage early language skills.",
+        "typical_achievement_weeks": 8,
+        "follow_up_ids": [],
+        "achievement_time_weeks": null,
+        "comment": ""
       }
     ];
 
-    // 1) Create the nodes array
-    const nodes = babyData.map(d => ({
-      id: d.id,
-      title: d.title,
-      description: d.description,
-      followUps: d.follow_up_ids,
-      typical_achievement_weeks: d.typical_achievement_weeks
-    }));
-
-    // 2) Create the links
-    const validIds = new Set(babyData.map(d => d.id));
-    const links = [];
-    babyData.forEach(d => {
-      d.follow_up_ids.forEach(fuId => {
-        if (validIds.has(fuId)) {
-          links.push({ source: d.id, target: fuId });
+    // Attempt to load from localStorage if available
+    const savedData = localStorage.getItem("babyData");
+    if (savedData) {
+      try {
+        const parsed = JSON.parse(savedData);
+        if (Array.isArray(parsed)) {
+          babyData = parsed;
         }
-      });
-    });
+      } catch (e) {
+        console.warn("Local storage data was corrupt, ignoring it.");
+      }
+    }
 
-    const svg = d3.select("#graph"),
-          width = window.innerWidth,
-          height = window.innerHeight;
+    /************************************************
+     * 2) D3 SETUP
+     ************************************************/
+    const svg = d3.select("#graph");
+    const width = window.innerWidth;
+    const height = window.innerHeight;
 
     svg.attr("width", width).attr("height", height);
 
-    // Define arrow marker in <defs>
+    // We'll create a <g> container so we can zoom & pan
+    const zoomG = svg.append("g");
+
+    // Define arrow marker in <defs> for the links
     const defs = svg.append("defs");
     defs.append("marker")
       .attr("id", "arrowhead")
       .attr("viewBox", "0 -5 10 10")
-      .attr("refX", 90)       // Increase this to place arrow outside the large node circle
+      .attr("refX", 90)       // place arrow outside node circle
       .attr("refY", 0)
       .attr("markerWidth", 6)
       .attr("markerHeight", 6)
       .attr("orient", "auto")
-      .attr("markerUnits", "strokeWidth")  // Helps with consistent sizing
+      .attr("markerUnits", "strokeWidth")
       .append("path")
       .attr("d", "M0,-5L10,0L0,5")
       .attr("fill", "#888");
 
-    // 4) Initialize the simulation
+    // Parse the babyData into nodes and links
+    function buildGraphData(data) {
+      const nodes = data.map(d => ({
+        id: d.id,
+        title: d.title,
+        description: d.description,
+        follow_up_ids: d.follow_up_ids,
+        typical_achievement_weeks: d.typical_achievement_weeks,
+        achievement_time_weeks: d.achievement_time_weeks,
+        comment: d.comment
+      }));
+
+      const validIds = new Set(data.map(d => d.id));
+      const links = [];
+      data.forEach(d => {
+        d.follow_up_ids.forEach(fuId => {
+          if (validIds.has(fuId)) {
+            links.push({ source: d.id, target: fuId });
+          }
+        });
+      });
+      return { nodes, links };
+    }
+
+    let { nodes, links } = buildGraphData(babyData);
+
+    // Force simulation
     const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(200))
-      .force("charge", d3.forceManyBody().strength(-5000))
+      .force("charge", d3.forceManyBody().strength(-4000))
       .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("collision", d3.forceCollide().radius(35));
+      .force("collision", d3.forceCollide().radius(40));
 
-    // 5) Link elements
-    const link = svg.selectAll(".link")
+    // Create the link elements
+    let link = zoomG.selectAll(".link")
       .data(links)
       .enter()
       .append("line")
       .attr("class", "link")
       .attr("marker-end", "url(#arrowhead)");
 
-    // 6) Node groups
-    const node = svg.selectAll(".node")
+    // Create node groups
+    let node = zoomG.selectAll(".node")
       .data(nodes)
       .enter()
       .append("g")
-      .attr("class", "node")
+      .attr("class", d => "node " + (d.achievement_time_weeks !== null ? "unlocked" : ""))
       .call(d3.drag()
         .on("start", dragstarted)
         .on("drag", dragged)
         .on("end", dragended)
       );
 
-    // 7) Circles
+    // Node circles
     node.append("circle")
-      .attr("r", 80)
-      .on("click", (event, d) => {
-        alert(`Title: ${d.title}\nDescription: ${d.description}`);
-      });
+      .attr("r", 60) // reduced radius to show more of the text
+      .on("click", (event, d) => onNodeClick(d));
 
-    // 8) Captions
+    // Title text
     node.append("text")
       .attr("class", "caption")
-      .attr("dy", -8)
+      .attr("dy", -2)
       .text(d => d.title);
 
-    // Second line showing "~ week X"
+    // Weeks text
     node.append("text")
       .attr("class", "weeks")
-      .attr("dy", 10)
+      .attr("dy", 14)
       .text(d => `~ week ${d.typical_achievement_weeks}`);
 
-    // 9) On each tick
+    // Simulation tick
     simulation.on("tick", () => {
       link
         .attr("x1", d => d.source.x)
@@ -185,7 +275,12 @@
       node.attr("transform", d => `translate(${d.x},${d.y})`);
     });
 
-    // 10) Drag functions
+    // Zoom & Pan
+    svg.call(d3.zoom().on("zoom", (event) => {
+      zoomG.attr("transform", event.transform);
+    }));
+
+    // Drag functions
     function dragstarted(event, d) {
       if (!event.active) simulation.alphaTarget(0.3).restart();
       d.fx = d.x;
@@ -200,6 +295,215 @@
       d.fx = null;
       d.fy = null;
     }
+
+    /************************************************
+     * 3) INTERACTIONS
+     ************************************************/
+    // When the user clicks a node
+    function onNodeClick(nodeData) {
+      // We show details and allow unlocking/locking
+      const isUnlocked = nodeData.achievement_time_weeks !== null;
+      const action = isUnlocked ? "re-lock or update" : "unlock";
+
+      const userInput = window.prompt(
+        `Title: ${nodeData.title}\n\n${nodeData.description}\n\n` +
+        `Typical: ~week ${nodeData.typical_achievement_weeks}\n` +
+        (isUnlocked 
+          ? `Currently unlocked at week ${nodeData.achievement_time_weeks}\n` +
+            `Comment: ${nodeData.comment}\n\n` +
+            `Enter a new comment or clear to remove.\n` +
+            `Leave blank if you just want to re-lock this item.`
+          : `Enter a comment if you'd like (or leave blank).`) +
+        `\n\nType something and press OK to ${action}, or press Cancel to do nothing.`,
+        isUnlocked ? nodeData.comment : ""
+      );
+
+      if (userInput === null) {
+        // User canceled
+        return;
+      }
+
+      if (isUnlocked && userInput === "") {
+        // If user provided an empty string, treat that as re-lock
+        nodeData.achievement_time_weeks = null;
+        nodeData.comment = "";
+      } else {
+        // Unlock or update
+        nodeData.comment = userInput;
+        const babyBirthDate = document.getElementById("birthDate").value;
+        if (babyBirthDate) {
+          // Calculate difference in weeks from birth date
+          const birth = new Date(babyBirthDate);
+          const today = new Date();
+          const diffDays = Math.floor((today - birth) / (1000 * 60 * 60 * 24));
+          const diffWeeks = Math.round(diffDays / 7);
+          nodeData.achievement_time_weeks = diffWeeks;
+        } else {
+          // If no birth date, just set it to typical_achievement_weeks
+          // or you could set it to 0 if you prefer
+          nodeData.achievement_time_weeks = nodeData.typical_achievement_weeks;
+        }
+      }
+      // Re-render the node style
+      refreshGraph();
+      saveToLocalStorage();
+    }
+
+    // Re-render the graph after data changes
+    function refreshGraph() {
+      node
+        .attr("class", d => "node " + (d.achievement_time_weeks !== null ? "unlocked" : ""));
+
+      // Re-bind texts if we want to show early/late on the node itself
+      node.select(".weeks")
+        .text(d => {
+          if (d.achievement_time_weeks === null) {
+            return `~ week ${d.typical_achievement_weeks}`;
+          } else {
+            // Compare typical vs actual
+            const diff = d.typical_achievement_weeks - d.achievement_time_weeks;
+            if (diff > 0) {
+              return `Unlocked ${Math.abs(diff)} weeks early!`;
+            } else if (diff < 0) {
+              return `Unlocked ${Math.abs(diff)} weeks late.`;
+            } else {
+              return `Unlocked right on time!`;
+            }
+          }
+        });
+    }
+
+    // Save to local storage
+    function saveToLocalStorage() {
+      // Merge back into babyData
+      babyData = nodes.map(d => {
+        return {
+          id: d.id,
+          title: d.title,
+          description: d.description,
+          typical_achievement_weeks: d.typical_achievement_weeks,
+          follow_up_ids: d.follow_up_ids,
+          achievement_time_weeks: d.achievement_time_weeks,
+          comment: d.comment
+        };
+      });
+      localStorage.setItem("babyData", JSON.stringify(babyData));
+    }
+
+    /************************************************
+     * 4) IMPORT/EXPORT LOGIC
+     ************************************************/
+    // Export
+    document.getElementById("exportBtn").addEventListener("click", () => {
+      // Prepare data to be saved
+      const exportData = JSON.stringify(babyData, null, 2);
+      const blob = new Blob([exportData], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "babyData_backup.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // Import
+    document.getElementById("importBtn").addEventListener("click", () => {
+      document.getElementById("importFile").click();
+    });
+
+    document.getElementById("importFile").addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const importedData = JSON.parse(e.target.result);
+          if (!Array.isArray(importedData)) {
+            alert("Invalid JSON format. Must be an array of items.");
+            return;
+          }
+          // Replace babyData
+          babyData = importedData;
+          localStorage.setItem("babyData", JSON.stringify(babyData));
+          // Rebuild the graph
+          rebuildGraph();
+        } catch (err) {
+          alert("Error parsing JSON file. Please check file format.");
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = null; // reset the input
+    });
+
+    // Rebuild everything from babyData
+    function rebuildGraph() {
+      // Stop old simulation
+      simulation.stop();
+      zoomG.selectAll("*").remove();
+
+      const graph = buildGraphData(babyData);
+      nodes = graph.nodes;
+      links = graph.links;
+
+      simulation.nodes(nodes);
+      simulation.force("link").links(links);
+
+      link = zoomG.selectAll(".link")
+        .data(links)
+        .enter()
+        .append("line")
+        .attr("class", "link")
+        .attr("marker-end", "url(#arrowhead)");
+
+      node = zoomG.selectAll(".node")
+        .data(nodes)
+        .enter()
+        .append("g")
+        .attr("class", d => "node " + (d.achievement_time_weeks !== null ? "unlocked" : ""))
+        .call(d3.drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended)
+        );
+
+      node.append("circle")
+        .attr("r", 60)
+        .on("click", (event, d) => onNodeClick(d));
+
+      node.append("text")
+        .attr("class", "caption")
+        .attr("dy", -2)
+        .text(d => d.title);
+
+      node.append("text")
+        .attr("class", "weeks")
+        .attr("dy", 14)
+        .text(d => d.achievement_time_weeks === null
+          ? `~ week ${d.typical_achievement_weeks}`
+          : compareAchievement(d));
+
+      simulation.alpha(1).restart();
+    }
+
+    // Helper function for building unlocked text
+    function compareAchievement(d) {
+      const diff = d.typical_achievement_weeks - d.achievement_time_weeks;
+      if (diff > 0) {
+        return `Unlocked ${Math.abs(diff)} weeks early!`;
+      } else if (diff < 0) {
+        return `Unlocked ${Math.abs(diff)} weeks late.`;
+      } else {
+        return "Unlocked right on time!";
+      }
+    }
+
+    /************************************************
+     * 5) INITIAL RENDER
+     ************************************************/
+    refreshGraph();
+
   </script>
 </body>
 </html>
