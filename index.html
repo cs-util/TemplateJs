@@ -32,9 +32,10 @@
 - When the user selects a node that is already completed, load the date and comment from the data when it was unlocked into the side panel ui that opens
 - Based on the entered birthdate show also the current week the baby is in in the top header bar (right next to the date) 
 - The UI for each node should not be a circle, it should be a rounded rectangle with the caption on the top left, the week info on the bottom left and the optional icon on the right center (being quite large and if overlap happens behind the text). The icon should be grayish to not distract too much
+- The default data that should be loaded if no data is found in the storage should be loaded from https://raw.githubusercontent.com/cs-util-com/BabyStepsJs/refs/heads/main/defaultData.json.txt
 
 Please keep this comment block in the code.
-Simplify the code if possible (without removing the functionality described above) but keep comments that are not extremely redundant.
+Simplify the code if possible (without removing the functionality described above). Keep all my comments even if you think they are redundant.
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -143,52 +144,6 @@ Simplify the code if possible (without removing the functionality described abov
 </head>
 <body>
 
-<script>
-  // Default data: can be overridden by localStorage or imports
-  let babyData = [
-    {
-      "id": 1,
-      "title": "Lifts Head",
-      "icon": "airline_seat_flat_angled",
-      "description": "Baby can lift their head briefly when on tummy. Encourage short but frequent tummy times!",
-      "typical_achievement_weeks": 4,
-      "follow_up_ids": [2, 3],
-      "achievement_time_weeks": null,
-      "comment": null
-    },
-    {
-      "id": 2,
-      "title": "Smiles Responsively",
-      "description": "Baby smiles back when you smile or talk. Increase face-to-face interactions for social development.",
-      "typical_achievement_weeks": 6,
-      "follow_up_ids": [3, 4],
-      "achievement_time_weeks": null,
-      "comment": null
-    },
-    {
-      "id": 3,
-      "title": "Follows Objects",
-      "icon": "visibility",
-      "description": "Baby tracks moving objects with eyes. Use colorful toys to stimulate visual tracking.",
-      "typical_achievement_weeks": 8,
-      "follow_up_ids": [],
-      "achievement_time_weeks": null,
-      "comment": null
-    },
-    {
-      "id": 4,
-      "title": "Coos and Gurgles",
-      "icon": "record_voice_over",
-      "description": "Baby coos and gurgles. Talk and sing to them to support early language skills.",
-      "typical_achievement_weeks": 8,
-      "follow_up_ids": [],
-      "achievement_time_weeks": null,
-      "comment": null
-    }
-  ];
-
-</script>
-
 <!-- TOP PANEL -->
 <div class="top-panel">
   <div class="birthdate-container">
@@ -219,14 +174,30 @@ Simplify the code if possible (without removing the functionality described abov
 <svg id="graph"></svg>
 
 <script>
-  // 1) LOAD FROM localStorage (if available), override the default babyData
+(async function main() {
+  // 1) Load data from localStorage if possible
+  let babyData = [];
   const savedData = localStorage.getItem("babyData");
   if (savedData) {
     try {
       const parsed = JSON.parse(savedData);
-      if (Array.isArray(parsed)) babyData = parsed;
+      if (Array.isArray(parsed)) {
+        babyData = parsed;
+      }
     } catch (e) {
       console.warn("Local storage babyData was corrupt, ignoring it.");
+    }
+  }
+
+  // If no valid local data, load from remote (defaultData.json.txt)
+  if (!babyData || babyData.length === 0) {
+    try {
+      const resp = await fetch("https://raw.githubusercontent.com/cs-util-com/BabyStepsJs/refs/heads/main/defaultData.json.txt");
+      babyData = await resp.json();
+    } catch (error) {
+      console.error("Could not fetch baby data from remote:", error);
+      // fallback if fetch fails
+      babyData = [];
     }
   }
 
@@ -611,6 +582,7 @@ Simplify the code if possible (without removing the functionality described abov
 
   // 10) INITIAL RENDER
   renderGraph();
+})();
 </script>
 </body>
 </html>
