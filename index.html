@@ -368,10 +368,10 @@ Simplify the code if possible (without removing the functionality described abov
 
     // Setup force simulation
     simulation = d3.forceSimulation(nodes)
-      .force("link", d3.forceLink(links).id(d => d.id).distance(160))
-      .force("charge", d3.forceManyBody().strength(-1000))
+      .force("link", d3.forceLink(links).id(d => d.id).distance(60))
+      .force("charge", d3.forceManyBody().strength(-8000))
       .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("collision", d3.forceCollide().radius(120));
+      .force("collision", d3.forceCollide().radius(220));
 
     // Draw links
     link = zoomG.selectAll(".link")
