@@ -6,7 +6,8 @@
 		"icon": "airline_seat_flat_angled",
 		"typical_achievement_weeks": 0,
 		"follow_up_ids": [
-			2
+			2,
+			31
 		],
 		"achievement_time_weeks": null,
 		"comment": null
@@ -18,7 +19,8 @@
 		"icon": "face",
 		"typical_achievement_weeks": 2,
 		"follow_up_ids": [
-			3
+			3,
+			32
 		],
 		"achievement_time_weeks": null,
 		"comment": null
@@ -30,7 +32,8 @@
 		"icon": null,
 		"typical_achievement_weeks": 6,
 		"follow_up_ids": [
-			4
+			4,
+			33
 		],
 		"achievement_time_weeks": null,
 		"comment": null
@@ -43,7 +46,8 @@
 		"typical_achievement_weeks": 8,
 		"follow_up_ids": [
 			5,
-			6
+			6,
+			37
 		],
 		"achievement_time_weeks": null,
 		"comment": null
@@ -91,7 +95,8 @@
 		"icon": "autorenew",
 		"typical_achievement_weeks": 20,
 		"follow_up_ids": [
-			9
+			9,
+			38
 		],
 		"achievement_time_weeks": null,
 		"comment": null
@@ -103,7 +108,8 @@
 		"icon": null,
 		"typical_achievement_weeks": 24,
 		"follow_up_ids": [
-			10
+			10,
+			39
 		],
 		"achievement_time_weeks": null,
 		"comment": null
@@ -127,7 +133,8 @@
 		"icon": null,
 		"typical_achievement_weeks": 32,
 		"follow_up_ids": [
-			12
+			12,
+			40
 		],
 		"achievement_time_weeks": null,
 		"comment": null
@@ -139,7 +146,8 @@
 		"icon": "pets",
 		"typical_achievement_weeks": 36,
 		"follow_up_ids": [
-			13
+			13,
+			41
 		],
 		"achievement_time_weeks": null,
 		"comment": null
@@ -151,7 +159,8 @@
 		"icon": null,
 		"typical_achievement_weeks": 40,
 		"follow_up_ids": [
-			14
+			14,
+			42
 		],
 		"achievement_time_weeks": null,
 		"comment": null
@@ -200,7 +209,8 @@
 		"icon": null,
 		"typical_achievement_weeks": 56,
 		"follow_up_ids": [
-			19
+			19,
+			45
 		],
 		"achievement_time_weeks": null,
 		"comment": null
@@ -212,7 +222,8 @@
 		"icon": null,
 		"typical_achievement_weeks": 60,
 		"follow_up_ids": [
-			19
+			19,
+			47
 		],
 		"achievement_time_weeks": null,
 		"comment": null
@@ -224,7 +235,8 @@
 		"icon": "priority_high",
 		"typical_achievement_weeks": 64,
 		"follow_up_ids": [
-			20
+			20,
+			46
 		],
 		"achievement_time_weeks": null,
 		"comment": null
@@ -236,7 +248,8 @@
 		"icon": null,
 		"typical_achievement_weeks": 68,
 		"follow_up_ids": [
-			21
+			21,
+			43
 		],
 		"achievement_time_weeks": null,
 		"comment": null
@@ -332,7 +345,8 @@
 		"icon": "create",
 		"typical_achievement_weeks": 100,
 		"follow_up_ids": [
-			29
+			29,
+			51
 		],
 		"achievement_time_weeks": null,
 		"comment": null
@@ -355,6 +369,372 @@
 		"description": "Noticeable leaning towards left or right hand in play and feeding.",
 		"icon": null,
 		"typical_achievement_weeks": 108,
+		"follow_up_ids": [],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 31,
+		"title": "First Pee on Parent",
+		"description": "A comical first—keep a towel handy! Part of newborn surprises.",
+		"icon": null,
+		"typical_achievement_weeks": 1,
+		"follow_up_ids": [
+			32,
+			2
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 32,
+		"title": "First Fart",
+		"description": "Tiny tummy starts gassy adventures. Burping and tummy time can help.",
+		"icon": null,
+		"typical_achievement_weeks": 2,
+		"follow_up_ids": [
+			33
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 33,
+		"title": "First Burp",
+		"description": "Gentle pats on the back can relieve trapped air.",
+		"icon": null,
+		"typical_achievement_weeks": 3,
+		"follow_up_ids": [
+			34
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 34,
+		"title": "First Bath",
+		"description": "Introduction to water fun. Use mild soap and keep the water warm.",
+		"icon": "bathtub",
+		"typical_achievement_weeks": 4,
+		"follow_up_ids": [
+			35
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 35,
+		"title": "First Real Sleep (3+ hours)",
+		"description": "A minor miracle for tired parents—celebrate the extra rest.",
+		"icon": "bedtime",
+		"typical_achievement_weeks": 5,
+		"follow_up_ids": [
+			36,
+			5
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 36,
+		"title": "First Time Sleeping Through the Night",
+		"description": "Longer sleep stretches. Maintain a consistent bedtime routine.",
+		"icon": "hotel",
+		"typical_achievement_weeks": 12,
+		"follow_up_ids": [
+			37
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 37,
+		"title": "First Laugh",
+		"description": "Responds to tickles or silly faces. Encourage joy through playful interactions.",
+		"icon": "sentiment_satisfied",
+		"typical_achievement_weeks": 16,
+		"follow_up_ids": [
+			38
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 38,
+		"title": "First Time Rolling Over",
+		"description": "Rolling can start from tummy to back. Give plenty of supervised floor time.",
+		"icon": null,
+		"typical_achievement_weeks": 20,
+		"follow_up_ids": [
+			39
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 39,
+		"title": "First Time Eating Solid Food",
+		"description": "Introduction to purees or soft solids. Watch for readiness cues like head control.",
+		"icon": null,
+		"typical_achievement_weeks": 24,
+		"follow_up_ids": [
+			40,
+			9
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 40,
+		"title": "First Time Sitting Up",
+		"description": "Sits with little support. Ensure a cushioned environment for soft landings.",
+		"icon": null,
+		"typical_achievement_weeks": 28,
+		"follow_up_ids": [
+			41,
+			11
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 41,
+		"title": "First Time Standing Up",
+		"description": "Pulls to a stand or stands with help. Provide stable furniture to hold onto.",
+		"icon": null,
+		"typical_achievement_weeks": 36,
+		"follow_up_ids": [
+			42
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 42,
+		"title": "First Time Walking",
+		"description": "Independent steps begin. Clear floor of hazards and cheer on each wobble.",
+		"icon": "directions_walk",
+		"typical_achievement_weeks": 52,
+		"follow_up_ids": [
+			43
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 43,
+		"title": "First Word",
+		"description": "May say 'mama' or 'dada' with intent. Talk often to encourage language.",
+		"icon": null,
+		"typical_achievement_weeks": 60,
+		"follow_up_ids": [
+			44
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 44,
+		"title": "First Attempt at Running",
+		"description": "Toddling speeds up! Provide safe, open spaces and watch for tumbles.",
+		"icon": null,
+		"typical_achievement_weeks": 64,
+		"follow_up_ids": [
+			45,
+			47
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 45,
+		"title": "First Time Throwing a Tantrum",
+		"description": "Emotional expression emerges. Offer calm reassurance and consistent boundaries.",
+		"icon": null,
+		"typical_achievement_weeks": 68,
+		"follow_up_ids": [
+			46
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 46,
+		"title": "First Potty Attempt",
+		"description": "Shows curiosity about the potty. Encourage gently and celebrate small wins.",
+		"icon": null,
+		"typical_achievement_weeks": 72,
+		"follow_up_ids": [
+			47
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 47,
+		"title": "First Attempt at Dancing",
+		"description": "Sways or bounces to music. Dance together for fun and balance practice.",
+		"icon": "music_note",
+		"typical_achievement_weeks": 80,
+		"follow_up_ids": [
+			48,
+			25
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 48,
+		"title": "First Time Jumping",
+		"description": "Little hops or bounces. Aids coordination and leg strength.",
+		"icon": null,
+		"typical_achievement_weeks": 84,
+		"follow_up_ids": [
+			49,
+			26
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 49,
+		"title": "First Time Climbing",
+		"description": "May climb low furniture or steps. Supervise closely to prevent falls.",
+		"icon": null,
+		"typical_achievement_weeks": 88,
+		"follow_up_ids": [
+			50,
+			27
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 50,
+		"title": "First Time Kicking a Ball",
+		"description": "Begins to kick objects forward. Use a soft ball for safety.",
+		"icon": "sports_soccer",
+		"typical_achievement_weeks": 90,
+		"follow_up_ids": [
+			51
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 51,
+		"title": "First Scribble",
+		"description": "Random crayon or pencil marks. Encourage creativity (and supervise for wall art!).",
+		"icon": "create",
+		"typical_achievement_weeks": 92,
+		"follow_up_ids": [
+			52
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 52,
+		"title": "First Attempt at Brushing Teeth",
+		"description": "Introduces basic self-care. Use a soft brush and baby-safe toothpaste.",
+		"icon": "brush",
+		"typical_achievement_weeks": 94,
+		"follow_up_ids": [
+			53
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 53,
+		"title": "First Two-Word Sentence",
+		"description": "e.g., 'More milk!' or 'Mommy help.' Encouragement boosts language skills.",
+		"icon": null,
+		"typical_achievement_weeks": 96,
+		"follow_up_ids": [
+			54
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 54,
+		"title": "Draw on Paper with Crayons",
+		"description": "Scribbles become more controlled. Provide plenty of safe art supplies.",
+		"icon": null,
+		"typical_achievement_weeks": 96,
+		"follow_up_ids": [
+			55
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 55,
+		"title": "Stacking 5 Blocks",
+		"description": "Improving fine motor skills and spatial coordination. Celebrate each tower!",
+		"icon": null,
+		"typical_achievement_weeks": 96,
+		"follow_up_ids": [
+			56
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 56,
+		"title": "Follow Simple 2-Step Instructions",
+		"description": "Understands short tasks like 'Pick up the toy and put it in the box.'",
+		"icon": null,
+		"typical_achievement_weeks": 96,
+		"follow_up_ids": [
+			57
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 57,
+		"title": "Climbs onto Furniture Safely",
+		"description": "Able to navigate onto a couch or low chair. Supervise to prevent falls.",
+		"icon": null,
+		"typical_achievement_weeks": 96,
+		"follow_up_ids": [
+			58
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 58,
+		"title": "Begins to Jump with Both Feet",
+		"description": "A small hop off the ground. Help them practice on soft, safe surfaces.",
+		"icon": null,
+		"typical_achievement_weeks": 96,
+		"follow_up_ids": [
+			59
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 59,
+		"title": "Points to at Least 5 Body Parts",
+		"description": "Understands names of common body parts like nose, ears, and toes.",
+		"icon": null,
+		"typical_achievement_weeks": 96,
+		"follow_up_ids": [
+			60
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 60,
+		"title": "Recognizes Name in Mirror",
+		"description": "Shows self-recognition by patting chest or face when asked 'Who is that?'",
+		"icon": "tag_faces",
+		"typical_achievement_weeks": 96,
 		"follow_up_ids": [],
 		"achievement_time_weeks": null,
 		"comment": null
