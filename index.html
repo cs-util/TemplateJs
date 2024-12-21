@@ -1,86 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BabyStepsJs</title>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <style>
-        body {
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #1e1e2f;
-        }
-        svg {
-            width: 100%;
-            height: 90%;
-            border: 1px solid #ccc;
-        }
-        .node circle {
-            fill: #4caf50;
-            stroke: #fff;
-            stroke-width: 2px;
-        }
-        .node text {
-            font-size: 12px;
-            text-anchor: middle;
-            fill: #4caf50;
-        }
-        .link {
-            fill: none;
-            stroke: #888;
-            stroke-width: 2px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BabyStepsJs</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #1e1e2f;
+      height: 100vh;
+    }
+    svg {
+      width: 100%;
+      height: 90%;
+      border: 1px solid #ccc;
+    }
+    .link {
+      stroke: #888;
+      stroke-width: 2px;
+    }
+    .node circle {
+      fill: #4caf50;
+      stroke: #fff;
+      stroke-width: 2px;
+      cursor: pointer;
+    }
+    .node text {
+      font-size: 12px;
+      text-anchor: middle;
+      fill: #ffffff;
+      pointer-events: none; /* So the text doesn’t block circle clicks/drags */
+    }
+  </style>
 </head>
+
 <body>
-    <svg></svg>
-    <script>
-        const data = {
-            name: "Root Skill",
-            children: [
-                {
-                    name: "Skill 1",
-                    children: [
-                        { name: "Skill 1.1" },
-                        { name: "Skill 1.2" }
-                    ]
-                },
-                {
-                    name: "Skill 2",
-                    children: [
-                        { name: "Skill 2.1" },
-                        { name: "Skill 2.2" }
-                    ]
-                }
-            ]
-        };
+  <svg id="graph"></svg>
+  <script>
+    // Original data
+    const babyData = [
+      {
+        id: 1,
+        title: "Lifts Head",
+        description: "Baby can lift their head briefly when placed on their tummy. Encourage tummy time daily to strengthen neck muscles.",
+        typical_achievement_weeks: 4,
+        follow_up_ids: [2, 3],
+        achievement_time_weeks: null,
+        comment: ""
+      },
+      {
+        id: 2,
+        title: "Smiles Responsively",
+        description: "Baby smiles in response to your smile or voice. Engage in frequent face-to-face interactions to promote social development.",
+        typical_achievement_weeks: 6,
+        follow_up_ids: [3, 4],
+        achievement_time_weeks: null,
+        comment: ""
+      },
+      {
+        id: 3,
+        title: "Follows Objects with Eyes",
+        description: "Baby can track moving objects with their eyes. Use colorful toys to help develop visual tracking skills.",
+        typical_achievement_weeks: 8,
+        follow_up_ids: [], // Problematic reference if 5 isn't in data
+        achievement_time_weeks: null,
+        comment: ""
+      },
+      {
+        id: 4,
+        title: "Coos and Gurgles",
+        description: "Baby makes cooing and gurgling sounds. Talk and sing to your baby to encourage early language skills.",
+        typical_achievement_weeks: 8,
+        follow_up_ids: [], // Problematic reference if 6 isn't in data
+        achievement_time_weeks: null,
+        comment: ""
+      }
+    ];
 
-        const svg = d3.select("svg"),
-              width = window.innerWidth,
-              height = window.innerHeight,
-              g = svg.append("g").attr("transform", "translate(40,0)");
+    // 1) Create the nodes array
+    const nodes = babyData.map(d => ({
+      id: d.id,
+      title: d.title,
+      description: d.description,
+      followUps: d.follow_up_ids
+    }));
 
-        const tree = d3.tree().size([height - 100, width - 200]);
-        const root = d3.hierarchy(data);
-        tree(root);
+    // Filter out follow-ups that don't exist in the data --
+    const validIds = new Set(babyData.map(d => d.id));
+    // 2) Create the links
+    const links = [];
+    babyData.forEach(d => {
+      d.follow_up_ids.forEach(fuId => {
+        // Only link to fuId if we actually have a node with that ID
+        if (validIds.has(fuId)) {
+          links.push({ source: d.id, target: fuId });
+        }
+      });
+    });
 
-        g.selectAll(".link").data(root.links()).enter().append("path")
-            .attr("class", "link")
-            .attr("d", d3.linkHorizontal().x(d => d.y).y(d => d.x));
+    // 3) Select svg and set dimensions
+    const svg = d3.select("#graph");
+    const width = window.innerWidth ;
+    const height = window.innerHeight ;
 
-        const node = g.selectAll(".node").data(root.descendants()).enter().append("g")
-            .attr("class", "node")
-            .attr("transform", d => `translate(${d.y},${d.x})`);
+    // Apply these dimensions to the svg
+    svg
+      .attr("width", width)
+      .attr("height", height);
 
-        node.append("circle").attr("r", 8);
+    // 4) Initialize the simulation
+    const simulation = d3.forceSimulation(nodes)
+      .force("link", d3.forceLink(links).id(d => d.id).distance(200))
+      .force("charge", d3.forceManyBody().strength(-5000))
+      .force("center", d3.forceCenter(width / 2, height / 2))
+      // Helps keep nodes from overlapping
+      .force("collision", d3.forceCollide().radius(35)); 
 
-        node.append("text").attr("dy", 20).attr("x", d => d.children ? -15 : 15)
-            .style("text-anchor", d => d.children ? "end" : "start")
-            .text(d => d.data.name);
-    </script>
+    // 5) Link elements
+    const link = svg.selectAll(".link")
+      .data(links)
+      .enter()
+      .append("line")
+      .attr("class", "link");
+
+    // 6) Node groups
+    const node = svg.selectAll(".node")
+      .data(nodes)
+      .enter()
+      .append("g")
+      .attr("class", "node")
+      .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended)
+      );
+
+    // 7) Circle
+    node.append("circle")
+      .attr("r", 80)
+      .on("click", (event, d) => {
+        alert(`Title: ${d.title}\nDescription: ${d.description}`);
+      });
+
+    // 8) Text labels
+    node.append("text")
+      .attr("dy", -8)
+      .text(d => d.title);
+
+    // 9) On each tick, update the link and node positions
+    simulation.on("tick", () => {
+      link
+        .attr("x1", d => d.source.x)
+        .attr("y1", d => d.source.y)
+        .attr("x2", d => d.target.x)
+        .attr("y2", d => d.target.y);
+
+      node
+        .attr("transform", d => `translate(${d.x},${d.y})`);
+    });
+
+    // 10) Drag functions
+    function dragstarted(event, d) {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      d.fx = d.x;
+      d.fy = d.y;
+    }
+    function dragged(event, d) {
+      d.fx = event.x;
+      d.fy = event.y;
+    }
+    function dragended(event, d) {
+      if (!event.active) simulation.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
+    }
+  </script>
 </body>
 </html>
