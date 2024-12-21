@@ -1,77 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>BabyStepsJs</title>
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-</head>
-<body style="margin:0; background-color:#1e1e2f;">
-  <svg width="100%" height="90%" style="border:1px solid #ccc;"></svg>
-  <script>
-    const data = {
-      name: "Root Skill",
-      children: [
-        {
-          name: "Skill 1",
-          children: [
-            { name: "Skill 1.1" },
-            { name: "Skill 1.2" }
-          ]
-        },
-        {
-          name: "Skill 2",
-          children: [
-            { name: "Skill 2.1" },
-            { name: "Skill 2.2" }
-          ]
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BabyStepsJs</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #1e1e2f;
         }
-      ]
-    };
+        svg {
+            width: 100%;
+            height: 90%;
+            border: 1px solid #ccc;
+        }
+        .node circle {
+            fill: #4caf50;
+            stroke: #fff;
+            stroke-width: 2px;
+        }
+        .node text {
+            font-size: 12px;
+            text-anchor: middle;
+            fill: #4caf50;
+        }
+        .link {
+            fill: none;
+            stroke: #888;
+            stroke-width: 2px;
+        }
+    </style>
+</head>
+<body>
+    <svg></svg>
+    <script>
+        const data = {
+            name: "Root Skill",
+            children: [
+                {
+                    name: "Skill 1",
+                    children: [
+                        { name: "Skill 1.1" },
+                        { name: "Skill 1.2" }
+                    ]
+                },
+                {
+                    name: "Skill 2",
+                    children: [
+                        { name: "Skill 2.1" },
+                        { name: "Skill 2.2" }
+                    ]
+                }
+            ]
+        };
 
-    const svg   = d3.select("svg"),
-          width = window.innerWidth,
-          height= window.innerHeight,
-          g     = svg.append("g").attr("transform", "translate(40,0)");
+        const svg = d3.select("svg"),
+              width = window.innerWidth,
+              height = window.innerHeight,
+              g = svg.append("g").attr("transform", "translate(40,0)");
 
-    // Create the tree layout
-    const tree = d3.tree().size([height - 100, width - 200]);
-    const root = d3.hierarchy(data);
-    tree(root);
+        const tree = d3.tree().size([height - 100, width - 200]);
+        const root = d3.hierarchy(data);
+        tree(root);
 
-    // Links
-    g.selectAll("path")
-      .data(root.links())
-      .enter().append("path")
-      .attr("fill", "none")
-      .attr("stroke", "#888")
-      .attr("stroke-width", 2)
-      .attr("d", d3.linkHorizontal()
-                   .x(d => d.y)
-                   .y(d => d.x));
+        g.selectAll(".link").data(root.links()).enter().append("path")
+            .attr("class", "link")
+            .attr("d", d3.linkHorizontal().x(d => d.y).y(d => d.x));
 
-    // Nodes
-    const node = g.selectAll("g.node")
-      .data(root.descendants())
-      .enter().append("g")
-      .attr("class", "node")
-      .attr("transform", d => `translate(${d.y},${d.x})`);
+        const node = g.selectAll(".node").data(root.descendants()).enter().append("g")
+            .attr("class", "node")
+            .attr("transform", d => `translate(${d.y},${d.x})`);
 
-    // Circles
-    node.append("circle")
-      .attr("r", 8)
-      .attr("fill", "#4caf50")
-      .attr("stroke", "#fff")
-      .attr("stroke-width", 2);
+        node.append("circle").attr("r", 8);
 
-    // Text labels
-    node.append("text")
-      .attr("dy", 20)
-      .attr("x", d => d.children ? -15 : 15)
-      .attr("text-anchor", d => d.children ? "end" : "start")
-      .attr("fill", "#4caf50")
-      .style("font-size", "12px")
-      .text(d => d.data.name);
-
-  </script>
+        node.append("text").attr("dy", 20).attr("x", d => d.children ? -15 : 15)
+            .style("text-anchor", d => d.children ? "end" : "start")
+            .text(d => d.data.name);
+    </script>
 </body>
 </html>
