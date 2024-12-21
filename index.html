@@ -53,51 +53,61 @@ Simplify the code if possible (without removing the functionality described abov
 
   <!-- Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
   <style>
     html, body {
       margin: 0; padding: 0; overflow: hidden;
-      background-color: #1e1e2f; font-family: Arial, sans-serif;
+      background-color: #1e1e2f;
+      font-family: CONSOLAS, monospace;
     }
 
     /* TOP PANEL */
     .top-panel {
-      position: absolute; 
-      width: 100%; 
+      position: absolute;
+      width: 100%;
       top: 10px;
-      z-index: 999; 
-      color: white; 
+      z-index: 999;
+      color: white;
       font-size: 14px;
-      display: flex; 
-      justify-content: center; 
-      align-items: center; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
       gap: 20px;
       flex-wrap: wrap; /* allow wrapping in smaller screens */
     }
     .top-panel .birthdate-container {
-      display: flex; 
-      align-items: center; 
+      display: flex;
+      align-items: center;
       gap: 8px;
     }
     .top-panel input[type="date"] {
-      color: black; 
-      padding: 5px 8px; 
-      border-radius: 5px; 
+      color: black;
+      padding: 5px 8px;
+      border-radius: 5px;
       border: none;
     }
     .top-panel button {
-      cursor: pointer; 
-      padding: 5px 10px; 
-      border-radius: 5px; 
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 5px;
       border: none;
-      background-color: #4caf50; 
-      color: white; 
+      background-color: #4caf50;
+      color: white;
       font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
-    .top-panel button:hover { 
-      background-color: #388e3c; 
+    .top-panel button:hover {
+      background-color: #388e3c;
     }
-    .top-panel input#importFile { 
-      display: none; 
+    .top-panel .material-icons {
+      margin-right: 4px;
+      font-size: 18px;
+      vertical-align: middle;
+    }
+    .top-panel input#importFile {
+      display: none;
     }
 
     /* Make top panel more manageable on small screens */
@@ -117,112 +127,107 @@ Simplify the code if possible (without removing the functionality described abov
 
     /* SIDE PANEL */
     .side-panel {
-      position: absolute; 
-      right: 0; 
+      position: absolute;
+      right: 0;
       width: 300px;
-      height: 100%; 
-      background-color: #2c2c3e; 
+      height: 100%;
+      background-color: #2c2c3e;
       color: #fff;
-      border-left: 1px solid #444; 
-      padding: 20px; 
+      border-left: 1px solid #444;
+      padding: 20px;
       box-sizing: border-box;
-      display: none; 
-      flex-direction: column; 
-      gap: 10px; 
+      display: none;
+      flex-direction: column;
+      gap: 10px;
       font-size: 14px;
     }
-    .side-panel h2 { 
-      margin: 0; 
-      font-size: 16px; 
+    .side-panel h2 {
+      margin: 0;
+      font-size: 16px;
     }
     .side-panel textarea {
-      width: 100%; 
-      height: 80px; 
-      resize: vertical; 
+      width: 100%;
+      height: 80px;
+      resize: vertical;
       border: none;
-      border-radius: 4px; 
-      font-family: Arial, sans-serif; 
+      border-radius: 4px;
+      font-family: CONSOLAS, monospace;
       padding: 5px;
     }
-    .side-panel input[type="date"], 
+    .side-panel input[type="date"],
     .side-panel button {
-      margin-top: 5px; 
-      padding: 5px; 
-      border-radius: 4px; 
-      border: none; 
+      margin-top: 5px;
+      padding: 5px;
+      border-radius: 4px;
+      border: none;
       color: black;
     }
     .side-panel button.save-btn {
-      background-color: #4caf50; 
-      color: white; 
+      background-color: #4caf50;
+      color: white;
       font-weight: bold;
-      cursor: pointer; 
+      cursor: pointer;
       width: 100%;
     }
-    .side-panel button.save-btn:hover { 
-      background-color: #388e3c; 
+    .side-panel button.save-btn:hover {
+      background-color: #388e3c;
     }
 
     /* MAIN SVG */
     svg {
-      width: 100%; 
-      height: 100vh; 
+      width: 100%;
+      height: 100vh;
       box-sizing: border-box;
     }
     .link {
-      stroke: #888; 
-      stroke-width: 2px; 
+      stroke: #888;
+      stroke-width: 2px;
       marker-end: url(#arrowhead);
     }
 
     /* Node Rectangle */
     .node-rect {
-      stroke: #fff; 
-      stroke-width: 1.5px; 
+      stroke: #fff;
+      stroke-width: 1.5px;
       cursor: pointer;
-      /* Default locked color */
-      fill: #a88615c5;
-      rx: 10;  /* Rounded corners */
-      ry: 10;
+      fill: #a88615c5; /* default locked color */
+      rx: 10;
+      ry: 10; /* rounded corners */
     }
-    /* Overdue color */
     .node-rect.overdue {
-      fill: #cc5a5ad7;
+      fill: #cc5a5ad7; /* color if overdue */
     }
-    /* Next color */
     .node-rect.next {
-      fill: #5d50d0c7;
+      fill: #5d50d0c7; /* color if next/unlockable */
     }
-    /* Unlocked color */
     .node-rect.unlocked {
-      fill: rgba(9, 126, 19, 0.856);
+      fill: rgba(9, 126, 19, 0.856); /* color if unlocked */
     }
 
     /* Title text inside node */
     .title-text {
-      font-size: 12px; 
-      fill: #ffffff; 
+      font-size: 12px;
+      fill: #ffffff;
       pointer-events: none;
     }
     /* Weeks info text inside node */
     .weeks-text {
-      font-size: 10px; 
-      fill: #ececec; 
+      font-size: 10px;
+      fill: #ececec;
       pointer-events: none;
     }
     /* Icon, large and semi-transparent behind text */
     .node-icon {
       font-family: "Material Icons";
       font-size: 36px;
-      fill: #ffffff;      
-      fill-opacity: 0.65;  /* more transparent */
+      fill: #ffffff;
+      fill-opacity: 0.65;
       pointer-events: none; /* don’t block clicks */
     }
   </style>
 </head>
 <body>
 
-<!-- TOP PANEL -->
 <div class="top-panel">
   <div class="birthdate-container">
     <label for="birthDate">Birthday:</label>
@@ -230,8 +235,14 @@ Simplify the code if possible (without removing the functionality described abov
     <span id="currentWeekLabel"></span>
   </div>
   <div>
-    <button id="importBtn">Import</button>
-    <button id="exportBtn">Export</button>
+    <button id="importBtn">
+      <span class="material-icons">folder_open</span>
+      Import
+    </button>
+    <button id="exportBtn">
+      <span class="material-icons">save</span>
+      Export
+    </button>
     <input id="importFile" type="file" accept=".json" />
   </div>
 </div>
@@ -253,6 +264,13 @@ Simplify the code if possible (without removing the functionality described abov
 
 <script>
 (async function main() {
+
+  // HELPER to compute age in weeks between two dates
+  function weeksBetween(firstDate, secondDate) {
+    const diffDays = (secondDate - firstDate) / (1000 * 60 * 60 * 24);
+    return Math.floor(diffDays / 7);
+  }
+
   // 1) Load data from localStorage if possible
   let babyData = [];
   const savedData = localStorage.getItem("babyData");
@@ -285,10 +303,10 @@ Simplify the code if possible (without removing the functionality described abov
     document.getElementById("birthDate").value = savedBirthDate;
   }
 
-  // 2) D3 SETUP
   const svg = d3.select("#graph");
   const width = window.innerWidth;
   const height = window.innerHeight;
+
   svg.attr("width", width).attr("height", height);
 
   // A group to handle pan & zoom
@@ -309,11 +327,12 @@ Simplify the code if possible (without removing the functionality described abov
     .attr("d", "M0,-5L10,0L0,5")
     .attr("fill", "#888");
 
+  // Zoom behavior
   svg.call(d3.zoom().on("zoom", (event) => {
     zoomG.attr("transform", event.transform);
   }));
 
-  // Build graph data (nodes & links)
+  // Build graph data (nodes & links) from babyData
   function buildGraphData(data) {
     const validIds = new Set(data.map(d => d.id));
     return {
@@ -326,7 +345,6 @@ Simplify the code if possible (without removing the functionality described abov
     };
   }
 
-  // Node rectangle dimensions
   const NODE_WIDTH = 180;
   const NODE_HEIGHT = 60;
 
@@ -352,18 +370,26 @@ Simplify the code if possible (without removing the functionality described abov
       .enter().append("line")
       .attr("class", "link");
 
-    // Draw nodes (group)
+    // Draw node groups
     nodeGroup = zoomG.selectAll(".node")
       .data(nodes)
       .enter().append("g")
       .attr("class", "node")
       .call(d3.drag()
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended)
+        .on("start", (event, d) => {
+          if (!event.active) simulation.alphaTarget(0.3).restart();
+          d.fx = d.x; d.fy = d.y;
+        })
+        .on("drag", (event, d) => {
+          d.fx = event.x; d.fy = event.y;
+        })
+        .on("end", (event, d) => {
+          if (!event.active) simulation.alphaTarget(0);
+          d.fx = null; d.fy = null;
+        })
       );
 
-    // 1) Rectangle (background)
+    // Node rect
     nodeGroup.append("rect")
       .attr("class", "node-rect")
       .attr("width", NODE_WIDTH)
@@ -371,32 +397,31 @@ Simplify the code if possible (without removing the functionality described abov
       .attr("x", -NODE_WIDTH / 2)
       .attr("y", -NODE_HEIGHT / 2)
       .on("click", (event, d) => {
-        event.stopPropagation(); // to prevent side-panel from closing
+        event.stopPropagation(); // so we don't close side-panel
         onNodeClick(d);
       });
 
-    // 2) Icon (right center, behind text)
+    // Node icon (right center)
     nodeGroup.append("text")
       .attr("class", "node-icon")
-      .attr("x", (NODE_WIDTH / 2) - 24)  // 30px in from right edge
-      .attr("y", 16)                     // center vertically
+      .attr("x", (NODE_WIDTH / 2) - 24)
+      .attr("y", 16)
       .attr("text-anchor", "middle")
-      .attr("dominant-baseline", "middle")
-      .text(d => d.icon ? d.icon : "");
+      .text(d => d.icon || "");
 
-    // 3) Title text (top-left corner)
+    // Title text (top-left corner)
     nodeGroup.append("text")
       .attr("class", "title-text")
-      .attr("x", -(NODE_WIDTH / 2) + 8)     // small left padding
-      .attr("y", -(NODE_HEIGHT / 2) + 16)   // some top padding
+      .attr("x", -(NODE_WIDTH / 2) + 8)
+      .attr("y", -(NODE_HEIGHT / 2) + 16)
       .text(d => d.title)
-      .each(function(d) { wrapText(d3.select(this), NODE_WIDTH - 40); });
+      .each(function() { wrapText(d3.select(this), NODE_WIDTH - 40); });
 
-    // 4) Weeks info (bottom-left corner)
+    // Weeks info (bottom-left corner)
     nodeGroup.append("text")
       .attr("class", "weeks-text")
-      .attr("x", -(NODE_WIDTH / 2) + 8)   // left padding
-      .attr("y", (NODE_HEIGHT / 2) - 8)   // bottom padding
+      .attr("x", -(NODE_WIDTH / 2) + 8)
+      .attr("y", (NODE_HEIGHT / 2) - 8)
       .text(formatWeeks);
 
     simulation.on("tick", () => {
@@ -412,18 +437,6 @@ Simplify the code if possible (without removing the functionality described abov
     refreshGraph();
   }
 
-  function dragstarted(event, d) {
-    if (!event.active) simulation.alphaTarget(0.3).restart();
-    d.fx = d.x; d.fy = d.y;
-  }
-  function dragged(event, d) {
-    d.fx = event.x; d.fy = event.y;
-  }
-  function dragended(event, d) {
-    if (!event.active) simulation.alphaTarget(0);
-    d.fx = null; d.fy = null;
-  }
-
   // Simple text-wrap function for node titles
   function wrapText(textSelection, width) {
     textSelection.each(function() {
@@ -434,13 +447,9 @@ Simplify the code if possible (without removing the functionality described abov
       const lineHeight = 1.2; // em
       const y = text.attr("y") || 0;
       const x = text.attr("x") || 0;
-      let tspan = text.text(null)
-        .append("tspan")
-        .attr("x", x)
-        .attr("y", y)
-        .attr("dy", 0 + "em");
-      let word;
+      let tspan = text.text(null).append("tspan").attr("x", x).attr("y", y);
 
+      let word;
       while ((word = words.pop())) {
         line.push(word);
         tspan.text(line.join(" "));
@@ -457,55 +466,47 @@ Simplify the code if possible (without removing the functionality described abov
     });
   }
 
-  // 4) COLORING & “NEXT” / “OVERDUE”
-  function refreshGraph() {
-    updateCurrentWeekLabel();
-
-    const birthDateStr = document.getElementById("birthDate").value;
-    let ageInWeeks = null;
-    if (birthDateStr) {
-      const diffDays = (new Date() - new Date(birthDateStr)) / (1000 * 60 * 60 * 24);
-      ageInWeeks = Math.floor(diffDays / 7);
-    }
-
-    nodeGroup.select("rect.node-rect")
-      .each(function(d) {
-        const rect = d3.select(this);
-        // Remove all state classes first
-        rect.classed("unlocked", false)
-            .classed("overdue", false)
-            .classed("next", false);
-
-        if (d.achievement_time_weeks !== null) {
-          // Unlocked
-          rect.classed("unlocked", true);
-        } else {
-          // Still locked
-          if (ageInWeeks && ageInWeeks > d.typical_achievement_weeks) {
-            rect.classed("overdue", true);
-          }
-          // Check if 'next' (all parents unlocked)
-          const parents = babyData.filter(p => p.follow_up_ids.includes(d.id));
-          const allParentsUnlocked = parents.every(p => p.achievement_time_weeks !== null);
-          if (parents.length === 0 || allParentsUnlocked) {
-            rect.classed("next", true);
-          }
-        }
-      });
-
-    // Update weeks text
-    nodeGroup.select(".weeks-text").text(formatWeeks);
-  }
-
-  // Return string describing how early/late an achievement was unlocked
+  // Returns string describing how early/late an achievement was unlocked
   function formatWeeks(d) {
-    if (d.achievement_time_weeks === null) {
+    if (d.achievement_time_weeks == null) {
       return `~ week ${d.typical_achievement_weeks}`;
     }
     const diff = d.typical_achievement_weeks - d.achievement_time_weeks;
     if (diff > 0) return `Unlocked ${Math.abs(diff)} weeks early`;
     if (diff < 0) return `Unlocked ${Math.abs(diff)} weeks late`;
     return `Unlocked right on time`;
+  }
+
+  // 4) COLORING & “NEXT” / “OVERDUE”
+  function refreshGraph() {
+    updateCurrentWeekLabel();
+    const birthDateStr = document.getElementById("birthDate").value;
+    const ageInWeeks = birthDateStr ? weeksBetween(new Date(birthDateStr), new Date()) : null;
+
+    nodeGroup.select(".node-rect").each(function(d) {
+      const rect = d3.select(this);
+      rect.classed("unlocked", false)
+          .classed("overdue", false)
+          .classed("next", false);
+
+      if (d.achievement_time_weeks !== null) {
+        rect.classed("unlocked", true);
+      } else {
+        // Overdue if older than typical_achievement_weeks
+        if (ageInWeeks && ageInWeeks > d.typical_achievement_weeks) {
+          rect.classed("overdue", true);
+        }
+        // Check if 'next' (all parents unlocked)
+        const parents = babyData.filter(p => p.follow_up_ids.includes(d.id));
+        const allParentsUnlocked = parents.every(p => p.achievement_time_weeks !== null);
+        if (!parents.length || allParentsUnlocked) {
+          rect.classed("next", true);
+        }
+      }
+    });
+
+    // Update weeks text again (in case it changed)
+    nodeGroup.select(".weeks-text").text(formatWeeks);
   }
 
   // 5) SIDE PANEL
@@ -549,17 +550,15 @@ Simplify the code if possible (without removing the functionality described abov
     descEl.textContent = d.description;
     commentEl.value = d.comment || "";
 
-    // If locked, fill today's date by default
-    // If unlocked, reconstruct date from birth date + achievement_time_weeks
     const birthDateStr = document.getElementById("birthDate").value;
     if (d.achievement_time_weeks === null) {
-      const now = new Date();
-      dateEl.value = now.toISOString().split("T")[0];
+      // If locked, fill today's date by default
+      dateEl.value = new Date().toISOString().split("T")[0];
     } else if (birthDateStr) {
+      // If already unlocked, reconstruct date from birth + achievement_time_weeks
       const bd = new Date(birthDateStr);
-      const guessDate = new Date(bd);
-      guessDate.setDate(guessDate.getDate() + (7 * d.achievement_time_weeks));
-      dateEl.value = guessDate.toISOString().split("T")[0];
+      bd.setDate(bd.getDate() + (7 * d.achievement_time_weeks));
+      dateEl.value = bd.toISOString().split("T")[0];
     } else {
       dateEl.value = "";
     }
@@ -571,6 +570,31 @@ Simplify the code if possible (without removing the functionality described abov
     sidePanel.style.display = "none";
     currentNode = null;
   }
+
+  // Save side-panel data
+  saveBtn.addEventListener("click", () => {
+    if (!currentNode) return;
+
+    const achievementDate = dateEl.value ? new Date(dateEl.value) : null;
+    const birthDateStr = document.getElementById("birthDate").value;
+
+    // If user provided a date, compute baby’s age in weeks
+    if (achievementDate && birthDateStr) {
+      const bd = new Date(birthDateStr);
+      const w = weeksBetween(bd, achievementDate);
+      currentNode.achievement_time_weeks = w > 0 ? w : 0;
+    } else if (achievementDate && !birthDateStr) {
+      currentNode.achievement_time_weeks = currentNode.typical_achievement_weeks;
+    } else {
+      // No date => treat as locked
+      currentNode.achievement_time_weeks = null;
+    }
+    currentNode.comment = commentEl.value.trim();
+
+    refreshGraph();
+    saveToLocalStorage();
+    hideSidePanel();
+  });
 
   // Close side panel if user clicks outside it
   document.addEventListener("click", (event) => {
@@ -602,7 +626,6 @@ Simplify the code if possible (without removing the functionality described abov
 
   // 7) IMPORT / EXPORT
   document.getElementById("exportBtn").addEventListener("click", () => {
-    // Prepare data for export (entire tech tree + states)
     const exportData = JSON.stringify(babyData, null, 2);
     const blob = new Blob([exportData], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -647,9 +670,7 @@ Simplify the code if possible (without removing the functionality described abov
       label.textContent = "";
       return;
     }
-    const diffDays = (new Date() - new Date(birthDateStr)) / (1000 * 60 * 60 * 24);
-    const ageInWeeks = Math.floor(diffDays / 7);
-    label.textContent = `(Week ${ageInWeeks})`;
+    label.textContent = `(Week ${weeksBetween(new Date(birthDateStr), new Date())})`;
   }
 
   // 9) RE-RENDER ON BIRTHDATE CHANGE
