@@ -146,9 +146,10 @@ Simplify the code if possible (without removing the functionality described abov
       margin: 0; 
       font-size: 16px; 
     }
-    /* Shared input style for date + textarea in side panel */
+    /* Shared input style for date + textarea + file in side panel */
     .side-panel input[type="date"],
-    .side-panel textarea {
+    .side-panel textarea,
+    .side-panel input[type="file"] {
       margin-top: 5px; 
       padding: 5px; 
       border: none; 
@@ -159,6 +160,15 @@ Simplify the code if possible (without removing the functionality described abov
     .side-panel textarea {
       height: 80px; 
       resize: vertical;
+    }
+    /* Preview image */
+    #sidePanelImagePreview {
+      max-width: 100%; 
+      max-height: 120px; 
+      object-fit: cover; 
+      display: none; 
+      margin-top: 5px;
+      border: 1px solid #444;
     }
     /* Save button */
     .side-panel button.save-btn {
@@ -244,11 +254,19 @@ Simplify the code if possible (without removing the functionality described abov
 <div class="side-panel" id="sidePanel">
   <h2 id="sidePanelTitle"></h2>
   <div id="sidePanelDescription" style="font-size: 12px; color: #ccc;"></div>
+  
   <label for="sidePanelAchievementDate">Date Unlocked (optional):</label>
   <input type="date" id="sidePanelAchievementDate" />
+  
   <label for="sidePanelComment">Comment:</label>
   <textarea id="sidePanelComment"
             placeholder="Enter any notes or observations..."></textarea>
+            
+  <!-- New: Optional image upload & preview -->
+  <label for="sidePanelImageFile">Add an image (optional):</label>
+  <input type="file" id="sidePanelImageFile" accept="image/*" />
+  <img id="sidePanelImagePreview" />
+
   <button class="save-btn" id="sidePanelSaveBtn">Save</button>
 </div>
 
@@ -509,11 +527,24 @@ Simplify the code if possible (without removing the functionality described abov
   const commentEl = document.getElementById("sidePanelComment");
   const saveBtn = document.getElementById("sidePanelSaveBtn");
 
+  // New references for image input & preview
+  const imageFileInput = document.getElementById("sidePanelImageFile");
+  const imagePreview = document.getElementById("sidePanelImagePreview");
+
   function onNodeClick(d) {
     currentNode = d;
     titleEl.textContent = d.title;
     descEl.textContent = d.description;
     commentEl.value = d.comment || "";
+
+    // If there's an existing image, show it; otherwise hide preview
+    if (d.imageData) {
+      imagePreview.src = d.imageData;
+      imagePreview.style.display = "block";
+    } else {
+      imagePreview.style.display = "none";
+    }
+    imageFileInput.value = null; // reset file input
 
     const birthDateStr = document.getElementById("birthDate").value;
     if (d.achievement_time_weeks === null) {
@@ -534,6 +565,21 @@ Simplify the code if possible (without removing the functionality described abov
     sidePanel.style.display = "none";
     currentNode = null;
   }
+
+  // Handle image file selection
+  imageFileInput.addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      if (currentNode) {
+        currentNode.imageData = ev.target.result; // store base64
+        imagePreview.src = currentNode.imageData;
+        imagePreview.style.display = "block";
+      }
+    };
+    reader.readAsDataURL(file);
+  });
 
   // Single event listener for saving side-panel data
   saveBtn.addEventListener("click", () => {
@@ -577,7 +623,8 @@ Simplify the code if possible (without removing the functionality described abov
       typical_achievement_weeks: d.typical_achievement_weeks,
       follow_up_ids: d.follow_up_ids,
       achievement_time_weeks: d.achievement_time_weeks,
-      comment: d.comment
+      comment: d.comment,
+      imageData: d.imageData || null   // NEW: persist image
     }))));
 
     const bd = document.getElementById("birthDate").value;
