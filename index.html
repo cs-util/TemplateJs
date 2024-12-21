@@ -15,7 +15,7 @@
     .top-panel {
       position: absolute; width: 100%; text-align: center; top: 10px;
       z-index: 999; color: white; font-size: 14px; display: flex;
-      justify-content: center; align-items: center; flex-wrap: wrap; gap: 20px;
+      justify-content: center; align-items: center; gap: 20px;
     }
     .top-panel input[type="date"] {
       color: black; padding: 5px 8px; border-radius: 5px; border: none;
@@ -25,6 +25,7 @@
       background-color: #4caf50; color: white; font-weight: bold;
     }
     .top-panel button:hover { background-color: #388e3c; }
+    .top-panel input#importFile { display: none; }
 
     /* SIDE PANEL */
     .side-panel {
@@ -46,34 +47,38 @@
       cursor: pointer; width: 100%;
     }
     .side-panel button.save-btn:hover { background-color: #388e3c; }
-    .side-panel button.close-btn {
-      background-color: #c33; color: #fff; margin-top: auto; cursor: pointer;
-    }
-    .side-panel button.close-btn:hover { background-color: #a00; }
 
+    /* MAIN SVG */
     svg {
-      width: 100%; height: 100vh; border: 1px solid #ccc; box-sizing: border-box;
+      width: 100%; height: 100vh; box-sizing: border-box;
     }
-    .link { stroke: #888; stroke-width: 2px; marker-end: url(#arrowhead); }
+    .link {
+      stroke: #888; stroke-width: 2px; marker-end: url(#arrowhead);
+    }
     .node circle {
       fill: hwb(60 15% 79%); stroke: #fff; stroke-width: 2px; cursor: pointer;
     }
-    .node.unlocked circle { fill: rgb(9, 126, 19); }
-    .node.overdue circle { fill: #a83232; }
-    .node.next circle { fill: #5c50d0; }
+    .node.unlocked circle {
+      fill: rgb(9, 126, 19); /* already unlocked */
+    }
+    .node.overdue circle {
+      fill: #a83232; /* if current age > typical_achievement_weeks & still locked */
+    }
+    .node.next circle {
+      fill: #5c50d0; /* next in line if all parents are unlocked */
+    }
     .caption {
-      font-size: 12px; text-anchor: middle; fill: #ffffff; pointer-events: none;
-      /* Attempt a small multi-line approach via approximate line clamping */
-      transform: translateY(-4px);
+      font-size: 12px; text-anchor: middle; fill: #ffffff;
+      pointer-events: none; /* ignoring pointer so node circle gets the click */
     }
     .weeks {
-      font-size: 10px; text-anchor: middle; fill: #cccccc; pointer-events: none;
-      transform: translateY(16px);
+      font-size: 10px; text-anchor: middle; fill: #cccccc;
+      pointer-events: none; transform: translateY(16px);
     }
-
   </style>
 </head>
 <body>
+
   <!-- TOP PANEL -->
   <div class="top-panel">
     <div>
@@ -83,7 +88,7 @@
     <div>
       <button id="importBtn">Import</button>
       <button id="exportBtn">Export</button>
-      <input id="importFile" type="file" accept=".json" style="display:none" />
+      <input id="importFile" type="file" accept=".json" />
     </div>
   </div>
 
@@ -94,16 +99,16 @@
     <label for="sidePanelAchievementDate">Date Unlocked (optional):</label>
     <input type="date" id="sidePanelAchievementDate" />
     <label for="sidePanelComment">Comment:</label>
-    <textarea id="sidePanelComment" placeholder="Enter any notes or observations..."></textarea>
+    <textarea id="sidePanelComment"
+              placeholder="Enter any notes or observations..."></textarea>
     <button class="save-btn" id="sidePanelSaveBtn">Save</button>
-    <button class="close-btn" id="sidePanelCloseBtn">Close</button>
   </div>
 
   <!-- MAIN SVG -->
   <svg id="graph"></svg>
 
   <script>
-    // 1) INITIAL DATA (will be overridden if localStorage or import is used)
+    // 1) INITIAL DATA (will be overridden if localStorage or imported)
     let babyData = [
       {
         "id": 1,
@@ -143,15 +148,21 @@
       }
     ];
 
-    // Try to load from localStorage
-    const saved = localStorage.getItem("babyData");
-    if (saved) {
+    // Attempt to load data from localStorage
+    const savedData = localStorage.getItem("babyData");
+    if (savedData) {
       try {
-        const parsed = JSON.parse(saved);
+        const parsed = JSON.parse(savedData);
         if (Array.isArray(parsed)) babyData = parsed;
       } catch (e) {
-        console.warn("Local storage data was corrupt, ignoring it.");
+        console.warn("Local storage babyData was corrupt, ignoring it.");
       }
+    }
+
+    // Attempt to load birthDate from localStorage
+    const savedBirthDate = localStorage.getItem("birthDate");
+    if (savedBirthDate) {
+      document.getElementById("birthDate").value = savedBirthDate;
     }
 
     // 2) D3 SETUP
@@ -159,7 +170,7 @@
     const width = window.innerWidth, height = window.innerHeight;
     svg.attr("width", width).attr("height", height);
 
-    // Pan & zoom grouping
+    // Pan & zoom group
     const zoomG = svg.append("g");
 
     // Arrowhead definition
@@ -181,7 +192,7 @@
       zoomG.attr("transform", event.transform);
     }));
 
-    // Build nodes & links
+    // Prepare nodes & links from babyData
     function buildGraphData(data) {
       const validIds = new Set(data.map(d => d.id));
       return {
@@ -202,17 +213,20 @@
       nodes = graphData.nodes;
       links = graphData.links;
 
+      // Setup force simulation
       simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(200))
         .force("charge", d3.forceManyBody().strength(-4000))
         .force("center", d3.forceCenter(width / 2, height / 2))
         .force("collision", d3.forceCollide().radius(50));
 
+      // Draw links
       link = zoomG.selectAll(".link")
         .data(links)
         .enter().append("line")
         .attr("class", "link");
 
+      // Draw nodes
       node = zoomG.selectAll(".node")
         .data(nodes)
         .enter().append("g")
@@ -225,10 +239,19 @@
 
       node.append("circle")
         .attr("r", 60)
-        .on("click", (_, d) => onNodeClick(d));
+        .on("click", (event, d) => {
+          event.stopPropagation(); // so it doesn’t trigger “outside click”
+          onNodeClick(d);
+        });
 
-      node.append("text").attr("class", "caption").text(d => d.title);
-      node.append("text").attr("class", "weeks").text(formatWeeks);
+      node.append("text")
+        .attr("class", "caption")
+        .text(d => d.title)
+        .each(function(d) { wrapText(d3.select(this), 100); });
+
+      node.append("text")
+        .attr("class", "weeks")
+        .text(formatWeeks);
 
       simulation.on("tick", () => {
         link
@@ -254,6 +277,45 @@
       d.fx = null; d.fy = null;
     }
 
+    // Simple text-wrap function for node titles
+    function wrapText(textSelection, width) {
+      textSelection.each(function() {
+        const text = d3.select(this);
+        const words = text.text().split(/\s+/).reverse();
+        let line = [];
+        let lineNumber = 0;
+        const lineHeight = 1.2; // em
+        const y = text.attr("y") || 0;
+        const x = text.attr("x") || 0;
+        let tspan = text.text(null)
+          .append("tspan")
+          .attr("x", x)
+          .attr("y", y)
+          .attr("dy", 0 + "em");
+        let word;
+        while ((word = words.pop())) {
+          line.push(word);
+          tspan.text(line.join(" "));
+          if (tspan.node().getComputedTextLength() > width) {
+            line.pop();
+            tspan.text(line.join(" "));
+            line = [word];
+            tspan = text.append("tspan")
+              .attr("x", x).attr("y", y)
+              .attr("dy", ++lineNumber * lineHeight + "em")
+              .text(word);
+          }
+        }
+        // Center text vertically in circle (roughly)
+        const totalLines = lineNumber + 1;
+        const offset = -0.6 * totalLines;
+        text.selectAll("tspan")
+          .attr("dy", function(d, i) {
+            return (i + offset) * lineHeight + "em";
+          });
+      });
+    }
+
     // 4) LOGIC FOR COLORING & “NEXT” / “OVERDUE”
     function refreshGraph() {
       const bd = document.getElementById("birthDate").value;
@@ -263,93 +325,93 @@
         ageInWeeks = Math.round(diffDays / 7);
       }
 
-      // Mark each node with states: unlocked, next, overdue
       node
         .classed("unlocked", d => d.achievement_time_weeks !== null)
         .classed("overdue", d => {
-          // overdue if still locked and current age is beyond typical_achievement_weeks
           if (!ageInWeeks) return false;
-          return (d.achievement_time_weeks === null && ageInWeeks > d.typical_achievement_weeks);
+          return d.achievement_time_weeks === null && ageInWeeks > d.typical_achievement_weeks;
         })
         .classed("next", d => {
-          // next if still locked but all parents are unlocked
-          if (d.achievement_time_weeks !== null) return false; // already unlocked
-          // find all parents
+          // "next" if still locked but all parents are unlocked
+          if (d.achievement_time_weeks !== null) return false;
           const parents = babyData.filter(p => p.follow_up_ids.includes(d.id));
-          // if no parents, it can be next right away
-          if (parents.length === 0) return true;
-          // otherwise, check if all parents are unlocked
+          if (parents.length === 0) return true; // no parents => immediately next
           return parents.every(p => p.achievement_time_weeks !== null);
         });
+
+      // Update weeks text
       node.select(".weeks").text(formatWeeks);
     }
 
     function formatWeeks(d) {
-      // If the node is locked, show typical week
       if (d.achievement_time_weeks === null) {
         return `~ week ${d.typical_achievement_weeks}`;
       }
-      // If unlocked, show early/late
       const diff = d.typical_achievement_weeks - d.achievement_time_weeks;
       if (diff > 0) return `Unlocked ${Math.abs(diff)} weeks early`;
       if (diff < 0) return `Unlocked ${Math.abs(diff)} weeks late`;
       return `Unlocked right on time`;
     }
 
-    // 5) SIDE PANEL INTERACTIONS
-    let currentNode = null; // track which node is being edited in side panel
+    // 5) SIDE PANEL
+    let currentNode = null;
     const sidePanel = document.getElementById("sidePanel");
     const titleEl = document.getElementById("sidePanelTitle");
     const descEl = document.getElementById("sidePanelDescription");
     const dateEl = document.getElementById("sidePanelAchievementDate");
     const commentEl = document.getElementById("sidePanelComment");
     const saveBtn = document.getElementById("sidePanelSaveBtn");
-    const closeBtn = document.getElementById("sidePanelCloseBtn");
 
     saveBtn.addEventListener("click", () => {
       if (!currentNode) return;
-      // If user provided a date, we compute the baby’s age in weeks at that date
+
+      // If user provided a date, compute baby’s age in weeks at that date
       const achievementDate = dateEl.value ? new Date(dateEl.value) : null;
       const birthDateStr = document.getElementById("birthDate").value;
       if (achievementDate && birthDateStr) {
         const bd = new Date(birthDateStr);
         const diffDays = (achievementDate - bd) / (1000 * 60 * 60 * 24);
-        currentNode.achievement_time_weeks = diffDays > 0 ? Math.round(diffDays / 7) : 0;
+        currentNode.achievement_time_weeks = diffDays > 0
+          ? Math.round(diffDays / 7)
+          : 0; // if negative, set 0 as a fallback
       } else if (achievementDate && !birthDateStr) {
-        // If no birth date was provided, fallback to typical
+        // No birth date => fallback to typical
         currentNode.achievement_time_weeks = currentNode.typical_achievement_weeks;
       } else {
-        // No date => treat it as locked again
+        // No date => treat as locked again
         currentNode.achievement_time_weeks = null;
       }
+
       currentNode.comment = commentEl.value.trim();
       refreshGraph();
       saveToLocalStorage();
       hideSidePanel();
     });
 
-    closeBtn.addEventListener("click", hideSidePanel);
-
+    // Show side panel and fill data
     function onNodeClick(d) {
       currentNode = d;
       titleEl.textContent = d.title;
       descEl.textContent = d.description;
       commentEl.value = d.comment || "";
 
-      // If the node is unlocked, let's try to estimate a date based on birth date
-      // We can’t do the exact reverse calculation reliably because we only stored weeks.
-      // But let's do a best guess. The user can adjust if needed.
+      // If locked, fill today's date
+      // If unlocked, guess date from birthDate + achievement_time_weeks
       const birthDateStr = document.getElementById("birthDate").value;
-      if (d.achievement_time_weeks !== null && birthDateStr) {
+      if (d.achievement_time_weeks === null) {
+        // locked => default to today's date
+        const now = new Date();
+        dateEl.value = now.toISOString().split("T")[0];
+      } else if (birthDateStr) {
         const bd = new Date(birthDateStr);
         const guessDate = new Date(bd);
         guessDate.setDate(guessDate.getDate() + (7 * d.achievement_time_weeks));
-        // Format as yyyy-mm-dd
-        const isoDate = guessDate.toISOString().split("T")[0];
-        dateEl.value = isoDate;
+        dateEl.value = guessDate.toISOString().split("T")[0];
       } else {
+        // no birth date to guess from, just clear
         dateEl.value = "";
       }
+
       sidePanel.style.display = "flex";
     }
 
@@ -357,6 +419,14 @@
       sidePanel.style.display = "none";
       currentNode = null;
     }
+
+    // Hide side panel if user clicks outside it
+    document.addEventListener("click", (event) => {
+      const isClickInside = sidePanel.contains(event.target);
+      if (!isClickInside) {
+        hideSidePanel();
+      }
+    });
 
     // 6) SAVE TO LOCAL STORAGE
     function saveToLocalStorage() {
@@ -369,10 +439,18 @@
         achievement_time_weeks: d.achievement_time_weeks,
         comment: d.comment
       }))));
+
+      const bd = document.getElementById("birthDate").value;
+      if (bd) {
+        localStorage.setItem("birthDate", bd);
+      } else {
+        localStorage.removeItem("birthDate");
+      }
     }
 
-    // 7) IMPORT/EXPORT
+    // 7) IMPORT / EXPORT
     document.getElementById("exportBtn").addEventListener("click", () => {
+      // Prepare data for export (the entire tech tree + states)
       const exportData = JSON.stringify(babyData, null, 2);
       const blob = new Blob([exportData], { type: "application/json" });
       const url = URL.createObjectURL(blob);
@@ -409,8 +487,9 @@
       e.target.value = null;
     });
 
-    // 8) RE-RENDER GRAPH WHEN BIRTHDATE CHANGES
+    // 8) RE-RENDER ON BIRTHDATE CHANGE
     document.getElementById("birthDate").addEventListener("change", () => {
+      saveToLocalStorage();
       refreshGraph();
     });
 
