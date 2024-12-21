@@ -10,7 +10,6 @@
 
   <!-- Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-
   <style>
     html, body {
       margin: 0; padding: 0; overflow: hidden;
@@ -64,57 +63,59 @@
     .link {
       stroke: #888; stroke-width: 2px; marker-end: url(#arrowhead);
     }
-    .node circle {
-      fill: hwb(60 15% 79%); /* locked default color */
-      stroke: #fff; stroke-width: 2px; cursor: pointer;
+
+    /* Node Rectangle */
+    .node-rect {
+      stroke: #fff; stroke-width: 1.5px; cursor: pointer;
+      /* default locked color */
+      fill: hwb(60 15% 79%);
+      rx: 10;  /* Rounded corners */
+      ry: 10;
     }
-    .node.unlocked circle {
-      fill: rgb(9, 126, 19); /* unlocked color */
+    /* Overdue color */
+    .node-rect.overdue {
+      fill: #a83232;
     }
-    .node.overdue circle {
-      fill: #a83232; /* overdue color if current age > typical_achievement_weeks & still locked */
+    /* Next color */
+    .node-rect.next {
+      fill: #5c50d0;
     }
-    .node.next circle {
-      fill: #5c50d0; /* highlight color if all parents are unlocked */
+    /* Unlocked color */
+    .node-rect.unlocked {
+      fill: rgb(9, 126, 19);
     }
 
-    /* ICON inside nodes */
+    /* Title text inside node */
+    .title-text {
+      font-size: 12px; fill: #ffffff; pointer-events: none;
+    }
+    /* Weeks info text inside node */
+    .weeks-text {
+      font-size: 10px; fill: #cccccc; pointer-events: none;
+    }
+    /* Icon on the top-right inside node */
     .node-icon {
       font-family: "Material Icons";
-      font-size: 32px;
-      fill: #007bff;  /* won't apply to icons font, so use color attribute if you embed in <foreignObject> or .attr("fill", ...)  */
-      text-anchor: middle;
-      pointer-events: none; /* let circle get the click */
-      user-select: none;
-      dominant-baseline: central;
-    }
-
-    /* TITLE */
-    .caption {
-      font-size: 12px; text-anchor: middle; fill: #ffffff;
-      pointer-events: none; /* ignoring pointer so node circle gets the click */
-    }
-    .weeks {
-      font-size: 10px; text-anchor: middle; fill: #cccccc;
-      pointer-events: none; transform: translateY(16px);
+      font-size: 18px; fill: #007bff; pointer-events: none;
     }
   </style>
 </head>
 <body>
 
 <!--
-  1) JSON DATA at the top. Note the optional "icon" field. Example:
-     "icon": "face"  -> uses the Material Icon "face"
+  1) JSON DATA at the top. Note the optional "icon" field.
+  Example:
+  "icon": "face"  -> uses the Material Icon "face"
 
-     Fields:
-       - id (number)
-       - title (string)
-       - description (string)
-       - icon (string, optional)
-       - typical_achievement_weeks (number)
-       - follow_up_ids (array of id numbers)
-       - achievement_time_weeks (number or null)
-       - comment (string or null)
+  Fields:
+  - id (number)
+  - title (string)
+  - description (string)
+  - icon (string, optional)
+  - typical_achievement_weeks (number)
+  - follow_up_ids (array of id numbers)
+  - achievement_time_weeks (number or null)
+  - comment (string or null)
 -->
 <script>
   // Default data: can be overridden by localStorage or imports
@@ -161,415 +162,432 @@
   ];
 </script>
 
-  <!-- TOP PANEL -->
-  <div class="top-panel">
-    <div class="birthdate-container">
-      <label for="birthDate">Birth Date:</label>
-      <input type="date" id="birthDate"/>
-      <span id="currentWeekLabel"></span>
-    </div>
-    <div>
-      <button id="importBtn">Import</button>
-      <button id="exportBtn">Export</button>
-      <input id="importFile" type="file" accept=".json" />
-    </div>
+<!-- TOP PANEL -->
+<div class="top-panel">
+  <div class="birthdate-container">
+    <label for="birthDate">Birth Date:</label>
+    <input type="date" id="birthDate"/>
+    <span id="currentWeekLabel"></span>
   </div>
-
-  <!-- SIDE PANEL -->
-  <div class="side-panel" id="sidePanel">
-    <h2 id="sidePanelTitle"></h2>
-    <div id="sidePanelDescription" style="font-size: 12px; color: #ccc;"></div>
-    <label for="sidePanelAchievementDate">Date Unlocked (optional):</label>
-    <input type="date" id="sidePanelAchievementDate" />
-    <label for="sidePanelComment">Comment:</label>
-    <textarea id="sidePanelComment"
-              placeholder="Enter any notes or observations..."></textarea>
-    <button class="save-btn" id="sidePanelSaveBtn">Save</button>
+  <div>
+    <button id="importBtn">Import</button>
+    <button id="exportBtn">Export</button>
+    <input id="importFile" type="file" accept=".json" />
   </div>
+</div>
 
-  <!-- MAIN SVG -->
-  <svg id="graph"></svg>
+<!-- SIDE PANEL -->
+<div class="side-panel" id="sidePanel">
+  <h2 id="sidePanelTitle"></h2>
+  <div id="sidePanelDescription" style="font-size: 12px; color: #ccc;"></div>
+  <label for="sidePanelAchievementDate">Date Unlocked (optional):</label>
+  <input type="date" id="sidePanelAchievementDate" />
+  <label for="sidePanelComment">Comment:</label>
+  <textarea id="sidePanelComment"
+            placeholder="Enter any notes or observations..."></textarea>
+  <button class="save-btn" id="sidePanelSaveBtn">Save</button>
+</div>
 
-  <script>
-    // 1) LOAD FROM localStorage (if available), override the default babyData
-    const savedData = localStorage.getItem("babyData");
-    if (savedData) {
-      try {
-        const parsed = JSON.parse(savedData);
-        if (Array.isArray(parsed)) babyData = parsed;
-      } catch (e) {
-        console.warn("Local storage babyData was corrupt, ignoring it.");
-      }
+<!-- MAIN SVG -->
+<svg id="graph"></svg>
+
+<script>
+  // 1) LOAD FROM localStorage (if available), override the default babyData
+  const savedData = localStorage.getItem("babyData");
+  if (savedData) {
+    try {
+      const parsed = JSON.parse(savedData);
+      if (Array.isArray(parsed)) babyData = parsed;
+    } catch (e) {
+      console.warn("Local storage babyData was corrupt, ignoring it.");
     }
+  }
 
-    // Attempt to load birthDate from localStorage
-    const savedBirthDate = localStorage.getItem("birthDate");
-    if (savedBirthDate) {
-      document.getElementById("birthDate").value = savedBirthDate;
-    }
+  // Attempt to load birthDate from localStorage
+  const savedBirthDate = localStorage.getItem("birthDate");
+  if (savedBirthDate) {
+    document.getElementById("birthDate").value = savedBirthDate;
+  }
 
-    // 2) D3 SETUP
-    const svg = d3.select("#graph");
-    const width = window.innerWidth, height = window.innerHeight;
-    svg.attr("width", width).attr("height", height);
+  // 2) D3 SETUP
+  const svg = d3.select("#graph");
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  svg.attr("width", width).attr("height", height);
 
-    // Pan & zoom group
-    const zoomG = svg.append("g");
+  // A group to handle pan & zoom
+  const zoomG = svg.append("g");
 
-    // Arrowhead definition
-    const defs = svg.append("defs");
-    defs.append("marker")
-      .attr("id", "arrowhead")
-      .attr("viewBox", "0 -5 10 10")
-      .attr("refX", 90)
-      .attr("refY", 0)
-      .attr("markerWidth", 6)
-      .attr("markerHeight", 6)
-      .attr("orient", "auto")
-      .attr("markerUnits", "strokeWidth")
-      .append("path")
-      .attr("d", "M0,-5L10,0L0,5")
-      .attr("fill", "#888");
+  // Arrowhead definition
+  const defs = svg.append("defs");
+  defs.append("marker")
+    .attr("id", "arrowhead")
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 90)
+    .attr("refY", 0)
+    .attr("markerWidth", 6)
+    .attr("markerHeight", 6)
+    .attr("orient", "auto")
+    .attr("markerUnits", "strokeWidth")
+    .append("path")
+    .attr("d", "M0,-5L10,0L0,5")
+    .attr("fill", "#888");
 
-    svg.call(d3.zoom().on("zoom", (event) => {
-      zoomG.attr("transform", event.transform);
-    }));
+  svg.call(d3.zoom().on("zoom", (event) => {
+    zoomG.attr("transform", event.transform);
+  }));
 
-    // Build graph data (nodes & links)
-    function buildGraphData(data) {
-      const validIds = new Set(data.map(d => d.id));
-      return {
-        nodes: data.map(d => ({ ...d })),
-        links: data.flatMap(d =>
-          d.follow_up_ids
-            .filter(fuId => validIds.has(fuId))
-            .map(fuId => ({ source: d.id, target: fuId }))
-        )
-      };
-    }
+  // Build graph data (nodes & links)
+  function buildGraphData(data) {
+    const validIds = new Set(data.map(d => d.id));
+    return {
+      nodes: data.map(d => ({ ...d })),
+      links: data.flatMap(d =>
+        d.follow_up_ids
+          .filter(fuId => validIds.has(fuId))
+          .map(fuId => ({ source: d.id, target: fuId }))
+      )
+    };
+  }
 
-    // 3) RENDERING & SIMULATION
-    let simulation, node, link, nodes, links;
-    function renderGraph() {
-      zoomG.selectAll("*").remove();
+  // Node rectangle dimensions
+  const NODE_WIDTH = 180;
+  const NODE_HEIGHT = 60;
 
-      const graphData = buildGraphData(babyData);
-      nodes = graphData.nodes;
-      links = graphData.links;
+  let simulation, nodeGroup, link, nodes, links;
+  function renderGraph() {
+    zoomG.selectAll("*").remove();
 
-      // Setup force simulation
-      simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(200))
-        .force("charge", d3.forceManyBody().strength(-4000))
-        .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(60));
+    const graphData = buildGraphData(babyData);
+    nodes = graphData.nodes;
+    links = graphData.links;
 
-      // Draw links
-      link = zoomG.selectAll(".link")
-        .data(links)
-        .enter().append("line")
-        .attr("class", "link");
+    // Setup force simulation
+    simulation = d3.forceSimulation(nodes)
+      .force("link", d3.forceLink(links).id(d => d.id).distance(160))
+      .force("charge", d3.forceManyBody().strength(-1000))
+      .force("center", d3.forceCenter(width / 2, height / 2))
+      .force("collision", d3.forceCollide().radius(120));
 
-      // Draw nodes (group)
-      node = zoomG.selectAll(".node")
-        .data(nodes)
-        .enter().append("g")
-        .attr("class", "node")
-        .call(d3.drag()
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended)
-        );
+    // Draw links
+    link = zoomG.selectAll(".link")
+      .data(links)
+      .enter().append("line")
+      .attr("class", "link");
 
-      // Node circles
-      node.append("circle")
-        .attr("r", 60)
-        .on("click", (event, d) => {
-          event.stopPropagation(); // to avoid closing the side panel immediately
-          onNodeClick(d);
-        });
+    // Draw nodes (group)
+    nodeGroup = zoomG.selectAll(".node")
+      .data(nodes)
+      .enter().append("g")
+      .attr("class", "node")
+      .call(d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended)
+      );
 
-      // Optional icon text
-      node.append("text")
-        .attr("class", "node-icon")
-        .attr("dy", "-0.8em")
-        .text(d => d.icon ? d.icon : "")
-        .each(function(d) {
-          // If no icon, remove the node-icon element to avoid empty space
-          if (!d.icon) d3.select(this).remove();
-        });
-
-      // Title
-      node.append("text")
-        .attr("class", "caption")
-        .text(d => d.title)
-        .each(function(d) { wrapText(d3.select(this), 100); });
-
-      // Weeks (unlocked info)
-      node.append("text")
-        .attr("class", "weeks")
-        .text(formatWeeks);
-
-      // On each tick of the simulation
-      simulation.on("tick", () => {
-        link
-          .attr("x1", d => d.source.x)
-          .attr("y1", d => d.source.y)
-          .attr("x2", d => d.target.x)
-          .attr("y2", d => d.target.y);
-
-        node.attr("transform", d => `translate(${d.x},${d.y})`);
+    // Node rect (rounded corners)
+    nodeGroup.append("rect")
+      .attr("class", "node-rect")
+      .attr("width", NODE_WIDTH)
+      .attr("height", NODE_HEIGHT)
+      .attr("x", -NODE_WIDTH / 2)
+      .attr("y", -NODE_HEIGHT / 2)
+      .on("click", (event, d) => {
+        event.stopPropagation(); // to prevent side-panel from closing
+        onNodeClick(d);
       });
 
-      refreshGraph();
-    }
+    // Title text (top-left corner)
+    nodeGroup.append("text")
+      .attr("class", "title-text")
+      .attr("x", -(NODE_WIDTH / 2) + 8)    // small left padding
+      .attr("y", -(NODE_HEIGHT / 2) + 16) // some top padding
+      .text(d => d.title)
+      .each(function(d) { wrapText(d3.select(this), NODE_WIDTH - 40); });
 
-    function dragstarted(event, d) {
-      if (!event.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d.x; d.fy = d.y;
-    }
-    function dragged(event, d) {
-      d.fx = event.x; d.fy = event.y;
-    }
-    function dragended(event, d) {
-      if (!event.active) simulation.alphaTarget(0);
-      d.fx = null; d.fy = null;
-    }
+    // Weeks info (bottom-left corner)
+    nodeGroup.append("text")
+      .attr("class", "weeks-text")
+      .attr("x", -(NODE_WIDTH / 2) + 8)   // left padding
+      .attr("y", (NODE_HEIGHT / 2) - 8)   // bottom padding
+      .text(formatWeeks);
 
-    // Simple text-wrap function for node titles
-    function wrapText(textSelection, width) {
-      textSelection.each(function() {
-        const text = d3.select(this);
-        const words = text.text().split(/\s+/).reverse();
-        let line = [];
-        let lineNumber = 0;
-        const lineHeight = 1.2; // em
-        const y = text.attr("y") || 0;
-        const x = text.attr("x") || 0;
-        let tspan = text.text(null)
-          .append("tspan")
-          .attr("x", x)
-          .attr("y", y)
-          .attr("dy", 0 + "em");
-        let word;
+    // Optional icon on the top-right
+    nodeGroup.append("text")
+      .attr("class", "node-icon")
+      .attr("x", (NODE_WIDTH / 2) - 22)   // shift a bit from right edge
+      .attr("y", -(NODE_HEIGHT / 2) + 20) // near top
+      .text(d => d.icon ? d.icon : "")
+      .each(function(d) {
+        // If no icon, remove the text element
+        if (!d.icon) d3.select(this).remove();
+      });
 
-        while ((word = words.pop())) {
-          line.push(word);
+    simulation.on("tick", () => {
+      link
+        .attr("x1", d => d.source.x)
+        .attr("y1", d => d.source.y)
+        .attr("x2", d => d.target.x)
+        .attr("y2", d => d.target.y);
+
+      nodeGroup.attr("transform", d => `translate(${d.x},${d.y})`);
+    });
+
+    refreshGraph();
+  }
+
+  function dragstarted(event, d) {
+    if (!event.active) simulation.alphaTarget(0.3).restart();
+    d.fx = d.x; d.fy = d.y;
+  }
+  function dragged(event, d) {
+    d.fx = event.x; d.fy = event.y;
+  }
+  function dragended(event, d) {
+    if (!event.active) simulation.alphaTarget(0);
+    d.fx = null; d.fy = null;
+  }
+
+  // Simple text-wrap function for node titles
+  function wrapText(textSelection, width) {
+    textSelection.each(function() {
+      const text = d3.select(this);
+      const words = text.text().split(/\s+/).reverse();
+      let line = [];
+      let lineNumber = 0;
+      const lineHeight = 1.2; // em
+      const y = text.attr("y") || 0;
+      const x = text.attr("x") || 0;
+      let tspan = text.text(null)
+        .append("tspan")
+        .attr("x", x)
+        .attr("y", y)
+        .attr("dy", 0 + "em");
+      let word;
+
+      while ((word = words.pop())) {
+        line.push(word);
+        tspan.text(line.join(" "));
+        if (tspan.node().getComputedTextLength() > width) {
+          line.pop();
           tspan.text(line.join(" "));
-          if (tspan.node().getComputedTextLength() > width) {
-            line.pop();
-            tspan.text(line.join(" "));
-            line = [word];
-            tspan = text.append("tspan")
-              .attr("x", x).attr("y", y)
-              .attr("dy", ++lineNumber * lineHeight + "em")
-              .text(word);
-          }
+          line = [word];
+          tspan = text.append("tspan")
+            .attr("x", x).attr("y", y)
+            .attr("dy", ++lineNumber * lineHeight + "em")
+            .text(word);
         }
-        // Center text vertically in the circle (rough approximation)
-        const totalLines = lineNumber + 1;
-        const offset = -0.6 * totalLines;
-        text.selectAll("tspan")
-          .attr("dy", function(d, i) {
-            return (i + offset) * lineHeight + "em";
-          });
-      });
-    }
-
-    // 4) COLORING & “NEXT” / “OVERDUE”
-    function refreshGraph() {
-      updateCurrentWeekLabel();
-
-      const bd = document.getElementById("birthDate").value;
-      let ageInWeeks = null;
-      if (bd) {
-        const diffDays = (new Date() - new Date(bd)) / (1000 * 60 * 60 * 24);
-        ageInWeeks = Math.floor(diffDays / 7);
-      }
-
-      node
-        .classed("unlocked", d => d.achievement_time_weeks !== null)
-        .classed("overdue", d => {
-          if (!ageInWeeks) return false;
-          return d.achievement_time_weeks === null && ageInWeeks > d.typical_achievement_weeks;
-        })
-        .classed("next", d => {
-          if (d.achievement_time_weeks !== null) return false; // already unlocked
-          // "next" if all parents are unlocked
-          const parents = babyData.filter(p => p.follow_up_ids.includes(d.id));
-          if (parents.length === 0) return true; // no parents => immediately next
-          return parents.every(p => p.achievement_time_weeks !== null);
-        });
-
-      // Update weeks text
-      node.select(".weeks").text(formatWeeks);
-    }
-
-    // Return string describing how early/late an achievement was unlocked
-    function formatWeeks(d) {
-      if (d.achievement_time_weeks === null) {
-        return `~ week ${d.typical_achievement_weeks}`;
-      }
-      const diff = d.typical_achievement_weeks - d.achievement_time_weeks;
-      if (diff > 0) return `Unlocked ${Math.abs(diff)} weeks early`;
-      if (diff < 0) return `Unlocked ${Math.abs(diff)} weeks late`;
-      return `Unlocked right on time`;
-    }
-
-    // 5) SIDE PANEL
-    let currentNode = null;
-    const sidePanel = document.getElementById("sidePanel");
-    const titleEl = document.getElementById("sidePanelTitle");
-    const descEl = document.getElementById("sidePanelDescription");
-    const dateEl = document.getElementById("sidePanelAchievementDate");
-    const commentEl = document.getElementById("sidePanelComment");
-    const saveBtn = document.getElementById("sidePanelSaveBtn");
-
-    saveBtn.addEventListener("click", () => {
-      if (!currentNode) return;
-
-      // If user provided a date, compute baby’s age in weeks at that date
-      const achievementDate = dateEl.value ? new Date(dateEl.value) : null;
-      const birthDateStr = document.getElementById("birthDate").value;
-
-      if (achievementDate && birthDateStr) {
-        const bd = new Date(birthDateStr);
-        const diffDays = (achievementDate - bd) / (1000 * 60 * 60 * 24);
-        currentNode.achievement_time_weeks = diffDays > 0
-          ? Math.round(diffDays / 7)
-          : 0; // fallback if negative
-      } else if (achievementDate && !birthDateStr) {
-        // No birth date => fallback to typical
-        currentNode.achievement_time_weeks = currentNode.typical_achievement_weeks;
-      } else {
-        // No date => treat as locked again
-        currentNode.achievement_time_weeks = null;
-      }
-
-      currentNode.comment = commentEl.value.trim();
-      refreshGraph();
-      saveToLocalStorage();
-      hideSidePanel();
-    });
-
-    function onNodeClick(d) {
-      currentNode = d;
-      titleEl.textContent = d.title;
-      descEl.textContent = d.description;
-      commentEl.value = d.comment || "";
-
-      // If locked, fill today's date by default
-      // If unlocked, reconstruct date from birth date + achievement_time_weeks
-      const birthDateStr = document.getElementById("birthDate").value;
-      if (d.achievement_time_weeks === null) {
-        // locked => default to today's date
-        const now = new Date();
-        dateEl.value = now.toISOString().split("T")[0];
-      } else if (birthDateStr) {
-        const bd = new Date(birthDateStr);
-        const guessDate = new Date(bd);
-        guessDate.setDate(guessDate.getDate() + (7 * d.achievement_time_weeks));
-        dateEl.value = guessDate.toISOString().split("T")[0];
-      } else {
-        dateEl.value = "";
-      }
-
-      sidePanel.style.display = "flex";
-    }
-
-    function hideSidePanel() {
-      sidePanel.style.display = "none";
-      currentNode = null;
-    }
-
-    // Close side panel if user clicks outside it
-    document.addEventListener("click", (event) => {
-      if (!sidePanel.contains(event.target)) {
-        hideSidePanel();
       }
     });
+  }
 
-    // 6) SAVE & LOAD from LOCAL STORAGE
-    function saveToLocalStorage() {
-      localStorage.setItem("babyData", JSON.stringify(nodes.map(d => ({
-        id: d.id,
-        title: d.title,
-        icon: d.icon,
-        description: d.description,
-        typical_achievement_weeks: d.typical_achievement_weeks,
-        follow_up_ids: d.follow_up_ids,
-        achievement_time_weeks: d.achievement_time_weeks,
-        comment: d.comment
-      }))));
+  // 4) COLORING & “NEXT” / “OVERDUE”
+  function refreshGraph() {
+    updateCurrentWeekLabel();
 
-      const bd = document.getElementById("birthDate").value;
-      if (bd) {
-        localStorage.setItem("birthDate", bd);
-      } else {
-        localStorage.removeItem("birthDate");
-      }
-    }
-
-    // 7) IMPORT / EXPORT
-    document.getElementById("exportBtn").addEventListener("click", () => {
-      // Prepare data for export (entire tech tree + states)
-      const exportData = JSON.stringify(babyData, null, 2);
-      const blob = new Blob([exportData], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "babyData_backup.json";
-      a.click();
-      URL.revokeObjectURL(url);
-    });
-
-    document.getElementById("importBtn").addEventListener("click", () => {
-      document.getElementById("importFile").click();
-    });
-
-    document.getElementById("importFile").addEventListener("change", (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        try {
-          const importedData = JSON.parse(ev.target.result);
-          if (!Array.isArray(importedData)) {
-            alert("JSON must be an array of items.");
-            return;
-          }
-          babyData = importedData;
-          localStorage.setItem("babyData", JSON.stringify(babyData));
-          renderGraph();
-        } catch (err) {
-          alert("Error parsing JSON. Check file format.");
-        }
-      };
-      reader.readAsText(file);
-      e.target.value = null;
-    });
-
-    // 8) HELPER: Update “Current Week” label
-    function updateCurrentWeekLabel() {
-      const birthDateStr = document.getElementById("birthDate").value;
-      const label = document.getElementById("currentWeekLabel");
-      if (!birthDateStr) {
-        label.textContent = "";
-        return;
-      }
+    const birthDateStr = document.getElementById("birthDate").value;
+    let ageInWeeks = null;
+    if (birthDateStr) {
       const diffDays = (new Date() - new Date(birthDateStr)) / (1000 * 60 * 60 * 24);
-      const ageInWeeks = Math.floor(diffDays / 7);
-      label.textContent = `(Week ${ageInWeeks})`;
+      ageInWeeks = Math.floor(diffDays / 7);
     }
 
-    // 9) RE-RENDER ON BIRTHDATE CHANGE
-    document.getElementById("birthDate").addEventListener("change", () => {
-      saveToLocalStorage();
-      refreshGraph();
-    });
+    nodeGroup.select("rect.node-rect")
+      .each(function(d) {
+        const rect = d3.select(this);
+        // Remove all state classes first
+        rect.classed("unlocked", false)
+            .classed("overdue", false)
+            .classed("next", false);
 
-    // 10) INITIAL RENDER
-    renderGraph();
-  </script>
+        // If unlocked
+        if (d.achievement_time_weeks !== null) {
+          rect.classed("unlocked", true);
+        } else {
+          // If locked, check if overdue
+          if (ageInWeeks && ageInWeeks > d.typical_achievement_weeks) {
+            rect.classed("overdue", true);
+          }
+          // Also check if 'next' (all parents unlocked)
+          const parents = babyData.filter(p => p.follow_up_ids.includes(d.id));
+          const allParentsUnlocked = parents.every(p => p.achievement_time_weeks !== null);
+          if (parents.length === 0 || allParentsUnlocked) {
+            // Only highlight as next if it's still locked
+            rect.classed("next", true);
+          }
+        }
+      });
+
+    // Update weeks text
+    nodeGroup.select(".weeks-text").text(formatWeeks);
+  }
+
+  // Return string describing how early/late an achievement was unlocked
+  function formatWeeks(d) {
+    if (d.achievement_time_weeks === null) {
+      return `~ week ${d.typical_achievement_weeks}`;
+    }
+    const diff = d.typical_achievement_weeks - d.achievement_time_weeks;
+    if (diff > 0) return `Unlocked ${Math.abs(diff)} weeks early`;
+    if (diff < 0) return `Unlocked ${Math.abs(diff)} weeks late`;
+    return `Unlocked right on time`;
+  }
+
+  // 5) SIDE PANEL
+  let currentNode = null;
+  const sidePanel = document.getElementById("sidePanel");
+  const titleEl = document.getElementById("sidePanelTitle");
+  const descEl = document.getElementById("sidePanelDescription");
+  const dateEl = document.getElementById("sidePanelAchievementDate");
+  const commentEl = document.getElementById("sidePanelComment");
+  const saveBtn = document.getElementById("sidePanelSaveBtn");
+
+  saveBtn.addEventListener("click", () => {
+    if (!currentNode) return;
+
+    // If user provided a date, compute baby’s age in weeks at that date
+    const achievementDate = dateEl.value ? new Date(dateEl.value) : null;
+    const birthDateStr = document.getElementById("birthDate").value;
+
+    if (achievementDate && birthDateStr) {
+      const bd = new Date(birthDateStr);
+      const diffDays = (achievementDate - bd) / (1000 * 60 * 60 * 24);
+      currentNode.achievement_time_weeks = diffDays > 0
+        ? Math.round(diffDays / 7)
+        : 0; // fallback if negative
+    } else if (achievementDate && !birthDateStr) {
+      // No birth date => fallback to typical
+      currentNode.achievement_time_weeks = currentNode.typical_achievement_weeks;
+    } else {
+      // No date => treat as locked again
+      currentNode.achievement_time_weeks = null;
+    }
+
+    currentNode.comment = commentEl.value.trim();
+    refreshGraph();
+    saveToLocalStorage();
+    hideSidePanel();
+  });
+
+  function onNodeClick(d) {
+    currentNode = d;
+    titleEl.textContent = d.title;
+    descEl.textContent = d.description;
+    commentEl.value = d.comment || "";
+
+    // If locked, fill today's date by default
+    // If unlocked, reconstruct date from birth date + achievement_time_weeks
+    const birthDateStr = document.getElementById("birthDate").value;
+    if (d.achievement_time_weeks === null) {
+      // locked => default to today's date
+      const now = new Date();
+      dateEl.value = now.toISOString().split("T")[0];
+    } else if (birthDateStr) {
+      const bd = new Date(birthDateStr);
+      const guessDate = new Date(bd);
+      guessDate.setDate(guessDate.getDate() + (7 * d.achievement_time_weeks));
+      dateEl.value = guessDate.toISOString().split("T")[0];
+    } else {
+      dateEl.value = "";
+    }
+
+    sidePanel.style.display = "flex";
+  }
+
+  function hideSidePanel() {
+    sidePanel.style.display = "none";
+    currentNode = null;
+  }
+
+  // Close side panel if user clicks outside it
+  document.addEventListener("click", (event) => {
+    if (!sidePanel.contains(event.target)) {
+      hideSidePanel();
+    }
+  });
+
+  // 6) SAVE & LOAD from LOCAL STORAGE
+  function saveToLocalStorage() {
+    localStorage.setItem("babyData", JSON.stringify(nodes.map(d => ({
+      id: d.id,
+      title: d.title,
+      icon: d.icon,
+      description: d.description,
+      typical_achievement_weeks: d.typical_achievement_weeks,
+      follow_up_ids: d.follow_up_ids,
+      achievement_time_weeks: d.achievement_time_weeks,
+      comment: d.comment
+    }))));
+
+    const bd = document.getElementById("birthDate").value;
+    if (bd) {
+      localStorage.setItem("birthDate", bd);
+    } else {
+      localStorage.removeItem("birthDate");
+    }
+  }
+
+  // 7) IMPORT / EXPORT
+  document.getElementById("exportBtn").addEventListener("click", () => {
+    // Prepare data for export (entire tech tree + states)
+    const exportData = JSON.stringify(babyData, null, 2);
+    const blob = new Blob([exportData], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "babyData_backup.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById("importBtn").addEventListener("click", () => {
+    document.getElementById("importFile").click();
+  });
+
+  document.getElementById("importFile").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const importedData = JSON.parse(ev.target.result);
+        if (!Array.isArray(importedData)) {
+          alert("JSON must be an array of items.");
+          return;
+        }
+        babyData = importedData;
+        localStorage.setItem("babyData", JSON.stringify(babyData));
+        renderGraph();
+      } catch (err) {
+        alert("Error parsing JSON. Check file format.");
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = null;
+  });
+
+  // 8) HELPER: Update “Current Week” label
+  function updateCurrentWeekLabel() {
+    const birthDateStr = document.getElementById("birthDate").value;
+    const label = document.getElementById("currentWeekLabel");
+    if (!birthDateStr) {
+      label.textContent = "";
+      return;
+    }
+    const diffDays = (new Date() - new Date(birthDateStr)) / (1000 * 60 * 60 * 24);
+    const ageInWeeks = Math.floor(diffDays / 7);
+    label.textContent = `(Week ${ageInWeeks})`;
+  }
+
+  // 9) RE-RENDER ON BIRTHDATE CHANGE
+  document.getElementById("birthDate").addEventListener("change", () => {
+    saveToLocalStorage();
+    refreshGraph();
+  });
+
+  // 10) INITIAL RENDER
+  renderGraph();
+</script>
 </body>
 </html>
