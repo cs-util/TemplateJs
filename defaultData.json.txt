@@ -1,0 +1,362 @@
+[
+	{
+		"id": 1,
+		"title": "Begins Tummy Time",
+		"description": "Placing baby on tummy fosters early motor development and head control.",
+		"icon": "airline_seat_flat_angled",
+		"typical_achievement_weeks": 0,
+		"follow_up_ids": [
+			2
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 2,
+		"title": "Focuses on Faces",
+		"description": "Baby visually engages with faces. Offer face-to-face interaction for social bonding.",
+		"icon": "face",
+		"typical_achievement_weeks": 2,
+		"follow_up_ids": [
+			3
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 3,
+		"title": "Social Smile",
+		"description": "Baby smiles in response to social cues. Encourage smiles with gentle talk and eye contact.",
+		"icon": null,
+		"typical_achievement_weeks": 6,
+		"follow_up_ids": [
+			4
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 4,
+		"title": "Coos and Gurgles",
+		"description": "Early vocalizations. Talk and sing to baby to promote language skills.",
+		"icon": "record_voice_over",
+		"typical_achievement_weeks": 8,
+		"follow_up_ids": [
+			5,
+			6
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 5,
+		"title": "Brings Hands to Mouth",
+		"description": "Hand-to-mouth coordination. Offer safe objects to explore.",
+		"icon": null,
+		"typical_achievement_weeks": 10,
+		"follow_up_ids": [
+			7
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 6,
+		"title": "Tracks Moving Objects",
+		"description": "Follows moving objects or faces. Move a colorful toy side-to-side to encourage tracking.",
+		"icon": "visibility",
+		"typical_achievement_weeks": 12,
+		"follow_up_ids": [
+			7
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 7,
+		"title": "Holds Head Steady",
+		"description": "Improved neck strength. Short, frequent tummy times build neck and core muscles.",
+		"icon": null,
+		"typical_achievement_weeks": 16,
+		"follow_up_ids": [
+			8
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 8,
+		"title": "Rolls Over",
+		"description": "Rolling from tummy to back or vice versa. Provide supervised floor time for practice.",
+		"icon": "autorenew",
+		"typical_achievement_weeks": 20,
+		"follow_up_ids": [
+			9
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 9,
+		"title": "Sits with Support",
+		"description": "Begins sitting with cushion or adult support. Strengthens core and back muscles.",
+		"icon": null,
+		"typical_achievement_weeks": 24,
+		"follow_up_ids": [
+			10
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 10,
+		"title": "Passes Objects Hand to Hand",
+		"description": "Increased coordination. Offer toys to help baby practice transferring between hands.",
+		"icon": null,
+		"typical_achievement_weeks": 28,
+		"follow_up_ids": [
+			11
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 11,
+		"title": "Sits Without Support",
+		"description": "Stable sitting posture. Provide a safe environment for upright play.",
+		"icon": null,
+		"typical_achievement_weeks": 32,
+		"follow_up_ids": [
+			12
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 12,
+		"title": "Crawls",
+		"description": "Creeping or crawling helps baby explore. Tummy play supports arms and leg coordination.",
+		"icon": "pets",
+		"typical_achievement_weeks": 36,
+		"follow_up_ids": [
+			13
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 13,
+		"title": "Pulls to Stand",
+		"description": "Pulls up to furniture or stable objects. Safety-proof furniture to avoid tumbles.",
+		"icon": null,
+		"typical_achievement_weeks": 40,
+		"follow_up_ids": [
+			14
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 14,
+		"title": "Cruises Along Furniture",
+		"description": "Side-steps while holding on. Encourage practice with stable support and soft surfaces.",
+		"icon": null,
+		"typical_achievement_weeks": 44,
+		"follow_up_ids": [
+			15
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 15,
+		"title": "Stands Alone",
+		"description": "Balance improves enough to stand without support for short moments.",
+		"icon": null,
+		"typical_achievement_weeks": 48,
+		"follow_up_ids": [
+			16
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 16,
+		"title": "Takes First Steps",
+		"description": "Begins walking independently. Offer a safe environment and celebrate every step.",
+		"icon": "directions_walk",
+		"typical_achievement_weeks": 52,
+		"follow_up_ids": [
+			17,
+			18
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 17,
+		"title": "Waves Bye-Bye",
+		"description": "Social gesture. Reinforce with consistent waving and verbal cues like 'bye-bye.'",
+		"icon": null,
+		"typical_achievement_weeks": 56,
+		"follow_up_ids": [
+			19
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 18,
+		"title": "Claps Hands",
+		"description": "Clapping in excitement or imitation. Demonstrate clapping during play or songs.",
+		"icon": null,
+		"typical_achievement_weeks": 60,
+		"follow_up_ids": [
+			19
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 19,
+		"title": "Understands 'No'",
+		"description": "Beginning of discipline and boundaries. Maintain consistency in tone and expression.",
+		"icon": "priority_high",
+		"typical_achievement_weeks": 64,
+		"follow_up_ids": [
+			20
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 20,
+		"title": "Says First Word",
+		"description": "May say 'mama' or 'dada' with meaning. Keep talking and reading to boost language.",
+		"icon": null,
+		"typical_achievement_weeks": 68,
+		"follow_up_ids": [
+			21
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 21,
+		"title": "Drinks from Cup",
+		"description": "Begins open-cup drinking with help. Practice motor coordination and swallowing.",
+		"icon": "local_cafe",
+		"typical_achievement_weeks": 72,
+		"follow_up_ids": [
+			22
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 22,
+		"title": "Uses Spoon or Fork",
+		"description": "Attempts self-feeding. Expect spills and encourage practice.",
+		"icon": null,
+		"typical_achievement_weeks": 76,
+		"follow_up_ids": [
+			23
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 23,
+		"title": "Builds Tower of Two Blocks",
+		"description": "Demonstrates fine motor and problem-solving skills.",
+		"icon": "view_in_ar",
+		"typical_achievement_weeks": 80,
+		"follow_up_ids": [
+			24
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 24,
+		"title": "Points to Desired Objects",
+		"description": "Communicates wants and needs by pointing. Label objects to expand vocabulary.",
+		"icon": null,
+		"typical_achievement_weeks": 84,
+		"follow_up_ids": [
+			25
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 25,
+		"title": "Walks Up Steps with Help",
+		"description": "Stepping coordination with adult support. Practice on safe, low steps.",
+		"icon": "stairs",
+		"typical_achievement_weeks": 88,
+		"follow_up_ids": [
+			26
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 26,
+		"title": "Runs",
+		"description": "Toddler takes fast steps independently. Ensure a safe, open space to minimize falls.",
+		"icon": null,
+		"typical_achievement_weeks": 92,
+		"follow_up_ids": [
+			27
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 27,
+		"title": "Kicks a Ball",
+		"description": "Begins coordinated kicking. Place a soft ball in front and encourage gentle kicks.",
+		"icon": "sports_soccer",
+		"typical_achievement_weeks": 96,
+		"follow_up_ids": [
+			28
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 28,
+		"title": "Scribbles",
+		"description": "Random pencil or crayon strokes. Provide supervision and non-toxic art supplies.",
+		"icon": "create",
+		"typical_achievement_weeks": 100,
+		"follow_up_ids": [
+			29
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 29,
+		"title": "Plays Make-Believe",
+		"description": "Imagination sparks: pretends with toys. Encourage role-play and storytelling.",
+		"icon": "emoji_people",
+		"typical_achievement_weeks": 104,
+		"follow_up_ids": [
+			30
+		],
+		"achievement_time_weeks": null,
+		"comment": null
+	},
+	{
+		"id": 30,
+		"title": "Begins to Show Hand Preference",
+		"description": "Noticeable leaning towards left or right hand in play and feeding.",
+		"icon": null,
+		"typical_achievement_weeks": 108,
+		"follow_up_ids": [],
+		"achievement_time_weeks": null,
+		"comment": null
+	}
+]
