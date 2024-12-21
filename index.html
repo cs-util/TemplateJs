@@ -4,7 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BabyStepsJs</title>
+
+  <!-- D3 -->
   <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
   <style>
     html, body {
       margin: 0; padding: 0; overflow: hidden;
@@ -14,8 +20,11 @@
     /* TOP PANEL */
     .top-panel {
       position: absolute; width: 100%; text-align: center; top: 10px;
-      z-index: 999; color: white; font-size: 14px; display: flex;
-      justify-content: center; align-items: center; gap: 20px;
+      z-index: 999; color: white; font-size: 14px;
+      display: flex; justify-content: center; align-items: center; gap: 30px;
+    }
+    .top-panel .birthdate-container {
+      display: flex; align-items: center; gap: 8px;
     }
     .top-panel input[type="date"] {
       color: black; padding: 5px 8px; border-radius: 5px; border: none;
@@ -56,17 +65,31 @@
       stroke: #888; stroke-width: 2px; marker-end: url(#arrowhead);
     }
     .node circle {
-      fill: hwb(60 15% 79%); stroke: #fff; stroke-width: 2px; cursor: pointer;
+      fill: hwb(60 15% 79%); /* locked default color */
+      stroke: #fff; stroke-width: 2px; cursor: pointer;
     }
     .node.unlocked circle {
-      fill: rgb(9, 126, 19); /* already unlocked */
+      fill: rgb(9, 126, 19); /* unlocked color */
     }
     .node.overdue circle {
-      fill: #a83232; /* if current age > typical_achievement_weeks & still locked */
+      fill: #a83232; /* overdue color if current age > typical_achievement_weeks & still locked */
     }
     .node.next circle {
-      fill: #5c50d0; /* next in line if all parents are unlocked */
+      fill: #5c50d0; /* highlight color if all parents are unlocked */
     }
+
+    /* ICON inside nodes */
+    .node-icon {
+      font-family: "Material Icons";
+      font-size: 32px;
+      fill: #007bff;  /* won't apply to icons font, so use color attribute if you embed in <foreignObject> or .attr("fill", ...)  */
+      text-anchor: middle;
+      pointer-events: none; /* let circle get the click */
+      user-select: none;
+      dominant-baseline: central;
+    }
+
+    /* TITLE */
     .caption {
       font-size: 12px; text-anchor: middle; fill: #ffffff;
       pointer-events: none; /* ignoring pointer so node circle gets the click */
@@ -79,11 +102,71 @@
 </head>
 <body>
 
+<!--
+  1) JSON DATA at the top. Note the optional "icon" field. Example:
+     "icon": "face"  -> uses the Material Icon "face"
+
+     Fields:
+       - id (number)
+       - title (string)
+       - description (string)
+       - icon (string, optional)
+       - typical_achievement_weeks (number)
+       - follow_up_ids (array of id numbers)
+       - achievement_time_weeks (number or null)
+       - comment (string or null)
+-->
+<script>
+  // Default data: can be overridden by localStorage or imports
+  let babyData = [
+    {
+      "id": 1,
+      "title": "Lifts Head",
+      "icon": "airline_seat_flat_angled", /* example icon */
+      "description": "Baby can lift their head briefly when on tummy. Encourage short but frequent tummy times!",
+      "typical_achievement_weeks": 4,
+      "follow_up_ids": [2, 3],
+      "achievement_time_weeks": null,
+      "comment": null
+    },
+    {
+      "id": 2,
+      "title": "Smiles Responsively",
+      "description": "Baby smiles back when you smile or talk. Increase face-to-face interactions for social development.",
+      "typical_achievement_weeks": 6,
+      "follow_up_ids": [3, 4],
+      "achievement_time_weeks": null,
+      "comment": null
+    },
+    {
+      "id": 3,
+      "title": "Follows Objects",
+      "icon": "visibility",
+      "description": "Baby tracks moving objects with eyes. Use colorful toys to stimulate visual tracking.",
+      "typical_achievement_weeks": 8,
+      "follow_up_ids": [],
+      "achievement_time_weeks": null,
+      "comment": null
+    },
+    {
+      "id": 4,
+      "title": "Coos and Gurgles",
+      "icon": "record_voice_over",
+      "description": "Baby coos and gurgles. Talk and sing to them to support early language skills.",
+      "typical_achievement_weeks": 8,
+      "follow_up_ids": [],
+      "achievement_time_weeks": null,
+      "comment": null
+    }
+  ];
+</script>
+
   <!-- TOP PANEL -->
   <div class="top-panel">
-    <div>
-      Birth Date:
-      <input type="date" id="birthDate" />
+    <div class="birthdate-container">
+      <label for="birthDate">Birth Date:</label>
+      <input type="date" id="birthDate"/>
+      <span id="currentWeekLabel"></span>
     </div>
     <div>
       <button id="importBtn">Import</button>
@@ -108,47 +191,7 @@
   <svg id="graph"></svg>
 
   <script>
-    // 1) INITIAL DATA (will be overridden if localStorage or imported)
-    let babyData = [
-      {
-        "id": 1,
-        "title": "Lifts Head",
-        "description": "Baby can lift their head briefly when placed on their tummy. Encourage tummy time daily to strengthen neck muscles.",
-        "typical_achievement_weeks": 4,
-        "follow_up_ids": [2, 3],
-        "achievement_time_weeks": null,
-        "comment": ""
-      },
-      {
-        "id": 2,
-        "title": "Smiles Responsively",
-        "description": "Baby smiles in response to your smile or voice. Engage in frequent face-to-face interactions to promote social development.",
-        "typical_achievement_weeks": 6,
-        "follow_up_ids": [3, 4],
-        "achievement_time_weeks": null,
-        "comment": ""
-      },
-      {
-        "id": 3,
-        "title": "Follows Objects with Eyes",
-        "description": "Baby can track moving objects with their eyes. Use colorful toys to help develop visual tracking skills.",
-        "typical_achievement_weeks": 8,
-        "follow_up_ids": [],
-        "achievement_time_weeks": null,
-        "comment": ""
-      },
-      {
-        "id": 4,
-        "title": "Coos and Gurgles",
-        "description": "Baby makes cooing and gurgling sounds. Talk and sing to your baby to encourage early language skills.",
-        "typical_achievement_weeks": 8,
-        "follow_up_ids": [],
-        "achievement_time_weeks": null,
-        "comment": ""
-      }
-    ];
-
-    // Attempt to load data from localStorage
+    // 1) LOAD FROM localStorage (if available), override the default babyData
     const savedData = localStorage.getItem("babyData");
     if (savedData) {
       try {
@@ -192,7 +235,7 @@
       zoomG.attr("transform", event.transform);
     }));
 
-    // Prepare nodes & links from babyData
+    // Build graph data (nodes & links)
     function buildGraphData(data) {
       const validIds = new Set(data.map(d => d.id));
       return {
@@ -209,6 +252,7 @@
     let simulation, node, link, nodes, links;
     function renderGraph() {
       zoomG.selectAll("*").remove();
+
       const graphData = buildGraphData(babyData);
       nodes = graphData.nodes;
       links = graphData.links;
@@ -218,7 +262,7 @@
         .force("link", d3.forceLink(links).id(d => d.id).distance(200))
         .force("charge", d3.forceManyBody().strength(-4000))
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(50));
+        .force("collision", d3.forceCollide().radius(60));
 
       // Draw links
       link = zoomG.selectAll(".link")
@@ -226,7 +270,7 @@
         .enter().append("line")
         .attr("class", "link");
 
-      // Draw nodes
+      // Draw nodes (group)
       node = zoomG.selectAll(".node")
         .data(nodes)
         .enter().append("g")
@@ -237,32 +281,47 @@
           .on("end", dragended)
         );
 
+      // Node circles
       node.append("circle")
         .attr("r", 60)
         .on("click", (event, d) => {
-          event.stopPropagation(); // so it doesn’t trigger “outside click”
+          event.stopPropagation(); // to avoid closing the side panel immediately
           onNodeClick(d);
         });
 
+      // Optional icon text
+      node.append("text")
+        .attr("class", "node-icon")
+        .attr("dy", "-0.8em")
+        .text(d => d.icon ? d.icon : "")
+        .each(function(d) {
+          // If no icon, remove the node-icon element to avoid empty space
+          if (!d.icon) d3.select(this).remove();
+        });
+
+      // Title
       node.append("text")
         .attr("class", "caption")
         .text(d => d.title)
         .each(function(d) { wrapText(d3.select(this), 100); });
 
+      // Weeks (unlocked info)
       node.append("text")
         .attr("class", "weeks")
         .text(formatWeeks);
 
+      // On each tick of the simulation
       simulation.on("tick", () => {
         link
           .attr("x1", d => d.source.x)
           .attr("y1", d => d.source.y)
           .attr("x2", d => d.target.x)
           .attr("y2", d => d.target.y);
+
         node.attr("transform", d => `translate(${d.x},${d.y})`);
       });
 
-      refreshGraph(); // apply coloring states
+      refreshGraph();
     }
 
     function dragstarted(event, d) {
@@ -293,6 +352,7 @@
           .attr("y", y)
           .attr("dy", 0 + "em");
         let word;
+
         while ((word = words.pop())) {
           line.push(word);
           tspan.text(line.join(" "));
@@ -306,7 +366,7 @@
               .text(word);
           }
         }
-        // Center text vertically in circle (roughly)
+        // Center text vertically in the circle (rough approximation)
         const totalLines = lineNumber + 1;
         const offset = -0.6 * totalLines;
         text.selectAll("tspan")
@@ -316,13 +376,15 @@
       });
     }
 
-    // 4) LOGIC FOR COLORING & “NEXT” / “OVERDUE”
+    // 4) COLORING & “NEXT” / “OVERDUE”
     function refreshGraph() {
+      updateCurrentWeekLabel();
+
       const bd = document.getElementById("birthDate").value;
       let ageInWeeks = null;
       if (bd) {
         const diffDays = (new Date() - new Date(bd)) / (1000 * 60 * 60 * 24);
-        ageInWeeks = Math.round(diffDays / 7);
+        ageInWeeks = Math.floor(diffDays / 7);
       }
 
       node
@@ -332,8 +394,8 @@
           return d.achievement_time_weeks === null && ageInWeeks > d.typical_achievement_weeks;
         })
         .classed("next", d => {
-          // "next" if still locked but all parents are unlocked
-          if (d.achievement_time_weeks !== null) return false;
+          if (d.achievement_time_weeks !== null) return false; // already unlocked
+          // "next" if all parents are unlocked
           const parents = babyData.filter(p => p.follow_up_ids.includes(d.id));
           if (parents.length === 0) return true; // no parents => immediately next
           return parents.every(p => p.achievement_time_weeks !== null);
@@ -343,6 +405,7 @@
       node.select(".weeks").text(formatWeeks);
     }
 
+    // Return string describing how early/late an achievement was unlocked
     function formatWeeks(d) {
       if (d.achievement_time_weeks === null) {
         return `~ week ${d.typical_achievement_weeks}`;
@@ -368,12 +431,13 @@
       // If user provided a date, compute baby’s age in weeks at that date
       const achievementDate = dateEl.value ? new Date(dateEl.value) : null;
       const birthDateStr = document.getElementById("birthDate").value;
+
       if (achievementDate && birthDateStr) {
         const bd = new Date(birthDateStr);
         const diffDays = (achievementDate - bd) / (1000 * 60 * 60 * 24);
         currentNode.achievement_time_weeks = diffDays > 0
           ? Math.round(diffDays / 7)
-          : 0; // if negative, set 0 as a fallback
+          : 0; // fallback if negative
       } else if (achievementDate && !birthDateStr) {
         // No birth date => fallback to typical
         currentNode.achievement_time_weeks = currentNode.typical_achievement_weeks;
@@ -388,15 +452,14 @@
       hideSidePanel();
     });
 
-    // Show side panel and fill data
     function onNodeClick(d) {
       currentNode = d;
       titleEl.textContent = d.title;
       descEl.textContent = d.description;
       commentEl.value = d.comment || "";
 
-      // If locked, fill today's date
-      // If unlocked, guess date from birthDate + achievement_time_weeks
+      // If locked, fill today's date by default
+      // If unlocked, reconstruct date from birth date + achievement_time_weeks
       const birthDateStr = document.getElementById("birthDate").value;
       if (d.achievement_time_weeks === null) {
         // locked => default to today's date
@@ -408,7 +471,6 @@
         guessDate.setDate(guessDate.getDate() + (7 * d.achievement_time_weeks));
         dateEl.value = guessDate.toISOString().split("T")[0];
       } else {
-        // no birth date to guess from, just clear
         dateEl.value = "";
       }
 
@@ -420,19 +482,19 @@
       currentNode = null;
     }
 
-    // Hide side panel if user clicks outside it
+    // Close side panel if user clicks outside it
     document.addEventListener("click", (event) => {
-      const isClickInside = sidePanel.contains(event.target);
-      if (!isClickInside) {
+      if (!sidePanel.contains(event.target)) {
         hideSidePanel();
       }
     });
 
-    // 6) SAVE TO LOCAL STORAGE
+    // 6) SAVE & LOAD from LOCAL STORAGE
     function saveToLocalStorage() {
       localStorage.setItem("babyData", JSON.stringify(nodes.map(d => ({
         id: d.id,
         title: d.title,
+        icon: d.icon,
         description: d.description,
         typical_achievement_weeks: d.typical_achievement_weeks,
         follow_up_ids: d.follow_up_ids,
@@ -450,7 +512,7 @@
 
     // 7) IMPORT / EXPORT
     document.getElementById("exportBtn").addEventListener("click", () => {
-      // Prepare data for export (the entire tech tree + states)
+      // Prepare data for export (entire tech tree + states)
       const exportData = JSON.stringify(babyData, null, 2);
       const blob = new Blob([exportData], { type: "application/json" });
       const url = URL.createObjectURL(blob);
@@ -487,13 +549,26 @@
       e.target.value = null;
     });
 
-    // 8) RE-RENDER ON BIRTHDATE CHANGE
+    // 8) HELPER: Update “Current Week” label
+    function updateCurrentWeekLabel() {
+      const birthDateStr = document.getElementById("birthDate").value;
+      const label = document.getElementById("currentWeekLabel");
+      if (!birthDateStr) {
+        label.textContent = "";
+        return;
+      }
+      const diffDays = (new Date() - new Date(birthDateStr)) / (1000 * 60 * 60 * 24);
+      const ageInWeeks = Math.floor(diffDays / 7);
+      label.textContent = `(Week ${ageInWeeks})`;
+    }
+
+    // 9) RE-RENDER ON BIRTHDATE CHANGE
     document.getElementById("birthDate").addEventListener("change", () => {
       saveToLocalStorage();
       refreshGraph();
     });
 
-    // 9) INITIAL RENDER
+    // 10) INITIAL RENDER
     renderGraph();
   </script>
 </body>
