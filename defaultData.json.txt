@@ -142,7 +142,8 @@
 			"icon": null,
 			"typical_achievement_weeks": 24,
 			"follow_up_ids": [
-				"14"
+				"14", 
+				"37"
 			],
 			"achievement_time_weeks": null,
 			"comment": null
@@ -313,8 +314,7 @@
 			"icon": null,
 			"typical_achievement_weeks": 76,
 			"follow_up_ids": [
-				"27",
-				"37"
+				"27"
 			],
 			"achievement_time_weeks": null,
 			"comment": null
@@ -457,7 +457,6 @@
 			"icon": null,
 			"typical_achievement_weeks": 24,
 			"follow_up_ids": [
-				"12",
 				"26"
 			],
 			"achievement_time_weeks": null,
