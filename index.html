@@ -464,16 +464,6 @@ You MUST keep all comments in the code below, even if you think they are redunda
       .attr("y", (NODE_HEIGHT / 2) - 8)
       .text(formatWeeks);
 
-    simulation.on("tick", () => {
-      link
-        .attr("x1", d => d.source.x)
-        .attr("y1", d => d.source.y)
-        .attr("x2", d => d.target.x)
-        .attr("y2", d => d.target.y);
-
-      nodeGroup.attr("transform", d => `translate(${d.x},${d.y})`);
-    });
-
     // Apply saved camera position if available
     if (babyData.latestCameraPosition) {
       const { x, y, k } = babyData.latestCameraPosition;
@@ -481,6 +471,36 @@ You MUST keep all comments in the code below, even if you think they are redunda
         zoomBehavior.transform,
         d3.zoomIdentity.translate(x, y).scale(k)
       );
+    } else {
+      // If no camera position is saved, center on the first nodes
+      simulation.on("end", () => {
+        if (!babyData.latestCameraPosition) {
+          // Find the minimum typical achievement weeks
+          const minWeeks = d3.min(nodes, d => d.typical_achievement_weeks);
+          // Get all nodes with the minimum weeks
+          const firstNodes = nodes.filter(d => d.typical_achievement_weeks === minWeeks);
+          if (firstNodes.length > 0) {
+            // Calculate the average position of the first nodes
+            const avgX = d3.mean(firstNodes, d => d.x);
+            const avgY = d3.mean(firstNodes, d => d.y);
+            // Define desired scale
+            const desiredScale = 1.5;
+            // Calculate the translation to center the first nodes
+            const translateX = width / 2 - avgX * desiredScale;
+            const translateY = height / 2 - avgY * desiredScale;
+            // Create the zoom transform
+            const transform = d3.zoomIdentity.translate(translateX, translateY).scale(desiredScale);
+            // Apply the transform with a transition
+            svg.transition().duration(750).call(
+              zoomBehavior.transform,
+              transform
+            );
+            // Save the transform
+            babyData.latestCameraPosition = { x: translateX, y: translateY, k: desiredScale };
+            saveToLocalStorage();
+          }
+        }
+      });
     }
 
     refreshGraph();
@@ -532,30 +552,17 @@ You MUST keep all comments in the code below, even if you think they are redunda
     const birthDateStr = babyData.birthday;
     const ageInWeeks = birthDateStr ? weeksBetween(new Date(birthDateStr), new Date()) : null;
 
-    nodeGroup.select(".node-rect").each(function(d) {
-      const rect = d3.select(this);
-      rect.classed("unlocked", false)
-          .classed("overdue", false)
-          .classed("next", false);
-
-      if (d.achievement_time_weeks != null) {
-        rect.classed("unlocked", true);
-      } else {
-        // Overdue if older than typical_achievement_weeks
-        if (ageInWeeks && ageInWeeks > d.typical_achievement_weeks) {
-          rect.classed("overdue", true);
-        }
-        // Check if 'next' (all parents unlocked)
+    nodeGroup.selectAll(".node-rect")
+      .classed("unlocked", d => d.achievement_time_weeks != null)
+      .classed("overdue", d => d.achievement_time_weeks == null && ageInWeeks && ageInWeeks > d.typical_achievement_weeks)
+      .classed("next", d => {
+        if (d.achievement_time_weeks != null) return false;
         const parents = babyData.items.filter(p => p.follow_up_ids.includes(d.id));
-        const allParentsUnlocked = parents.every(p => p.achievement_time_weeks != null);
-        if (!parents.length || allParentsUnlocked) {
-          rect.classed("next", true);
-        }
-      }
-    });
+        return parents.length === 0 || parents.every(p => p.achievement_time_weeks != null);
+      });
 
     // Update weeks text again (in case it changed)
-    nodeGroup.select(".weeks-text").text(formatWeeks);
+    nodeGroup.selectAll(".weeks-text").text(formatWeeks);
   }
 
   // 5) SIDE PANEL
