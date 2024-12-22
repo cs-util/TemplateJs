@@ -67,6 +67,9 @@ additional explanations what you change are nice to have but not necessary.
   <!-- Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
   <style>
     /* GLOBAL */
     html, body {
@@ -301,7 +304,6 @@ additional explanations what you change are nice to have but not necessary.
     return Math.floor((secondDate - firstDate) / millisecondsPerWeek);
   }
 
-  // Add formatAge function
   function formatAge(weeks) {
     if (weeks >= 52) {
       const years = weeks / 52;
@@ -576,7 +578,6 @@ additional explanations what you change are nice to have but not necessary.
     });
   }
 
-  // Modify formatWeeks function
   function formatWeeks(d) {
     if (d.achievement_time_weeks == null) {
       return `~ ${formatAge(d.typical_achievement_weeks)}`;
@@ -587,8 +588,6 @@ additional explanations what you change are nice to have but not necessary.
     }
     const timing = diff > 0 ? 'early' : 'late';
     const diffWeeks = Math.abs(diff);
-
-    // Use formatAge for the difference as well
     const diffText = diffWeeks >= 52 ? `${(diffWeeks / 52).toFixed(1)} years` : `${diffWeeks} weeks`;
 
     return `Unlocked ${diffText} ${timing}`;
@@ -678,6 +677,7 @@ additional explanations what you change are nice to have but not necessary.
   // Save button event listener
   saveBtn.addEventListener("click", () => {
     if (!currentNode) return;
+    const wasLocked = currentNode.achievement_time_weeks === null;
     const achievementDate = dateEl.value ? new Date(dateEl.value) : null;
     const birthDateStr = babyData.birthday;
 
@@ -698,6 +698,13 @@ additional explanations what you change are nice to have but not necessary.
     refreshGraph();
     saveToLocalStorage();
     hideSidePanel();
+
+    // Trigger confetti if the node was just unlocked
+    confetti({
+        particleCount: 200,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
   });
 
   // Close side panel if user clicks outside it
