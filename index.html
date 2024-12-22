@@ -50,6 +50,8 @@ Top Bar:
 Keep this comment block in the code.
 Simplify the code if possible (without removing the functionality described above). 
 You MUST keep all comments in the code below, even if you think they are redundant.
+Always respond with the full new html file (including these comments here), 
+additional explanations what you change are nice to have but not necessary. 
 -->
 
 <!DOCTYPE html>
@@ -233,6 +235,11 @@ You MUST keep all comments in the code below, even if you think they are redunda
       font-size: 12px;
       pointer-events: none;
     }
+    .description-text {
+      fill: #ccc;
+      font-size: 10px;
+      pointer-events: none;
+    }
     .weeks-text {
       fill: #ececec;
       font-size: 10px;
@@ -388,8 +395,8 @@ You MUST keep all comments in the code below, even if you think they are redunda
     };
   }
 
-  const NODE_WIDTH = 180;
-  const NODE_HEIGHT = 60;
+  const NODE_WIDTH = 194; // Golden ratio
+  const NODE_HEIGHT = 120;
   let simulation, nodeGroup, link, nodes, links;
 
   function renderGraph() {
@@ -459,8 +466,8 @@ You MUST keep all comments in the code below, even if you think they are redunda
     // Node icon (right center)
     nodeGroup.append("text")
       .attr("class", "node-icon")
-      .attr("x", (NODE_WIDTH / 2) - 24)
-      .attr("y", 16)
+      .attr("x", (NODE_WIDTH / 2) - 32)
+      .attr("y", 48)
       .attr("text-anchor", "middle")
       .text(d => d.icon || "");
 
@@ -472,11 +479,31 @@ You MUST keep all comments in the code below, even if you think they are redunda
       .text(d => d.title)
       .each(function() { wrapText(d3.select(this), NODE_WIDTH - 40); });
 
+    // Description text (below title)
+    nodeGroup.append("text")
+      .attr("class", "description-text")
+      .attr("x", -(NODE_WIDTH / 2) + 8)
+      .attr("y", function(d) {
+        // Position below title-text; adjust after wrapping
+        const titleNode = d3.select(this.parentNode).select(".title-text").node();
+        const titleHeight = titleNode.getBBox().height;
+        return -(NODE_HEIGHT / 2) + 16 + titleHeight + 4; // 4px padding
+      })
+      .text(d => d.description)
+      .each(function() { wrapText(d3.select(this), NODE_WIDTH - 40); });
+
     // Weeks info (bottom-left corner)
     nodeGroup.append("text")
       .attr("class", "weeks-text")
       .attr("x", -(NODE_WIDTH / 2) + 8)
-      .attr("y", (NODE_HEIGHT / 2) - 8)
+      .attr("y", function(d) {
+        // Position weeks-text at bottom, adjust based on description height
+        const descNode = d3.select(this.parentNode).select(".description-text").node();
+        const descHeight = descNode.getBBox().height;
+        const titleNode = d3.select(this.parentNode).select(".title-text").node();
+        const titleHeight = titleNode.getBBox().height;
+        return -(NODE_HEIGHT / 2) + 16 + titleHeight + descHeight + 12; // 24px padding
+      })
       .text(formatWeeks);
 
     // Apply saved camera position if available
