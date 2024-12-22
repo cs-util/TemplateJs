@@ -1,630 +1,635 @@
-[
-	{
-		"id": 1,
-		"title": "Birth",
-		"description": "Welcome to the world! The journey officially begins here.",
-		"icon": null,
-		"typical_achievement_weeks": 0,
-		"follow_up_ids": [
-			2
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 2,
-		"title": "Arriving Home",
-		"description": "First day at home. Family bonding and rest are top priorities.",
-		"icon": null,
-		"typical_achievement_weeks": 0,
-		"follow_up_ids": [
-			3
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 3,
-		"title": "First Doctor Appointment",
-		"description": "Ensures baby’s health and growth are on track. Discuss any concerns.",
-		"icon": null,
-		"typical_achievement_weeks": 1,
-		"follow_up_ids": [
-			4,
-			35
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 4,
-		"title": "Begins Tummy Time",
-		"description": "Placing baby on tummy fosters early motor development and head control.",
-		"icon": "airline_seat_flat_angled",
-		"typical_achievement_weeks": 2,
-		"follow_up_ids": [
-			5
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 5,
-		"title": "Focuses on Faces",
-		"description": "Baby visually engages with faces. Offer face-to-face interaction for social bonding.",
-		"icon": "face",
-		"typical_achievement_weeks": 2,
-		"follow_up_ids": [
-			6
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 6,
-		"title": "Social Smile",
-		"description": "Smiles in response to social cues. Encourage with gentle talk and eye contact.",
-		"icon": null,
-		"typical_achievement_weeks": 6,
-		"follow_up_ids": [
-			7
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 7,
-		"title": "First Bath",
-		"description": "Introduction to water fun. Use mild soap and keep water comfortably warm.",
-		"icon": "bathtub",
-		"typical_achievement_weeks": 6,
-		"follow_up_ids": [
-			8
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 8,
-		"title": "Brings Hands to Mouth",
-		"description": "Hand-to-mouth coordination. Offer safe objects for exploration.",
-		"icon": null,
-		"typical_achievement_weeks": 10,
-		"follow_up_ids": [
-			9, 13
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 9,
-		"title": "Tracks Moving Objects",
-		"description": "Follows faces or toys side-to-side. Boost visual tracking with colorful items.",
-		"icon": "visibility",
-		"typical_achievement_weeks": 12,
-		"follow_up_ids": [
-			10
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 10,
-		"title": "Holds Head Steady",
-		"description": "Neck and core strength improve. Tummy time helps build these muscles.",
-		"icon": null,
-		"typical_achievement_weeks": 16,
-		"follow_up_ids": [
-			11, 20
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 11,
-		"title": "Rolls Over",
-		"description": "Baby may roll from tummy to back or vice versa. Provide supervised floor time.",
-		"icon": "autorenew",
-		"typical_achievement_weeks": 20,
-		"follow_up_ids": [
-			12
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 12,
-		"title": "Sits with Support",
-		"description": "Sitting aided by cushions or an adult. Strengthens back and core muscles.",
-		"icon": null,
-		"typical_achievement_weeks": 24,
-		"follow_up_ids": [
-			14
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 13,
-		"title": "Passes Objects Hand to Hand",
-		"description": "Developing coordination. Offer toys to encourage transferring from one hand to the other.",
-		"icon": null,
-		"typical_achievement_weeks": 28,
-		"follow_up_ids": [
-			14
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 14,
-		"title": "Sits Without Support",
-		"description": "Stable sitting posture. Provide a safe play area for upright exploration.",
-		"icon": null,
-		"typical_achievement_weeks": 32,
-		"follow_up_ids": [
-			15
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 15,
-		"title": "Crawls",
-		"description": "Scooting or creeping to explore environment. Encourage safe floor time.",
-		"icon": "pets",
-		"typical_achievement_weeks": 36,
-		"follow_up_ids": [
-			16
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 16,
-		"title": "Pulls to Stand",
-		"description": "Pulls up using furniture. Secure surroundings to prevent accidents.",
-		"icon": null,
-		"typical_achievement_weeks": 40,
-		"follow_up_ids": [
-			17
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 17,
-		"title": "Cruises Along Furniture",
-		"description": "Side-steps while holding onto stable surfaces. Soft rugs can help with balance.",
-		"icon": null,
-		"typical_achievement_weeks": 44,
-		"follow_up_ids": [
-			18
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 18,
-		"title": "Stands Alone",
-		"description": "Briefly stands without support. Improves balance and confidence.",
-		"icon": null,
-		"typical_achievement_weeks": 48,
-		"follow_up_ids": [
-			19
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 19,
-		"title": "Takes First Steps",
-		"description": "Begins walking independently. Clear obstacles and celebrate every attempt.",
-		"icon": "directions_walk",
-		"typical_achievement_weeks": 52,
-		"follow_up_ids": [
-			21
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 20,
-		"title": "First Laugh",
-		"description": "Responds to funny noises or tickles. Encourage with playful interactions.",
-		"icon": "sentiment_satisfied",
-		"typical_achievement_weeks": 16,
-		"follow_up_ids": [
-			21
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 21,
-		"title": "Waves Bye-Bye",
-		"description": "Social gesture. Reinforce waving and provide cues like 'bye-bye.'",
-		"icon": null,
-		"typical_achievement_weeks": 56,
-		"follow_up_ids": [
-			22
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 22,
-		"title": "Claps Hands",
-		"description": "Clapping to express excitement or mimic adults. Demonstrate claps during play.",
-		"icon": null,
-		"typical_achievement_weeks": 60,
-		"follow_up_ids": [
-			23
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 23,
-		"title": "Understands 'No'",
-		"description": "Early boundary setting. Consistent tone and expression help baby learn limits.",
-		"icon": "priority_high",
-		"typical_achievement_weeks": 64,
-		"follow_up_ids": [
-			24,
-			38
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 24,
-		"title": "Says First Word",
-		"description": "May say 'mama' or 'dada' with meaning. Encourage language with talking and reading.",
-		"icon": null,
-		"typical_achievement_weeks": 68,
-		"follow_up_ids": [
-			25,
-			38
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 25,
-		"title": "Drinks from Cup",
-		"description": "Attempts open-cup drinking with help. Practice swallowing and hand coordination.",
-		"icon": "local_cafe",
-		"typical_achievement_weeks": 72,
-		"follow_up_ids": [
-			26,
-			39
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 26,
-		"title": "Uses Spoon or Fork",
-		"description": "Begins self-feeding with utensils. Expect spills; practice makes perfect.",
-		"icon": null,
-		"typical_achievement_weeks": 76,
-		"follow_up_ids": [
-			27,
-			37
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 27,
-		"title": "Builds Tower of Two Blocks",
-		"description": "Basic stacking shows motor and problem-solving skills.",
-		"icon": "view_in_ar",
-		"typical_achievement_weeks": 80,
-		"follow_up_ids": [
-			28,
-			40
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 28,
-		"title": "Points to Desired Objects",
-		"description": "Communicates wants by pointing. Name objects to reinforce vocabulary.",
-		"icon": null,
-		"typical_achievement_weeks": 84,
-		"follow_up_ids": [
-			29,
-			41
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 29,
-		"title": "Walks Up Steps with Help",
-		"description": "Stepping coordination while holding an adult’s hand. Keep steps safe.",
-		"icon": "stairs",
-		"typical_achievement_weeks": 88,
-		"follow_up_ids": [
-			30,
-			42
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 30,
-		"title": "Runs",
-		"description": "Toddler picks up speed. Supervise open spaces to prevent major tumbles.",
-		"icon": null,
-		"typical_achievement_weeks": 92,
-		"follow_up_ids": [
-			31
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 31,
-		"title": "Kicks a Ball",
-		"description": "Developing leg coordination. Use a soft ball for gentle practice.",
-		"icon": "sports_soccer",
-		"typical_achievement_weeks": 96,
-		"follow_up_ids": [
-			32
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 32,
-		"title": "Scribbles",
-		"description": "Random crayon or pencil strokes. Provide nontoxic art supplies and supervise.",
-		"icon": "create",
-		"typical_achievement_weeks": 100,
-		"follow_up_ids": [
-			33
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 33,
-		"title": "Plays Make-Believe",
-		"description": "Pretend play fosters imagination and cognitive development.",
-		"icon": "emoji_people",
-		"typical_achievement_weeks": 104,
-		"follow_up_ids": [
-			34
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 34,
-		"title": "Begins to Show Hand Preference",
-		"description": "Gradual leaning toward left or right hand for drawing or feeding.",
-		"icon": null,
-		"typical_achievement_weeks": 108,
-		"follow_up_ids": [],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 35,
-		"title": "First Real Sleep (3+ hours)",
-		"description": "A minor miracle for tired parents—celebrate the extra rest!",
-		"icon": "bedtime",
-		"typical_achievement_weeks": 5,
-		"follow_up_ids": [
-			36
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 36,
-		"title": "First Time Sleeping Through the Night",
-		"description": "Longer sleep stretches. Maintain a consistent bedtime routine.",
-		"icon": "hotel",
-		"typical_achievement_weeks": 12,
-		"follow_up_ids": [
-			
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 361,
-		"title": "First Time Falling Asleep on Own",
-		"description": "Self-soothing to sleep. Encourage a calming bedtime routine.",
-		"icon": "hotel",
-		"typical_achievement_weeks": 16,
-		"follow_up_ids": [ ],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 37,
-		"title": "First Time Eating Solid Food",
-		"description": "Introduction to purees or soft solids. Watch for readiness cues like head control.",
-		"icon": null,
-		"typical_achievement_weeks": 24,
-		"follow_up_ids": [
-			12, 26
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 38,
-		"title": "First Time Throwing a Tantrum",
-		"description": "Emotional expression emerges. Offer calm reassurance and consistent boundaries.",
-		"icon": null,
-		"typical_achievement_weeks": 68,
-		"follow_up_ids": [
-			39
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 39,
-		"title": "First Potty Attempt",
-		"description": "Shows curiosity about the potty. Encourage gently and celebrate small wins.",
-		"icon": null,
-		"typical_achievement_weeks": 72,
-		"follow_up_ids": [
-			43
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 40,
-		"title": "First Attempt at Dancing",
-		"description": "Sways or bounces to music. Dance together for fun and balance practice.",
-		"icon": "music_note",
-		"typical_achievement_weeks": 80,
-		"follow_up_ids": [
-			41
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 41,
-		"title": "First Time Jumping",
-		"description": "Little hops or bounces. Aids coordination and leg strength.",
-		"icon": null,
-		"typical_achievement_weeks": 84,
-		"follow_up_ids": [
-			42
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 42,
-		"title": "First Time Climbing",
-		"description": "May climb onto low furniture or steps. Supervise to prevent falls.",
-		"icon": null,
-		"typical_achievement_weeks": 88,
-		"follow_up_ids": [
-			30
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 43,
-		"title": "First Attempt at Brushing Teeth",
-		"description": "Introduces basic self-care. Use a soft brush and baby-safe toothpaste.",
-		"icon": "brush",
-		"typical_achievement_weeks": 94,
-		"follow_up_ids": [
-			44
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 44,
-		"title": "First Two-Word Sentence",
-		"description": "e.g., 'More milk!' or 'Mommy help.' Encouragement boosts language skills.",
-		"icon": null,
-		"typical_achievement_weeks": 96,
-		"follow_up_ids": [
-			45
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 45,
-		"title": "Draw on Paper with Crayons",
-		"description": "Scribbles become more controlled. Provide plenty of safe art supplies.",
-		"icon": null,
-		"typical_achievement_weeks": 96,
-		"follow_up_ids": [
-			46
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 46,
-		"title": "Stacking 5 Blocks",
-		"description": "Improving fine motor skills and spatial coordination. Celebrate each tower!",
-		"icon": null,
-		"typical_achievement_weeks": 96,
-		"follow_up_ids": [
-			47
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 47,
-		"title": "Follow Simple 2-Step Instructions",
-		"description": "Understands short tasks like 'Pick up the toy and put it in the box.'",
-		"icon": null,
-		"typical_achievement_weeks": 96,
-		"follow_up_ids": [
-			48
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 48,
-		"title": "Climbs onto Furniture Safely",
-		"description": "Navigates onto a couch or low chair. Supervise to prevent falls.",
-		"icon": null,
-		"typical_achievement_weeks": 96,
-		"follow_up_ids": [
-			49
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 49,
-		"title": "Begins to Jump with Both Feet",
-		"description": "A small hop off the ground. Help them practice on soft, safe surfaces.",
-		"icon": null,
-		"typical_achievement_weeks": 96,
-		"follow_up_ids": [
-			50
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 50,
-		"title": "Points to at Least 5 Body Parts",
-		"description": "Understands names of common body parts like nose, ears, and toes.",
-		"icon": null,
-		"typical_achievement_weeks": 96,
-		"follow_up_ids": [
-			51
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	},
-	{
-		"id": 51,
-		"title": "Recognizes Name in Mirror",
-		"description": "Shows self-recognition by patting chest or face when asked 'Who is that?'",
-		"icon": "tag_faces",
-		"typical_achievement_weeks": 96,
-		"follow_up_ids": [
-			34
-		],
-		"achievement_time_weeks": null,
-		"comment": null
-	}
-]
+{
+	"items": [
+		{
+			"id": "1",
+			"title": "Birth",
+			"description": "Welcome to the world! The journey officially begins here.",
+			"icon": null,
+			"typical_achievement_weeks": 0,
+			"follow_up_ids": [
+				"2"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "2",
+			"title": "Arriving Home",
+			"description": "First day at home. Family bonding and rest are top priorities.",
+			"icon": null,
+			"typical_achievement_weeks": 0,
+			"follow_up_ids": [
+				"3"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "3",
+			"title": "First Doctor Appointment",
+			"description": "Ensures baby’s health and growth are on track. Discuss any concerns.",
+			"icon": null,
+			"typical_achievement_weeks": 1,
+			"follow_up_ids": [
+				"4",
+				"35"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "4",
+			"title": "Begins Tummy Time",
+			"description": "Placing baby on tummy fosters early motor development and head control.",
+			"icon": "airline_seat_flat_angled",
+			"typical_achievement_weeks": 2,
+			"follow_up_ids": [
+				"5"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "5",
+			"title": "Focuses on Faces",
+			"description": "Baby visually engages with faces. Offer face-to-face interaction for social bonding.",
+			"icon": "face",
+			"typical_achievement_weeks": 2,
+			"follow_up_ids": [
+				"6"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "6",
+			"title": "Social Smile",
+			"description": "Smiles in response to social cues. Encourage with gentle talk and eye contact.",
+			"icon": null,
+			"typical_achievement_weeks": 6,
+			"follow_up_ids": [
+				"7"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "7",
+			"title": "First Bath",
+			"description": "Introduction to water fun. Use mild soap and keep water comfortably warm.",
+			"icon": "bathtub",
+			"typical_achievement_weeks": 6,
+			"follow_up_ids": [
+				"8"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "8",
+			"title": "Brings Hands to Mouth",
+			"description": "Hand-to-mouth coordination. Offer safe objects for exploration.",
+			"icon": null,
+			"typical_achievement_weeks": 10,
+			"follow_up_ids": [
+				"9",
+				"13"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "9",
+			"title": "Tracks Moving Objects",
+			"description": "Follows faces or toys side-to-side. Boost visual tracking with colorful items.",
+			"icon": "visibility",
+			"typical_achievement_weeks": 12,
+			"follow_up_ids": [
+				"10"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "10",
+			"title": "Holds Head Steady",
+			"description": "Neck and core strength improve. Tummy time helps build these muscles.",
+			"icon": null,
+			"typical_achievement_weeks": 16,
+			"follow_up_ids": [
+				"11",
+				"20"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "11",
+			"title": "Rolls Over",
+			"description": "Baby may roll from tummy to back or vice versa. Provide supervised floor time.",
+			"icon": "autorenew",
+			"typical_achievement_weeks": 20,
+			"follow_up_ids": [
+				"12"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "12",
+			"title": "Sits with Support",
+			"description": "Sitting aided by cushions or an adult. Strengthens back and core muscles.",
+			"icon": null,
+			"typical_achievement_weeks": 24,
+			"follow_up_ids": [
+				"14"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "13",
+			"title": "Passes Objects Hand to Hand",
+			"description": "Developing coordination. Offer toys to encourage transferring from one hand to the other.",
+			"icon": null,
+			"typical_achievement_weeks": 28,
+			"follow_up_ids": [
+				"14"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "14",
+			"title": "Sits Without Support",
+			"description": "Stable sitting posture. Provide a safe play area for upright exploration.",
+			"icon": null,
+			"typical_achievement_weeks": 32,
+			"follow_up_ids": [
+				"15"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "15",
+			"title": "Crawls",
+			"description": "Scooting or creeping to explore environment. Encourage safe floor time.",
+			"icon": "pets",
+			"typical_achievement_weeks": 36,
+			"follow_up_ids": [
+				"16"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "16",
+			"title": "Pulls to Stand",
+			"description": "Pulls up using furniture. Secure surroundings to prevent accidents.",
+			"icon": null,
+			"typical_achievement_weeks": 40,
+			"follow_up_ids": [
+				"17"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "17",
+			"title": "Cruises Along Furniture",
+			"description": "Side-steps while holding onto stable surfaces. Soft rugs can help with balance.",
+			"icon": null,
+			"typical_achievement_weeks": 44,
+			"follow_up_ids": [
+				"18"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "18",
+			"title": "Stands Alone",
+			"description": "Briefly stands without support. Improves balance and confidence.",
+			"icon": null,
+			"typical_achievement_weeks": 48,
+			"follow_up_ids": [
+				"19"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "19",
+			"title": "Takes First Steps",
+			"description": "Begins walking independently. Clear obstacles and celebrate every attempt.",
+			"icon": "directions_walk",
+			"typical_achievement_weeks": 52,
+			"follow_up_ids": [
+				"21"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "20",
+			"title": "First Laugh",
+			"description": "Responds to funny noises or tickles. Encourage with playful interactions.",
+			"icon": "sentiment_satisfied",
+			"typical_achievement_weeks": 16,
+			"follow_up_ids": [
+				"21"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "21",
+			"title": "Waves Bye-Bye",
+			"description": "Social gesture. Reinforce waving and provide cues like 'bye-bye.'",
+			"icon": null,
+			"typical_achievement_weeks": 56,
+			"follow_up_ids": [
+				"22"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "22",
+			"title": "Claps Hands",
+			"description": "Clapping to express excitement or mimic adults. Demonstrate claps during play.",
+			"icon": null,
+			"typical_achievement_weeks": 60,
+			"follow_up_ids": [
+				"23"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "23",
+			"title": "Understands 'No'",
+			"description": "Early boundary setting. Consistent tone and expression help baby learn limits.",
+			"icon": "priority_high",
+			"typical_achievement_weeks": 64,
+			"follow_up_ids": [
+				"24",
+				"38"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "24",
+			"title": "Says First Word",
+			"description": "May say 'mama' or 'dada' with meaning. Encourage language with talking and reading.",
+			"icon": null,
+			"typical_achievement_weeks": 68,
+			"follow_up_ids": [
+				"25",
+				"38"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "25",
+			"title": "Drinks from Cup",
+			"description": "Attempts open-cup drinking with help. Practice swallowing and hand coordination.",
+			"icon": "local_cafe",
+			"typical_achievement_weeks": 72,
+			"follow_up_ids": [
+				"26",
+				"39"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "26",
+			"title": "Uses Spoon or Fork",
+			"description": "Begins self-feeding with utensils. Expect spills; practice makes perfect.",
+			"icon": null,
+			"typical_achievement_weeks": 76,
+			"follow_up_ids": [
+				"27",
+				"37"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "27",
+			"title": "Builds Tower of Two Blocks",
+			"description": "Basic stacking shows motor and problem-solving skills.",
+			"icon": "view_in_ar",
+			"typical_achievement_weeks": 80,
+			"follow_up_ids": [
+				"28",
+				"40"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "28",
+			"title": "Points to Desired Objects",
+			"description": "Communicates wants by pointing. Name objects to reinforce vocabulary.",
+			"icon": null,
+			"typical_achievement_weeks": 84,
+			"follow_up_ids": [
+				"29",
+				"41"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "29",
+			"title": "Walks Up Steps with Help",
+			"description": "Stepping coordination while holding an adult’s hand. Keep steps safe.",
+			"icon": "stairs",
+			"typical_achievement_weeks": 88,
+			"follow_up_ids": [
+				"30",
+				"42"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "30",
+			"title": "Runs",
+			"description": "Toddler picks up speed. Supervise open spaces to prevent major tumbles.",
+			"icon": null,
+			"typical_achievement_weeks": 92,
+			"follow_up_ids": [
+				"31"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "31",
+			"title": "Kicks a Ball",
+			"description": "Developing leg coordination. Use a soft ball for gentle practice.",
+			"icon": "sports_soccer",
+			"typical_achievement_weeks": 96,
+			"follow_up_ids": [
+				"32"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "32",
+			"title": "Scribbles",
+			"description": "Random crayon or pencil strokes. Provide nontoxic art supplies and supervise.",
+			"icon": "create",
+			"typical_achievement_weeks": 100,
+			"follow_up_ids": [
+				"33"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "33",
+			"title": "Plays Make-Believe",
+			"description": "Pretend play fosters imagination and cognitive development.",
+			"icon": "emoji_people",
+			"typical_achievement_weeks": 104,
+			"follow_up_ids": [
+				"34"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "34",
+			"title": "Begins to Show Hand Preference",
+			"description": "Gradual leaning toward left or right hand for drawing or feeding.",
+			"icon": null,
+			"typical_achievement_weeks": 108,
+			"follow_up_ids": [],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "35",
+			"title": "First Real Sleep (3+ hours)",
+			"description": "A minor miracle for tired parents—celebrate the extra rest!",
+			"icon": "bedtime",
+			"typical_achievement_weeks": 5,
+			"follow_up_ids": [
+				"36"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "36",
+			"title": "First Time Sleeping Through the Night",
+			"description": "Longer sleep stretches. Maintain a consistent bedtime routine.",
+			"icon": "hotel",
+			"typical_achievement_weeks": 12,
+			"follow_up_ids": [
+				"36_1"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "36_1",
+			"title": "First Time Falling Asleep on Own",
+			"description": "Self-soothing to sleep. Encourage a calming bedtime routine.",
+			"icon": "hotel",
+			"typical_achievement_weeks": 16,
+			"follow_up_ids": [],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "37",
+			"title": "First Time Eating Solid Food",
+			"description": "Introduction to purees or soft solids. Watch for readiness cues like head control.",
+			"icon": null,
+			"typical_achievement_weeks": 24,
+			"follow_up_ids": [
+				"12",
+				"26"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "38",
+			"title": "First Time Throwing a Tantrum",
+			"description": "Emotional expression emerges. Offer calm reassurance and consistent boundaries.",
+			"icon": null,
+			"typical_achievement_weeks": 68,
+			"follow_up_ids": [
+				"39"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "39",
+			"title": "First Potty Attempt",
+			"description": "Shows curiosity about the potty. Encourage gently and celebrate small wins.",
+			"icon": null,
+			"typical_achievement_weeks": 72,
+			"follow_up_ids": [
+				"43"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "40",
+			"title": "First Attempt at Dancing",
+			"description": "Sways or bounces to music. Dance together for fun and balance practice.",
+			"icon": "music_note",
+			"typical_achievement_weeks": 80,
+			"follow_up_ids": [
+				"41"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "41",
+			"title": "First Time Jumping",
+			"description": "Little hops or bounces. Aids coordination and leg strength.",
+			"icon": null,
+			"typical_achievement_weeks": 84,
+			"follow_up_ids": [
+				"42"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "42",
+			"title": "First Time Climbing",
+			"description": "May climb onto low furniture or steps. Supervise to prevent falls.",
+			"icon": null,
+			"typical_achievement_weeks": 88,
+			"follow_up_ids": [
+				"30"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "43",
+			"title": "First Attempt at Brushing Teeth",
+			"description": "Introduces basic self-care. Use a soft brush and baby-safe toothpaste.",
+			"icon": "brush",
+			"typical_achievement_weeks": 94,
+			"follow_up_ids": [
+				"44"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "44",
+			"title": "First Two-Word Sentence",
+			"description": "e.g., 'More milk!' or 'Mommy help.' Encouragement boosts language skills.",
+			"icon": null,
+			"typical_achievement_weeks": 96,
+			"follow_up_ids": [
+				"45"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "45",
+			"title": "Draw on Paper with Crayons",
+			"description": "Scribbles become more controlled. Provide plenty of safe art supplies.",
+			"icon": null,
+			"typical_achievement_weeks": 96,
+			"follow_up_ids": [
+				"46"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "46",
+			"title": "Stacking 5 Blocks",
+			"description": "Improving fine motor skills and spatial coordination. Celebrate each tower!",
+			"icon": null,
+			"typical_achievement_weeks": 96,
+			"follow_up_ids": [
+				"47"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "47",
+			"title": "Follow Simple 2-Step Instructions",
+			"description": "Understands short tasks like 'Pick up the toy and put it in the box.'",
+			"icon": null,
+			"typical_achievement_weeks": 96,
+			"follow_up_ids": [
+				"48"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "48",
+			"title": "Climbs onto Furniture Safely",
+			"description": "Navigates onto a couch or low chair. Supervise to prevent falls.",
+			"icon": null,
+			"typical_achievement_weeks": 96,
+			"follow_up_ids": [
+				"49"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "49",
+			"title": "Begins to Jump with Both Feet",
+			"description": "A small hop off the ground. Help them practice on soft, safe surfaces.",
+			"icon": null,
+			"typical_achievement_weeks": 96,
+			"follow_up_ids": [
+				"50"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "50",
+			"title": "Points to at Least 5 Body Parts",
+			"description": "Understands names of common body parts like nose, ears, and toes.",
+			"icon": null,
+			"typical_achievement_weeks": 96,
+			"follow_up_ids": [
+				"51"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "51",
+			"title": "Recognizes Name in Mirror",
+			"description": "Shows self-recognition by patting chest or face when asked 'Who is that?'",
+			"icon": "tag_faces",
+			"typical_achievement_weeks": 96,
+			"follow_up_ids": [
+				"34"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		}
+	]
+}
