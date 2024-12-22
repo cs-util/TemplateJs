@@ -91,7 +91,7 @@
 		"icon": null,
 		"typical_achievement_weeks": 10,
 		"follow_up_ids": [
-			9
+			9, 13
 		],
 		"achievement_time_weeks": null,
 		"comment": null
@@ -115,7 +115,7 @@
 		"icon": null,
 		"typical_achievement_weeks": 16,
 		"follow_up_ids": [
-			11
+			11, 20
 		],
 		"achievement_time_weeks": null,
 		"comment": null
@@ -139,7 +139,7 @@
 		"icon": null,
 		"typical_achievement_weeks": 24,
 		"follow_up_ids": [
-			13
+			14
 		],
 		"achievement_time_weeks": null,
 		"comment": null
@@ -223,7 +223,7 @@
 		"icon": "directions_walk",
 		"typical_achievement_weeks": 52,
 		"follow_up_ids": [
-			20
+			21
 		],
 		"achievement_time_weeks": null,
 		"comment": null
@@ -445,7 +445,7 @@
 		"icon": null,
 		"typical_achievement_weeks": 24,
 		"follow_up_ids": [
-			12
+			12, 26
 		],
 		"achievement_time_weeks": null,
 		"comment": null
