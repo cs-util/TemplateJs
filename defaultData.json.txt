@@ -68,7 +68,7 @@
 			"icon": null,
 			"typical_achievement_weeks": 6,
 			"follow_up_ids": [
-				"7"
+				"52"
 			],
 			"achievement_time_weeks": null,
 			"comment": null
@@ -105,7 +105,8 @@
 			"icon": "visibility",
 			"typical_achievement_weeks": 12,
 			"follow_up_ids": [
-				"10"
+				"10",
+				"54"
 			],
 			"achievement_time_weeks": null,
 			"comment": null
@@ -142,7 +143,7 @@
 			"icon": null,
 			"typical_achievement_weeks": 24,
 			"follow_up_ids": [
-				"14", 
+				"14",
 				"37"
 			],
 			"achievement_time_weeks": null,
@@ -276,7 +277,8 @@
 			"typical_achievement_weeks": 64,
 			"follow_up_ids": [
 				"24",
-				"38"
+				"38",
+				"60"
 			],
 			"achievement_time_weeks": null,
 			"comment": null
@@ -401,7 +403,8 @@
 			"icon": "emoji_people",
 			"typical_achievement_weeks": 104,
 			"follow_up_ids": [
-				"34"
+				"34",
+				"59"
 			],
 			"achievement_time_weeks": null,
 			"comment": null
@@ -627,6 +630,124 @@
 			"follow_up_ids": [
 				"34"
 			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "52",
+			"title": "Leap 1: The World of Sensations",
+			"description": "Baby becomes more aware of sensory experiences, reacting noticeably to sounds, smells, and visual stimuli. Enhanced alertness and increased visual focus.",
+			"icon": null,
+			"typical_achievement_weeks": 5,
+			"follow_up_ids": [
+				"53"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "53",
+			"title": "Leap 2: The World of Patterns",
+			"description": "Begins recognizing simple patterns, contrasts, and shapes. Improved visual tracking and recognition of familiar faces.",
+			"icon": null,
+			"typical_achievement_weeks": 8,
+			"follow_up_ids": [
+				"54"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "54",
+			"title": "Leap 3: The World of Smooth Transitions",
+			"description": "Perceives continuous changes like movements and shifting lights. Smoother movements and anticipation of moving objects.",
+			"icon": null,
+			"typical_achievement_weeks": 12,
+			"follow_up_ids": [
+				"55"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "55",
+			"title": "Leap 4: The World of Events",
+			"description": "Understands simple cause-and-effect sequences. Anticipates routine events like feeding times.",
+			"icon": null,
+			"typical_achievement_weeks": 19,
+			"follow_up_ids": [
+				"56"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "56",
+			"title": "Leap 5: The World of Relationships",
+			"description": "Recognizes relationships between objects, such as spatial positioning and object permanence. Enjoys peek-a-boo.",
+			"icon": null,
+			"typical_achievement_weeks": 26,
+			"follow_up_ids": [
+				"57"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "57",
+			"title": "Leap 6: The World of Categories",
+			"description": "Starts categorizing objects and people into groups like animals or foods. Recognizes differences between categories.",
+			"icon": null,
+			"typical_achievement_weeks": 37,
+			"follow_up_ids": [
+				"58"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "58",
+			"title": "Leap 7: The World of Sequences",
+			"description": "Understands sequences and the order of actions. Follows simple instructions and attempts sequential tasks like stacking blocks.",
+			"icon": null,
+			"typical_achievement_weeks": 46,
+			"follow_up_ids": [
+				"27"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "59",
+			"title": "Leap 8: The World of Programs",
+			"description": "Recognizes complex sequences and routines. Imitates daily activities and engages in pretend play.",
+			"icon": null,
+			"typical_achievement_weeks": 55,
+			"follow_up_ids": [
+				"33"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "60",
+			"title": "Leap 9: The World of Principles",
+			"description": "Understands basic principles like gravity and concepts such as 'inside' and 'outside.' Experiments with physical properties.",
+			"icon": null,
+			"typical_achievement_weeks": 64,
+			"follow_up_ids": [
+				"61"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "61",
+			"title": "Leap 10: The World of Systems",
+			"description": "Comprehends systems and rules, including social norms and routines. Follows complex instructions and aligns behavior with expectations.",
+			"icon": null,
+			"typical_achievement_weeks": 75,
+			"follow_up_ids": [],
 			"achievement_time_weeks": null,
 			"comment": null
 		}
