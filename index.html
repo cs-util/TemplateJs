@@ -76,16 +76,11 @@ You MUST keep all comments in the code below, even if you think they are redunda
     /* PANELS & RESPONSIVENESS */
     .top-panel {
       position: absolute;
-      top: 10px; 
-      width: 100%;
-      z-index: 999;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center; 
-      align-items: center;
+      top: 10px; width: 100%; z-index: 999;
+      display: flex; flex-wrap: wrap;
+      justify-content: center; align-items: center;
       gap: 20px;
-      color: white;
-      font-size: 14px;
+      color: white; font-size: 14px;
     }
     @media (max-width: 600px) {
       .top-panel {
@@ -103,35 +98,23 @@ You MUST keep all comments in the code below, even if you think they are redunda
 
     /* BIRTHDATE + BUTTONS */
     .birthdate-container {
-      display: flex; 
-      align-items: center; 
-      gap: 8px;
+      display: flex; align-items: center; gap: 8px;
     }
     .top-panel input[type="date"] {
-      padding: 5px 8px; 
-      border: none; 
-      border-radius: 5px;
+      padding: 5px 8px; border: none; border-radius: 5px;
       color: black;
     }
     .top-panel button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 5px 10px; 
-      border: none; 
-      border-radius: 5px;
-      background-color: #4caf50; 
-      color: white; 
-      font-weight: bold;
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 5px 10px; border: none; border-radius: 5px;
+      background-color: #4caf50; color: white; font-weight: bold;
       cursor: pointer;
     }
     .top-panel button:hover {
       background-color: #388e3c;
     }
     .top-panel .material-icons {
-      margin-right: 4px; 
-      font-size: 18px; 
-      vertical-align: middle;
+      margin-right: 4px; font-size: 18px; vertical-align: middle;
     }
     .top-panel input#importFile {
       display: none;
@@ -139,58 +122,32 @@ You MUST keep all comments in the code below, even if you think they are redunda
 
     /* SIDE PANEL */
     .side-panel {
-      position: absolute; 
-      right: 0; 
-      width: 300px; 
-      height: 100%;
-      background-color: #2c2c3e; 
-      color: #fff; 
-      border-left: 1px solid #444; 
-      padding: 20px; 
-      display: none; 
-      box-sizing: border-box;
-      flex-direction: column; 
-      gap: 10px; 
-      font-size: 14px;
+      position: absolute; right: 0; width: 300px; height: 100%;
+      background-color: #2c2c3e; color: #fff;
+      border-left: 1px solid #444; padding: 20px;
+      display: none; box-sizing: border-box;
+      flex-direction: column; gap: 10px; font-size: 14px;
     }
-    .side-panel h2 { 
-      margin: 0; 
-      font-size: 16px; 
-    }
-    /* Shared input style for date + textarea + file in side panel */
+    .side-panel h2 { margin: 0; font-size: 16px; }
     .side-panel input[type="date"],
     .side-panel textarea,
     .side-panel input[type="file"] {
-      margin-top: 5px; 
-      padding: 5px; 
-      border: none; 
-      border-radius: 5px; 
-      color: black; 
-      font-family: CONSOLAS, monospace;
+      margin-top: 5px; padding: 5px;
+      border: none; border-radius: 5px;
+      color: black; font-family: CONSOLAS, monospace;
     }
     .side-panel textarea {
-      height: 80px; 
-      resize: vertical;
+      height: 80px; resize: vertical;
     }
-    /* Preview image */
     #sidePanelImagePreview {
-      max-width: 100%; 
-      max-height: 120px; 
-      object-fit: cover; 
-      display: none; 
-      margin-top: 5px;
+      max-width: 100%; max-height: 120px;
+      object-fit: cover; display: none; margin-top: 5px;
       border: 1px solid #444;
     }
-    /* Save button */
     .side-panel button.save-btn {
-      margin-top: 5px;
-      width: 100%;
-      padding: 5px; 
-      border: none; 
-      border-radius: 5px; 
-      background-color: #4caf50; 
-      color: white; 
-      font-weight: bold; 
+      margin-top: 5px; width: 100%; padding: 5px;
+      border: none; border-radius: 5px;
+      background-color: #4caf50; color: white; font-weight: bold;
       cursor: pointer;
     }
     .side-panel button.save-btn:hover {
@@ -199,21 +156,15 @@ You MUST keep all comments in the code below, even if you think they are redunda
 
     /* MAIN SVG / LINKS */
     svg {
-      width: 100%; 
-      height: 100vh; 
-      box-sizing: border-box;
+      width: 100%; height: 100vh; box-sizing: border-box;
     }
     .link {
-      stroke: #888; 
-      stroke-width: 2px; 
-      marker-end: url(#arrowhead);
+      stroke: #888; stroke-width: 2px; marker-end: url(#arrowhead);
     }
 
     /* NODES */
     .node-rect {
-      stroke: #fff; 
-      stroke-width: 1.5px; 
-      cursor: pointer;
+      stroke: #fff; stroke-width: 1.5px; cursor: pointer;
       fill: #a88615c5; /* default locked color */
       rx: 10; ry: 10; /* rounded corners */
     }
@@ -222,20 +173,14 @@ You MUST keep all comments in the code below, even if you think they are redunda
     .node-rect.unlocked { fill: rgba(9, 126, 19, 0.856); }
 
     .title-text {
-      fill: #fff; 
-      font-size: 12px; 
-      pointer-events: none;
+      fill: #fff; font-size: 12px; pointer-events: none;
     }
     .weeks-text {
-      fill: #ececec; 
-      font-size: 10px;
-      pointer-events: none;
+      fill: #ececec; font-size: 10px; pointer-events: none;
     }
     .node-icon {
       font-family: "Material Icons";
-      font-size: 36px; 
-      fill: #fff; 
-      fill-opacity: 0.65;
+      font-size: 36px; fill: #fff; fill-opacity: 0.65;
       pointer-events: none;
     }
   </style>
@@ -283,8 +228,8 @@ You MUST keep all comments in the code below, even if you think they are redunda
 
   // HELPER to compute age in weeks between two dates
   function weeksBetween(firstDate, secondDate) {
-    const diffDays = (secondDate - firstDate) / (1000 * 60 * 60 * 24);
-    return Math.floor(diffDays / 7);
+    const millisecondsPerWeek = 7 * 24 * 60 * 60 * 1000;
+    return Math.floor((secondDate - firstDate) / millisecondsPerWeek);
   }
 
   // 1) Load data from localStorage if possible
@@ -300,7 +245,7 @@ You MUST keep all comments in the code below, even if you think they are redunda
       if (parsed && Array.isArray(parsed.items)) {
         babyData = parsed;
       } else {
-        console.warn("Local storage babyData is outdated or invalid, ignoring it.");
+        console.warn("Local storage babyData is invalid, ignoring it.");
       }
     } catch (e) {
       console.warn("Local storage babyData was corrupt, ignoring it.");
@@ -308,13 +253,12 @@ You MUST keep all comments in the code below, even if you think they are redunda
   }
 
   // If no valid local data, load from remote (defaultData.json.txt)
-  if (!babyData.items || babyData.items.length === 0) {
+  if (!babyData.items.length) {
     try {
       const resp = await fetch("https://raw.githubusercontent.com/cs-util-com/BabyStepsJs/refs/heads/main/defaultData.json.txt");
       babyData.items = await resp.json();
     } catch (error) {
       console.error("Could not fetch baby data from remote:", error);
-      // fallback if fetch fails
       babyData.items = [];
     }
   }
@@ -333,8 +277,7 @@ You MUST keep all comments in the code below, even if you think they are redunda
   const zoomG = svg.append("g");
 
   // Arrowhead definition
-  const defs = svg.append("defs");
-  defs.append("marker")
+  svg.append("defs").append("marker")
     .attr("id", "arrowhead")
     .attr("viewBox", "0 -5 10 10")
     .attr("refX", 90)
@@ -479,7 +422,7 @@ You MUST keep all comments in the code below, even if you think they are redunda
           const minWeeks = d3.min(nodes, d => d.typical_achievement_weeks);
           // Get all nodes with the minimum weeks
           const firstNodes = nodes.filter(d => d.typical_achievement_weeks === minWeeks);
-          if (firstNodes.length > 0) {
+          if (firstNodes.length) {
             // Calculate the average position of the first nodes
             const avgX = d3.mean(firstNodes, d => d.x);
             const avgY = d3.mean(firstNodes, d => d.y);
@@ -510,16 +453,15 @@ You MUST keep all comments in the code below, even if you think they are redunda
   function wrapText(textSelection, width) {
     textSelection.each(function() {
       const text = d3.select(this);
-      const words = text.text().split(/\s+/).reverse();
+      const words = text.text().split(/\s+/);
       let line = [];
       let lineNumber = 0;
       const lineHeight = 1.2;
-      const y = text.attr("y") || 0;
-      const x = text.attr("x") || 0;
+      const y = text.attr("y");
+      const x = text.attr("x");
       let tspan = text.text(null).append("tspan").attr("x", x).attr("y", y);
 
-      let word;
-      while ((word = words.pop())) {
+      for (const word of words) {
         line.push(word);
         tspan.text(line.join(" "));
         if (tspan.node().getComputedTextLength() > width) {
@@ -537,13 +479,11 @@ You MUST keep all comments in the code below, even if you think they are redunda
 
   // Returns string describing how early/late an achievement was unlocked
   function formatWeeks(d) {
-    if (d.achievement_time_weeks == null) {
-      return `~ week ${d.typical_achievement_weeks}`;
-    }
+    if (d.achievement_time_weeks == null) return `~ week ${d.typical_achievement_weeks}`;
     const diff = d.typical_achievement_weeks - d.achievement_time_weeks;
-    if (diff > 0) return `Unlocked ${Math.abs(diff)} weeks early`;
-    if (diff < 0) return `Unlocked ${Math.abs(diff)} weeks late`;
-    return `Unlocked right on time`;
+    if (diff === 0) return `Unlocked right on time`;
+    const timing = diff > 0 ? 'early' : 'late';
+    return `Unlocked ${Math.abs(diff)} weeks ${timing}`;
   }
 
   // 4) COLORING & “NEXT” / “OVERDUE”
@@ -573,8 +513,6 @@ You MUST keep all comments in the code below, even if you think they are redunda
   const dateEl = document.getElementById("sidePanelAchievementDate");
   const commentEl = document.getElementById("sidePanelComment");
   const saveBtn = document.getElementById("sidePanelSaveBtn");
-
-  // New references for image input & preview
   const imageFileInput = document.getElementById("sidePanelImageFile");
   const imagePreview = document.getElementById("sidePanelImagePreview");
 
@@ -600,7 +538,7 @@ You MUST keep all comments in the code below, even if you think they are redunda
     } else if (birthDateStr) {
       // If already unlocked, reconstruct date from birth + achievement_time_weeks
       const bd = new Date(birthDateStr);
-      bd.setDate(bd.getDate() + (7 * d.achievement_time_weeks));
+      bd.setDate(bd.getDate() + 7 * d.achievement_time_weeks);
       dateEl.value = bd.toISOString().split("T")[0];
     } else {
       dateEl.value = "";
@@ -629,7 +567,7 @@ You MUST keep all comments in the code below, even if you think they are redunda
     reader.readAsDataURL(file);
   });
 
-  // Single event listener for saving side-panel data
+  // Save button event listener
   saveBtn.addEventListener("click", () => {
     if (!currentNode) return;
     const achievementDate = dateEl.value ? new Date(dateEl.value) : null;
@@ -708,11 +646,11 @@ You MUST keep all comments in the code below, even if you think they are redunda
   function updateCurrentWeekLabel() {
     const birthDateStr = babyData.birthday;
     const label = document.getElementById("currentWeekLabel");
-    if (!birthDateStr) {
+    if (birthDateStr) {
+      label.textContent = `(Week ${weeksBetween(new Date(birthDateStr), new Date())})`;
+    } else {
       label.textContent = "";
-      return;
     }
-    label.textContent = `(Week ${weeksBetween(new Date(birthDateStr), new Date())})`;
   }
 
   // 9) RE-RENDER ON BIRTHDATE CHANGE
