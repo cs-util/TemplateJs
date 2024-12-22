@@ -432,13 +432,13 @@
 		"icon": "hotel",
 		"typical_achievement_weeks": 12,
 		"follow_up_ids": [
-			36.1
+			
 		],
 		"achievement_time_weeks": null,
 		"comment": null
 	},
 	{
-		"id": 36.1,
+		"id": 361,
 		"title": "First Time Falling Asleep on Own",
 		"description": "Self-soothing to sleep. Encourage a calming bedtime routine.",
 		"icon": "hotel",
