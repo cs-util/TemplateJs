@@ -250,7 +250,7 @@ You MUST keep all comments in the code below, even if you think they are redunda
   </div>
   <div>
     <button id="importBtn">
-      <span class="material-icons">folder_open</span>
+      <span class="material-icons">cloud_download</span>
       Import
     </button>
     <button id="exportBtn">
@@ -288,13 +288,19 @@ You MUST keep all comments in the code below, even if you think they are redunda
   }
 
   // 1) Load data from localStorage if possible
-  let babyData = [];
+  let babyData = {
+    birthday: "",
+    latestCameraPosition: null,
+    items: []
+  };
   const savedData = localStorage.getItem("babyData");
   if (savedData) {
     try {
       const parsed = JSON.parse(savedData);
-      if (Array.isArray(parsed)) {
+      if (parsed && Array.isArray(parsed.items)) {
         babyData = parsed;
+      } else {
+        console.warn("Local storage babyData is outdated or invalid, ignoring it.");
       }
     } catch (e) {
       console.warn("Local storage babyData was corrupt, ignoring it.");
@@ -302,21 +308,20 @@ You MUST keep all comments in the code below, even if you think they are redunda
   }
 
   // If no valid local data, load from remote (defaultData.json.txt)
-  if (!babyData || babyData.length === 0) {
+  if (!babyData.items || babyData.items.length === 0) {
     try {
       const resp = await fetch("https://raw.githubusercontent.com/cs-util-com/BabyStepsJs/refs/heads/main/defaultData.json.txt");
-      babyData = await resp.json();
+      babyData.items = await resp.json();
     } catch (error) {
       console.error("Could not fetch baby data from remote:", error);
       // fallback if fetch fails
-      babyData = [];
+      babyData.items = [];
     }
   }
 
-  // Attempt to load birthDate from localStorage
-  const savedBirthDate = localStorage.getItem("birthDate");
-  if (savedBirthDate) {
-    document.getElementById("birthDate").value = savedBirthDate;
+  // Set birthDate input from babyData.birthday
+  if (babyData.birthday) {
+    document.getElementById("birthDate").value = babyData.birthday;
   }
 
   const svg = d3.select("#graph");
@@ -342,12 +347,20 @@ You MUST keep all comments in the code below, even if you think they are redunda
     .attr("d", "M0,-5L10,0L0,5")
     .attr("fill", "#888");
 
-  // Zoom behavior
-  svg.call(d3.zoom().on("zoom", (event) => {
+  // Zoom behavior with saving latestCameraPosition
+  const zoomBehavior = d3.zoom().on("zoom", (event) => {
     zoomG.attr("transform", event.transform);
-  }));
+    // Save the latest camera position
+    babyData.latestCameraPosition = {
+      x: event.transform.x,
+      y: event.transform.y,
+      k: event.transform.k
+    };
+    saveToLocalStorage();
+  });
+  svg.call(zoomBehavior);
 
-  // Build graph data (nodes & links) from babyData
+  // Build graph data (nodes & links) from babyData.items
   function buildGraphData(data) {
     const validIds = new Set(data.map(d => d.id));
     return {
@@ -367,26 +380,29 @@ You MUST keep all comments in the code below, even if you think they are redunda
   function renderGraph() {
     zoomG.selectAll("*").remove();
 
-    const graphData = buildGraphData(babyData);
+    const graphData = buildGraphData(babyData.items);
     nodes = graphData.nodes;
     links = graphData.links;
 
     // Setup force simulation
     simulation = d3.forceSimulation(nodes)
-    // Link force keeps connected nodes (parent->child) closer together
-    .force("link", d3.forceLink(links).id(d => d.id).distance(10))
-    // Charge force repels nodes from each other
-    .force("charge", d3.forceManyBody().strength(-300))
-    // Position along X axis, using typical_achievement_weeks to anchor:
-    .force("x", d3.forceX(d => d.typical_achievement_weeks * 80).strength(1.0))
-    // Gently position everything in the vertical center, but not too strong:
-    .force("y", d3.forceY(height / 2).strength(0.1))
-    // Small collision radius so that it doesn’t “push” nodes too drastically left and right:
-    .force("collision", d3.forceCollide().radius(120))
-    .on("tick", () => {
-      link.attr("x1", d => d.source.x).attr("y1", d => d.source.y).attr("x2", d => d.target.x).attr("y2", d => d.target.y);
-      nodeGroup.attr("transform", d => `translate(${d.x},${d.y})`);
-    });
+      // Link force keeps connected nodes (parent->child) closer together
+      .force("link", d3.forceLink(links).id(d => d.id).distance(100))
+      // Charge force repels nodes from each other
+      .force("charge", d3.forceManyBody().strength(-300))
+      // Position along X axis, using typical_achievement_weeks to anchor:
+      .force("x", d3.forceX(d => d.typical_achievement_weeks * 80).strength(1.0))
+      // Gently position everything in the vertical center, but not too strong:
+      .force("y", d3.forceY(height / 2).strength(0.1))
+      // Small collision radius so that it doesn’t “push” nodes too drastically left and right:
+      .force("collision", d3.forceCollide().radius(120))
+      .on("tick", () => {
+        link.attr("x1", d => d.source.x)
+            .attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x)
+            .attr("y2", d => d.target.y);
+        nodeGroup.attr("transform", d => `translate(${d.x},${d.y})`);
+      });
 
     // Draw links
     link = zoomG.selectAll(".link")
@@ -458,6 +474,15 @@ You MUST keep all comments in the code below, even if you think they are redunda
       nodeGroup.attr("transform", d => `translate(${d.x},${d.y})`);
     });
 
+    // Apply saved camera position if available
+    if (babyData.latestCameraPosition) {
+      const { x, y, k } = babyData.latestCameraPosition;
+      svg.transition().duration(750).call(
+        zoomBehavior.transform,
+        d3.zoomIdentity.translate(x, y).scale(k)
+      );
+    }
+
     refreshGraph();
   }
 
@@ -504,7 +529,7 @@ You MUST keep all comments in the code below, even if you think they are redunda
   // 4) COLORING & “NEXT” / “OVERDUE”
   function refreshGraph() {
     updateCurrentWeekLabel();
-    const birthDateStr = document.getElementById("birthDate").value;
+    const birthDateStr = babyData.birthday;
     const ageInWeeks = birthDateStr ? weeksBetween(new Date(birthDateStr), new Date()) : null;
 
     nodeGroup.select(".node-rect").each(function(d) {
@@ -521,7 +546,7 @@ You MUST keep all comments in the code below, even if you think they are redunda
           rect.classed("overdue", true);
         }
         // Check if 'next' (all parents unlocked)
-        const parents = babyData.filter(p => p.follow_up_ids.includes(d.id));
+        const parents = babyData.items.filter(p => p.follow_up_ids.includes(d.id));
         const allParentsUnlocked = parents.every(p => p.achievement_time_weeks != null);
         if (!parents.length || allParentsUnlocked) {
           rect.classed("next", true);
@@ -561,7 +586,7 @@ You MUST keep all comments in the code below, even if you think they are redunda
     }
     imageFileInput.value = null; // reset file input
 
-    const birthDateStr = document.getElementById("birthDate").value;
+    const birthDateStr = babyData.birthday;
     if (d.achievement_time_weeks === null) {
       // If locked, fill today's date by default
       dateEl.value = new Date().toISOString().split("T")[0];
@@ -591,6 +616,7 @@ You MUST keep all comments in the code below, even if you think they are redunda
         currentNode.imageData = ev.target.result; // store base64
         imagePreview.src = currentNode.imageData;
         imagePreview.style.display = "block";
+        saveToLocalStorage();
       }
     };
     reader.readAsDataURL(file);
@@ -600,7 +626,7 @@ You MUST keep all comments in the code below, even if you think they are redunda
   saveBtn.addEventListener("click", () => {
     if (!currentNode) return;
     const achievementDate = dateEl.value ? new Date(dateEl.value) : null;
-    const birthDateStr = document.getElementById("birthDate").value;
+    const birthDateStr = babyData.birthday;
 
     if (achievementDate && birthDateStr) {
       // Convert the difference to weeks
@@ -630,24 +656,7 @@ You MUST keep all comments in the code below, even if you think they are redunda
 
   // 6) SAVE & LOAD from LOCAL STORAGE
   function saveToLocalStorage() {
-    localStorage.setItem("babyData", JSON.stringify(nodes.map(d => ({
-      id: d.id,
-      title: d.title,
-      icon: d.icon,
-      description: d.description,
-      typical_achievement_weeks: d.typical_achievement_weeks,
-      follow_up_ids: d.follow_up_ids,
-      achievement_time_weeks: d.achievement_time_weeks,
-      comment: d.comment,
-      imageData: d.imageData || null   // NEW: persist image
-    }))));
-
-    const bd = document.getElementById("birthDate").value;
-    if (bd) {
-      localStorage.setItem("birthDate", bd);
-    } else {
-      localStorage.removeItem("birthDate");
-    }
+    localStorage.setItem("babyData", JSON.stringify(babyData));
   }
 
   // 7) IMPORT / EXPORT
@@ -673,13 +682,13 @@ You MUST keep all comments in the code below, even if you think they are redunda
     reader.onload = (ev) => {
       try {
         const importedData = JSON.parse(ev.target.result);
-        if (!Array.isArray(importedData)) {
-          alert("JSON must be an array of items.");
-          return;
+        if (importedData && Array.isArray(importedData.items)) {
+          babyData = importedData;
+          saveToLocalStorage();
+          renderGraph();
+        } else {
+          alert("JSON must be an object with an 'items' array.");
         }
-        babyData = importedData;
-        localStorage.setItem("babyData", JSON.stringify(babyData));
-        renderGraph();
       } catch (err) {
         alert("Error parsing JSON. Check file format.");
       }
@@ -690,7 +699,7 @@ You MUST keep all comments in the code below, even if you think they are redunda
 
   // 8) HELPER: Update “Current Week” label
   function updateCurrentWeekLabel() {
-    const birthDateStr = document.getElementById("birthDate").value;
+    const birthDateStr = babyData.birthday;
     const label = document.getElementById("currentWeekLabel");
     if (!birthDateStr) {
       label.textContent = "";
@@ -701,12 +710,14 @@ You MUST keep all comments in the code below, even if you think they are redunda
 
   // 9) RE-RENDER ON BIRTHDATE CHANGE
   document.getElementById("birthDate").addEventListener("change", () => {
+    babyData.birthday = document.getElementById("birthDate").value;
     saveToLocalStorage();
     refreshGraph();
   });
 
   // 10) INITIAL RENDER
   renderGraph();
+
 })();
 </script>
 </body>
