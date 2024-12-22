@@ -373,10 +373,20 @@ You MUST keep all comments in the code below, even if you think they are redunda
 
     // Setup force simulation
     simulation = d3.forceSimulation(nodes)
-      .force("link", d3.forceLink(links).id(d => d.id).distance(60))
-      .force("charge", d3.forceManyBody().strength(-8000))
-      .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("collision", d3.forceCollide().radius(220));
+    // Link force keeps connected nodes (parent->child) closer together
+    .force("link", d3.forceLink(links).id(d => d.id).distance(10))
+    // Charge force repels nodes from each other
+    .force("charge", d3.forceManyBody().strength(-300))
+    // Position along X axis, using typical_achievement_weeks to anchor:
+    .force("x", d3.forceX(d => d.typical_achievement_weeks * 80).strength(1.0))
+    // Gently position everything in the vertical center, but not too strong:
+    .force("y", d3.forceY(height / 2).strength(0.1))
+    // Small collision radius so that it doesn’t “push” nodes too drastically left and right:
+    .force("collision", d3.forceCollide().radius(120))
+    .on("tick", () => {
+      link.attr("x1", d => d.source.x).attr("y1", d => d.source.y).attr("x2", d => d.target.x).attr("y2", d => d.target.y);
+      nodeGroup.attr("transform", d => `translate(${d.x},${d.y})`);
+    });
 
     // Draw links
     link = zoomG.selectAll(".link")
