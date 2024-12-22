@@ -328,7 +328,7 @@ You MUST keep all comments in the code below, even if you think they are redunda
   if (!babyData.items.length) {
     try {
       const resp = await fetch("https://raw.githubusercontent.com/cs-util-com/BabyStepsJs/refs/heads/main/defaultData.json.txt");
-      babyData.items = await resp.json();
+      babyData = await resp.json();
     } catch (error) {
       console.error("Could not fetch baby data from remote:", error);
       babyData.items = [];
@@ -710,6 +710,11 @@ You MUST keep all comments in the code below, even if you think they are redunda
         const importedData = JSON.parse(ev.target.result);
         if (importedData && Array.isArray(importedData.items)) {
           babyData = importedData;
+          saveToLocalStorage();
+          renderGraph();
+        } else if (Array.isArray(importedData)) {
+          // Handle case where imported data is directly the items array
+          babyData.items = importedData;
           saveToLocalStorage();
           renderGraph();
         } else {
