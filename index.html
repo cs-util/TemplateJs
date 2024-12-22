@@ -364,7 +364,7 @@ You MUST keep all comments in the code below, even if you think they are redunda
   function buildGraphData(data) {
     const validIds = new Set(data.map(d => d.id));
     return {
-      nodes: data.map(d => ({ ...d })),
+      nodes: data, // Use the same objects to keep them in sync
       links: data.flatMap(d =>
         d.follow_up_ids
           .filter(fuId => validIds.has(fuId))
