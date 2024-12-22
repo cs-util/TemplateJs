@@ -7,7 +7,154 @@
 			"icon": null,
 			"typical_achievement_weeks": 0,
 			"follow_up_ids": [
+				"FirstFart",
+				"FirstHiccup",
+				"FirstSneeze",
+				"FirstYawn",
 				"Home"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstFart",
+			"title": "First Fart",
+			"description": "Baby's first toot. A humorous and natural part of development.",
+			"icon": null,
+			"typical_achievement_weeks": 0,
+			"follow_up_ids": [
+				"FirstPoop"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstPoop",
+			"title": "First Poop",
+			"description": "Baby’s first bowel movement. A sign that all systems are working!",
+			"icon": null,
+			"typical_achievement_weeks": 0,
+			"follow_up_ids": [
+				"FirstDiaperBlowout"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstDiaperBlowout",
+			"title": "First Diaper Blowout",
+			"description": "An explosive moment. Be prepared for extra laundry!",
+			"icon": null,
+			"typical_achievement_weeks": 1,
+			"follow_up_ids": [
+				"FirstPeeOnParents"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstPeeOnParents",
+			"title": "First Time Peeing on Parents",
+			"description": "A funny initiation into parenthood. Keep spare clothes handy!",
+			"icon": null,
+			"typical_achievement_weeks": 1,
+			"follow_up_ids": [
+				"FirstSpitUp"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstHiccup",
+			"title": "First Hiccup",
+			"description": "Tiny hiccups that occur after feeding. Completely normal.",
+			"icon": null,
+			"typical_achievement_weeks": 0,
+			"follow_up_ids": [
+				"FirstBurp"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstBurp",
+			"title": "First Burp",
+			"description": "A satisfying sound after feeding. Helps relieve gas.",
+			"icon": null,
+			"typical_achievement_weeks": 0,
+			"follow_up_ids": [
+				"FirstSpitUp"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstSpitUp",
+			"title": "First Time Spitting Up",
+			"description": "A common occurrence after feeding. Keep burp cloths handy.",
+			"icon": null,
+			"typical_achievement_weeks": 1,
+			"follow_up_ids": [
+				"FirstDrool"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstDrool",
+			"title": "First Time Drooling",
+			"description": "Time to break out the bibs! Excess saliva is normal.",
+			"icon": null,
+			"typical_achievement_weeks": 2,
+			"follow_up_ids": [
+				"FirstBlowBubbles"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstBlowBubbles",
+			"title": "First Time Blowing Bubbles with Mouth",
+			"description": "Developing oral motor skills. Enjoy giggles and mimicry.",
+			"icon": null,
+			"typical_achievement_weeks": 12,
+			"follow_up_ids": [
+				"FirstRaspberry"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstRaspberry",
+			"title": "First Blowing Raspberries",
+			"description": "Fun with lips and sounds. Encourage imitation games.",
+			"icon": null,
+			"typical_achievement_weeks": 16,
+			"follow_up_ids": [
+				"FirstWord"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstSneeze",
+			"title": "First Sneeze",
+			"description": "A tiny sneeze clears nasal passages. Adorable and normal.",
+			"icon": null,
+			"typical_achievement_weeks": 0,
+			"follow_up_ids": [
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstYawn",
+			"title": "First Yawn",
+			"description": "Baby's yawn signals it's time for rest. A cute cue to nap time.",
+			"icon": null,
+			"typical_achievement_weeks": 0,
+			"follow_up_ids": [
+				"Sleep3Hours"
 			],
 			"achievement_time_weeks": null,
 			"comment": null
@@ -35,6 +182,41 @@
 				"TummyTime",
 				"Sleep3Hours"
 			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstBath",
+			"title": "First Bath",
+			"description": "Introduction to water fun. Use mild soap and keep water comfortably warm.",
+			"icon": "bathtub",
+			"typical_achievement_weeks": 2,
+			"follow_up_ids": [
+				"FirstSplash",
+				"HandsToMouth"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstSplash",
+			"title": "First Time Splashing in the Bath",
+			"description": "Discovers the fun of water play. Keep bath time safe and enjoyable.",
+			"icon": null,
+			"typical_achievement_weeks": 12,
+			"follow_up_ids": [
+				"FirstSwimming"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstSwimming",
+			"title": "First Swimming Experience",
+			"description": "Introduces baby to swimming. Ensure safety with professional guidance.",
+			"icon": null,
+			"typical_achievement_weeks": 32,
+			"follow_up_ids": [],
 			"achievement_time_weeks": null,
 			"comment": null
 		},
@@ -75,14 +257,36 @@
 			"comment": null
 		},
 		{
-			"id": "FirstBath",
-			"title": "First Bath",
-			"description": "Introduction to water fun. Use mild soap and keep water comfortably warm.",
-			"icon": "bathtub",
-			"typical_achievement_weeks": 6,
+			"id": "Sleep3Hours",
+			"title": "First Real Sleep (3+ hours)",
+			"description": "A minor miracle for tired parents—celebrate the extra rest!",
+			"icon": "bedtime",
+			"typical_achievement_weeks": 5,
 			"follow_up_ids": [
-				"HandsToMouth"
+				"SleepThroughNight"
 			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "SleepThroughNight",
+			"title": "First Time Sleeping Through the Night",
+			"description": "Longer sleep stretches. Maintain a consistent bedtime routine.",
+			"icon": "hotel",
+			"typical_achievement_weeks": 12,
+			"follow_up_ids": [
+				"SleepOwn"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "SleepOwn",
+			"title": "First Time Falling Asleep on Own",
+			"description": "Self-soothing to sleep. Encourage a calming bedtime routine.",
+			"icon": "hotel",
+			"typical_achievement_weeks": 16,
+			"follow_up_ids": [],
 			"achievement_time_weeks": null,
 			"comment": null
 		},
@@ -126,14 +330,49 @@
 			"comment": null
 		},
 		{
+			"id": "FirstLaugh",
+			"title": "First Laugh",
+			"description": "Responds to funny noises or tickles. Encourage with playful interactions.",
+			"icon": "sentiment_satisfied",
+			"typical_achievement_weeks": 9,
+			"follow_up_ids": [
+				"FirstBlowBubbles"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
 			"id": "RollOver",
 			"title": "Rolls Over",
 			"description": "Baby may roll from tummy to back or vice versa. Provide supervised floor time.",
 			"icon": "autorenew",
 			"typical_achievement_weeks": 20,
 			"follow_up_ids": [
+				"FirstTooth",
 				"SitWithSupport"
 			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstTooth",
+			"title": "First Tooth",
+			"description": "A tiny tooth emerges. Teething toys can soothe gums.",
+			"icon": null,
+			"typical_achievement_weeks": 20,
+			"follow_up_ids": [
+				"FirstHaircut"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstHaircut",
+			"title": "First Haircut",
+			"description": "Time for a trim. A milestone for the baby book.",
+			"icon": null,
+			"typical_achievement_weeks": 40,
+			"follow_up_ids": [],
 			"achievement_time_weeks": null,
 			"comment": null
 		},
@@ -146,6 +385,31 @@
 			"follow_up_ids": [
 				"SitNoSupport",
 				"FirstSolidFood"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstSolidFood",
+			"title": "First Time Eating Solid Food",
+			"description": "Introduction to purees or soft solids. Watch for readiness cues like head control.",
+			"icon": null,
+			"typical_achievement_weeks": 24,
+			"follow_up_ids": [
+				"FirstSpitOutFood",
+				"UseUtensil"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstSpitOutFood",
+			"title": "First Time Spitting Out Food",
+			"description": "Exploring new tastes and textures. Messy but important for development.",
+			"icon": null,
+			"typical_achievement_weeks": 28,
+			"follow_up_ids": [
+				"UseUtensil"
 			],
 			"achievement_time_weeks": null,
 			"comment": null
@@ -235,18 +499,6 @@
 			"comment": null
 		},
 		{
-			"id": "FirstLaugh",
-			"title": "First Laugh",
-			"description": "Responds to funny noises or tickles. Encourage with playful interactions.",
-			"icon": "sentiment_satisfied",
-			"typical_achievement_weeks": 16,
-			"follow_up_ids": [
-				"WaveBye"
-			],
-			"achievement_time_weeks": null,
-			"comment": null
-		},
-		{
 			"id": "WaveBye",
 			"title": "Waves Bye-Bye",
 			"description": "Social gesture. Reinforce waving and provide cues like 'bye-bye.'",
@@ -298,6 +550,18 @@
 			"comment": null
 		},
 		{
+			"id": "FirstTantrum",
+			"title": "First Time Throwing a Tantrum",
+			"description": "Emotional expression emerges. Offer calm reassurance and consistent boundaries.",
+			"icon": null,
+			"typical_achievement_weeks": 68,
+			"follow_up_ids": [
+				"FirstPotty"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
 			"id": "DrinkCup",
 			"title": "Drinks from Cup",
 			"description": "Attempts open-cup drinking with help. Practice swallowing and hand coordination.",
@@ -306,6 +570,18 @@
 			"follow_up_ids": [
 				"UseUtensil",
 				"FirstPotty"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstPotty",
+			"title": "First Potty Attempt",
+			"description": "Shows curiosity about the potty. Encourage gently and celebrate small wins.",
+			"icon": null,
+			"typical_achievement_weeks": 72,
+			"follow_up_ids": [
+				"BrushTeethAttempt"
 			],
 			"achievement_time_weeks": null,
 			"comment": null
@@ -336,6 +612,18 @@
 			"comment": null
 		},
 		{
+			"id": "FirstDancing",
+			"title": "First Attempt at Dancing",
+			"description": "Sways or bounces to music. Dance together for fun and balance practice.",
+			"icon": "music_note",
+			"typical_achievement_weeks": 80,
+			"follow_up_ids": [
+				"FirstJumping"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
 			"id": "PointObjects",
 			"title": "Points to Desired Objects",
 			"description": "Communicates wants by pointing. Name objects to reinforce vocabulary.",
@@ -344,6 +632,18 @@
 			"follow_up_ids": [
 				"WalkStepsHelp",
 				"FirstJumping"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "FirstJumping",
+			"title": "First Time Jumping",
+			"description": "Little hops or bounces. Aids coordination and leg strength.",
+			"icon": null,
+			"typical_achievement_weeks": 84,
+			"follow_up_ids": [
+				"FirstClimbing"
 			],
 			"achievement_time_weeks": null,
 			"comment": null
@@ -362,6 +662,18 @@
 			"comment": null
 		},
 		{
+			"id": "FirstClimbing",
+			"title": "First Time Climbing",
+			"description": "May climb onto low furniture or steps. Supervise to prevent falls.",
+			"icon": null,
+			"typical_achievement_weeks": 88,
+			"follow_up_ids": [
+				"Run"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
 			"id": "Run",
 			"title": "Runs",
 			"description": "Toddler picks up speed. Supervise open spaces to prevent major tumbles.",
@@ -374,6 +686,18 @@
 			"comment": null
 		},
 		{
+			"id": "BrushTeethAttempt",
+			"title": "First Attempt at Brushing Teeth",
+			"description": "Introduces basic self-care. Use a soft brush and baby-safe toothpaste.",
+			"icon": "brush",
+			"typical_achievement_weeks": 94,
+			"follow_up_ids": [
+				"TwoWordSentence"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
 			"id": "KickBall",
 			"title": "Kicks a Ball",
 			"description": "Developing leg coordination. Use a soft ball for gentle practice.",
@@ -381,6 +705,18 @@
 			"typical_achievement_weeks": 96,
 			"follow_up_ids": [
 				"Scribble"
+			],
+			"achievement_time_weeks": null,
+			"comment": null
+		},
+		{
+			"id": "TwoWordSentence",
+			"title": "First Two-Word Sentence",
+			"description": "e.g., 'More milk!' or 'Mommy help.' Encouragement boosts language skills.",
+			"icon": null,
+			"typical_achievement_weeks": 96,
+			"follow_up_ids": [
+				"DrawWithCrayons"
 			],
 			"achievement_time_weeks": null,
 			"comment": null
@@ -417,220 +753,6 @@
 			"icon": null,
 			"typical_achievement_weeks": 108,
 			"follow_up_ids": [],
-			"achievement_time_weeks": null,
-			"comment": null
-		},
-		{
-			"id": "Sleep3Hours",
-			"title": "First Real Sleep (3+ hours)",
-			"description": "A minor miracle for tired parents—celebrate the extra rest!",
-			"icon": "bedtime",
-			"typical_achievement_weeks": 5,
-			"follow_up_ids": [
-				"SleepThroughNight"
-			],
-			"achievement_time_weeks": null,
-			"comment": null
-		},
-		{
-			"id": "SleepThroughNight",
-			"title": "First Time Sleeping Through the Night",
-			"description": "Longer sleep stretches. Maintain a consistent bedtime routine.",
-			"icon": "hotel",
-			"typical_achievement_weeks": 12,
-			"follow_up_ids": [
-				"SleepOwn"
-			],
-			"achievement_time_weeks": null,
-			"comment": null
-		},
-		{
-			"id": "SleepOwn",
-			"title": "First Time Falling Asleep on Own",
-			"description": "Self-soothing to sleep. Encourage a calming bedtime routine.",
-			"icon": "hotel",
-			"typical_achievement_weeks": 16,
-			"follow_up_ids": [],
-			"achievement_time_weeks": null,
-			"comment": null
-		},
-		{
-			"id": "FirstSolidFood",
-			"title": "First Time Eating Solid Food",
-			"description": "Introduction to purees or soft solids. Watch for readiness cues like head control.",
-			"icon": null,
-			"typical_achievement_weeks": 24,
-			"follow_up_ids": [
-				"UseUtensil"
-			],
-			"achievement_time_weeks": null,
-			"comment": null
-		},
-		{
-			"id": "FirstTantrum",
-			"title": "First Time Throwing a Tantrum",
-			"description": "Emotional expression emerges. Offer calm reassurance and consistent boundaries.",
-			"icon": null,
-			"typical_achievement_weeks": 68,
-			"follow_up_ids": [
-				"FirstPotty"
-			],
-			"achievement_time_weeks": null,
-			"comment": null
-		},
-		{
-			"id": "FirstPotty",
-			"title": "First Potty Attempt",
-			"description": "Shows curiosity about the potty. Encourage gently and celebrate small wins.",
-			"icon": null,
-			"typical_achievement_weeks": 72,
-			"follow_up_ids": [
-				"BrushTeethAttempt"
-			],
-			"achievement_time_weeks": null,
-			"comment": null
-		},
-		{
-			"id": "FirstDancing",
-			"title": "First Attempt at Dancing",
-			"description": "Sways or bounces to music. Dance together for fun and balance practice.",
-			"icon": "music_note",
-			"typical_achievement_weeks": 80,
-			"follow_up_ids": [
-				"FirstJumping"
-			],
-			"achievement_time_weeks": null,
-			"comment": null
-		},
-		{
-			"id": "FirstJumping",
-			"title": "First Time Jumping",
-			"description": "Little hops or bounces. Aids coordination and leg strength.",
-			"icon": null,
-			"typical_achievement_weeks": 84,
-			"follow_up_ids": [
-				"FirstClimbing"
-			],
-			"achievement_time_weeks": null,
-			"comment": null
-		},
-		{
-			"id": "FirstClimbing",
-			"title": "First Time Climbing",
-			"description": "May climb onto low furniture or steps. Supervise to prevent falls.",
-			"icon": null,
-			"typical_achievement_weeks": 88,
-			"follow_up_ids": [
-				"Run"
-			],
-			"achievement_time_weeks": null,
-			"comment": null
-		},
-		{
-			"id": "BrushTeethAttempt",
-			"title": "First Attempt at Brushing Teeth",
-			"description": "Introduces basic self-care. Use a soft brush and baby-safe toothpaste.",
-			"icon": "brush",
-			"typical_achievement_weeks": 94,
-			"follow_up_ids": [
-				"TwoWordSentence"
-			],
-			"achievement_time_weeks": null,
-			"comment": null
-		},
-		{
-			"id": "TwoWordSentence",
-			"title": "First Two-Word Sentence",
-			"description": "e.g., 'More milk!' or 'Mommy help.' Encouragement boosts language skills.",
-			"icon": null,
-			"typical_achievement_weeks": 96,
-			"follow_up_ids": [
-				"DrawWithCrayons"
-			],
-			"achievement_time_weeks": null,
-			"comment": null
-		},
-		{
-			"id": "DrawWithCrayons",
-			"title": "Draw on Paper with Crayons",
-			"description": "Scribbles become more controlled. Provide plenty of safe art supplies.",
-			"icon": null,
-			"typical_achievement_weeks": 96,
-			"follow_up_ids": [
-				"Stack5Blocks"
-			],
-			"achievement_time_weeks": null,
-			"comment": null
-		},
-		{
-			"id": "Stack5Blocks",
-			"title": "Stacking 5 Blocks",
-			"description": "Improving fine motor skills and spatial coordination. Celebrate each tower!",
-			"icon": null,
-			"typical_achievement_weeks": 96,
-			"follow_up_ids": [
-				"Follow2Step"
-			],
-			"achievement_time_weeks": null,
-			"comment": null
-		},
-		{
-			"id": "Follow2Step",
-			"title": "Follow Simple 2-Step Instructions",
-			"description": "Understands short tasks like 'Pick up the toy and put it in the box.'",
-			"icon": null,
-			"typical_achievement_weeks": 96,
-			"follow_up_ids": [
-				"ClimbFurniture"
-			],
-			"achievement_time_weeks": null,
-			"comment": null
-		},
-		{
-			"id": "ClimbFurniture",
-			"title": "Climbs onto Furniture Safely",
-			"description": "Navigates onto a couch or low chair. Supervise to prevent falls.",
-			"icon": null,
-			"typical_achievement_weeks": 96,
-			"follow_up_ids": [
-				"JumpBothFeet"
-			],
-			"achievement_time_weeks": null,
-			"comment": null
-		},
-		{
-			"id": "JumpBothFeet",
-			"title": "Begins to Jump with Both Feet",
-			"description": "A small hop off the ground. Help them practice on soft, safe surfaces.",
-			"icon": null,
-			"typical_achievement_weeks": 96,
-			"follow_up_ids": [
-				"PointBodyParts"
-			],
-			"achievement_time_weeks": null,
-			"comment": null
-		},
-		{
-			"id": "PointBodyParts",
-			"title": "Points to at Least 5 Body Parts",
-			"description": "Understands names of common body parts like nose, ears, and toes.",
-			"icon": null,
-			"typical_achievement_weeks": 96,
-			"follow_up_ids": [
-				"NameInMirror"
-			],
-			"achievement_time_weeks": null,
-			"comment": null
-		},
-		{
-			"id": "NameInMirror",
-			"title": "Recognizes Name in Mirror",
-			"description": "Shows self-recognition by patting chest or face when asked 'Who is that?'",
-			"icon": "tag_faces",
-			"typical_achievement_weeks": 96,
-			"follow_up_ids": [
-				"HandPreference"
-			],
 			"achievement_time_weeks": null,
 			"comment": null
 		},
