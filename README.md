@@ -29,7 +29,7 @@ Feel free to open an [issue](https://github.com/cs-util-com/BabyStepsJs/issues) 
 4. Clean up changes as needed.
 5. Submit a [pull request](https://github.com/cs-util-com/BabyStepsJs/pulls).
 
-## Context why this app was developed
+## Context on why and how this app was developed
 I built BabyStepsJs to track the development of my newborn daughter in the form of a skill tree. 
 It’s a mix of gamified documentation of her current progress and a bit of education on what she might discover next. 
 
