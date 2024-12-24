@@ -29,6 +29,25 @@ Feel free to open an [issue](https://github.com/cs-util-com/BabyStepsJs/issues) 
 4. Clean up changes as needed.
 5. Submit a [pull request](https://github.com/cs-util-com/BabyStepsJs/pulls).
 
+## Context why this app was developed
+I built BabyStepsJs to track the development of my newborn daughter in the form of a skill tree. 
+It’s a mix of gamified documentation of her current progress and a bit of education on what she might discover next. 
+
+I conducted a similar development experiment a few months ago with the same rules (see the [cs-util-com/InstantScribe](https://github.com/cs-util-com/InstantScribe) repo):
+-   Acted mainly as the PM and QA for the AI (this time ChatGPT-4) and iteratively added user stories and requirements to extend the feature set.
+-   Each iteration was typically a single commit, so the AI’s proposed changes were easy to review in the git diff.
+-   I generally did not modify the code much myself, only making minor adjustments like tweaking colors, positions, etc.
+-   I also made some initial high-level decisions, such as choosing D3 for the graph.
+
+Some findings/impressions from that process:
+-   I was able to prototype this in a few hours. The process was fun and allowed me to change requirements as I learned more about what I wanted.
+-   Most of the changes were correct on the first try (using o1). With other models, I often noticed more random changes in unrelated parts of the app.
+-   o1 tends to strip comments, even when they provide useful context on what the code does.
+-   Some ideas (e.g., how to smartly arrange the graph) o1 came up with on its own. It was often worth specifying the requirements more on the "why" and less on the "how," giving the AI the freedom to propose solutions I might not have considered.
+-   More complex requirements were sometimes ignored for a while when they were just part of [the "user stories" comment block](https://github.com/cs-util-com/BabyStepsJs/blob/main/index.html) at the top of the HTML file. Only after explicitly pointing out that they weren’t implemented did the AI make an effort to address them.
+
+In summary, I’m excited to continue exploring this development approach over the coming years to see if increasingly complex applications can be built iteratively in this way.
+
 ## Disclaimer
 
 BabyStepsJs is for informational and entertainment purposes only. It is not intended as a substitute for professional medical advice. For any health-related concerns about your baby, always consult a healthcare professional.
