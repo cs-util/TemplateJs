@@ -2,12 +2,14 @@
 
 TemplateJs is a minimal single-page web app template designed for quick deployment. 
 
-## Modifying the Template
+## Using the Template
 
-1. **Download**: Clone or fork this repository.
-2. **Edit**: Modify `index.html` and other files as needed.
-3. **Deploy**: Push changes to GitHub to update the hosted app.
-4. **Share**: If useful for others, submit a [pull request](https://github.com/cs-util/TemplateJs/pulls).
+1. Fork this repository
+2. Open the fork via GitHub CodeSpaces
+3. Install VsCode plugins
+   - "Live Server" to render the resulting page including live updates while you edit etc
+   - "GitHub Copilot" to do smaller iterations inside of CodeSpaces
+4. Edit the index.html and regularly commit and push in CodeSpaces to "release" your latest app version 
 
 ## Improvement Suggestions
 
