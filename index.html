@@ -17,35 +17,30 @@ additional explanations what you change are nice to have but not necessary.
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TemplateJs</title>
-
-  <!-- Material Icons -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-
+  <meta charset="UTF-8">
+  <title>Decoupled Modules Example with Person Class</title>
   <style>
-    /* GLOBAL */
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: CONSOLAS, monospace;
-    }
+    body { font-family: CONSOLAS, monospace; margin: 2rem; }
+    button { font-size: 1rem; padding: 0.5rem 1rem; }
   </style>
 </head>
 <body>
+  <h1>Template Web App</h1>
+  <button id="greetBtn">Greet</button>
+  
+  <!-- Load the main module -->
+  <script type="module">
 
-<div class="top-panel">
-  <div class="title">Template Web App</div>
-</div>
+    import { tellBirthday } from './utils.js';
+    import { Person } from './person.js';
 
-<svg id="graph"></svg>
+    // Create a new Person instance with values defined in the HTML.
+    const person = new Person('Alice', 40);
+    document.getElementById('greetBtn').addEventListener('click', () => {
+      alert(tellBirthday(person));
+    });
 
-<script>
-  (function main() {
-    console.log("Template Web App initialized.");
-  })();
-</script>
+  </script>
 
 </body>
 </html>
