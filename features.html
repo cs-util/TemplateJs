@@ -7,24 +7,110 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23fff'/%3E%3C/svg%3E" type="image/svg+xml">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .page-transition {
-      animation: fadeIn 0.5s ease-in-out;
+    @view-transition {
+      navigation: auto;
     }
-    @keyframes fadeIn {
+    
+    /* Named elements for transitions */
+    h1.site-title {
+      view-transition-name: site-title;
+    }
+    
+    nav.main-nav {
+      view-transition-name: main-nav;
+    }
+    
+    .nav-item.active::after {
+      view-transition-name: nav-indicator;
+    }
+    
+    /* Content transitions */
+    .feature-section {
+      view-transition-name: main-content;
+    }
+    
+    /* Transition styling */
+    ::view-transition-old(site-title),
+    ::view-transition-new(site-title) {
+      height: 100%;
+    }
+    
+    ::view-transition-old(nav-indicator) {
+      animation: fade-out 0.2s linear forwards;
+    }
+    
+    ::view-transition-new(nav-indicator) {
+      animation: fade-in 0.3s linear forwards;
+    }
+    
+    ::view-transition-old(main-content) {
+      animation: slide-out 0.3s ease forwards;
+    }
+    
+    ::view-transition-new(main-content) {
+      animation: slide-in 0.3s ease forwards;
+    }
+    
+    /* Fallback for browsers that don't support view transitions */
+    .page-content {
+      animation: fade-in 0.5s ease-in-out;
+    }
+    
+    @keyframes fade-in {
       from { opacity: 0; }
       to { opacity: 1; }
     }
+    
+    @keyframes fade-out {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    
+    @keyframes slide-in {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    @keyframes slide-out {
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(-20px); opacity: 0; }
+    }
   </style>
+  <script>
+    // Only use this if the browser supports it
+    if (document.startViewTransition) {
+      // Add event listener to all internal links
+      window.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('a[href^="/"]:not([target]), a[href^="./"]:not([target]), a[href^="../"]:not([target]), a[href^="index.html"]:not([target]), a[href^="features.html"]:not([target]), a[href^="about.html"]:not([target])').forEach(link => {
+          link.addEventListener('click', e => {
+            // Only handle transitions for internal links
+            if (link.origin === window.location.origin) {
+              e.preventDefault();
+              
+              // Use View Transitions API for navigation
+              const href = link.href;
+              document.startViewTransition(() => {
+                window.location.href = href;
+              });
+            }
+          });
+        });
+      });
+    }
+  </script>
 </head>
 <body class="font-mono p-8 bg-gray-50">
-  <div class="max-w-4xl mx-auto page-transition">
+  <div class="max-w-4xl mx-auto page-content">
     <header class="mb-8">
-      <h1 class="text-3xl font-bold text-blue-600 mb-4">Template Web App</h1>
-      <nav class="bg-blue-600 text-white p-4 rounded-lg mb-4">
+      <h1 class="text-3xl font-bold text-blue-600 mb-4 site-title">Template Web App</h1>
+      <nav class="bg-blue-600 text-white p-4 rounded-lg mb-4 main-nav">
         <ul class="flex space-x-6">
-          <li><a href="index.html" class="hover:underline">Home</a></li>
-          <li><a href="features.html" class="hover:underline font-bold">Features</a></li>
-          <li><a href="about.html" class="hover:underline">About</a></li>
+          <li><a href="index.html" class="hover:underline nav-item">Home</a></li>
+          <li><a href="features.html" class="hover:underline nav-item active relative">
+            Features
+            <span class="absolute bottom-0 left-0 w-full h-0.5 bg-white"></span>
+          </a></li>
+          <li><a href="about.html" class="hover:underline nav-item">About</a></li>
         </ul>
       </nav>
       <div class="bg-blue-100 border-l-4 border-blue-500 p-4 mb-6">
@@ -32,7 +118,7 @@
       </div>
     </header>
     
-    <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+    <div class="bg-white p-6 rounded-lg shadow-md mb-8 feature-section">
       <h2 class="text-2xl font-bold mb-4 text-blue-600">Key Features</h2>
       
       <div class="space-y-6">
