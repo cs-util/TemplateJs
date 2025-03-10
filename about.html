@@ -11,90 +11,39 @@
       navigation: auto;
     }
     
-    /* Named elements for transitions */
-    h1.site-title {
-      view-transition-name: site-title;
+    nav a[aria-current="page"]:after {
+      border-color: white;
+      view-transition-name: posts-nav;
     }
     
-    nav.main-nav {
-      view-transition-name: main-nav;
-    }
-    
-    .nav-item.active::after {
-      view-transition-name: nav-indicator;
-    }
-    
-    /* Content transitions */
-    .about-section {
-      view-transition-name: main-content;
-    }
-    
-    /* Transition styling */
-    ::view-transition-old(site-title),
-    ::view-transition-new(site-title) {
+    /* Old stuff going out */
+    ::view-transition-old(posts-nav) {
+      animation: fade 0.2s linear forwards;
       height: 100%;
     }
     
-    ::view-transition-old(nav-indicator) {
-      animation: fade-out 0.2s linear forwards;
+    /* New stuff coming in */
+    ::view-transition-new(posts-nav) {
+      animation: fade 0.3s linear reverse;
+      height: 100%;
     }
     
-    ::view-transition-new(nav-indicator) {
-      animation: fade-in 0.3s linear forwards;
-    }
-    
-    ::view-transition-old(main-content) {
-      animation: slide-out 0.3s ease forwards;
-    }
-    
-    ::view-transition-new(main-content) {
-      animation: slide-in 0.3s ease forwards;
-    }
-    
-    /* Fallback for browsers that don't support view transitions */
-    .page-content {
-      animation: fade-in 0.5s ease-in-out;
-    }
-    
-    @keyframes fade-in {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    
-    @keyframes fade-out {
+    @keyframes fade {
       from { opacity: 1; }
       to { opacity: 0; }
     }
-    
-    @keyframes slide-in {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    
-    @keyframes slide-out {
-      from { transform: translateY(0); opacity: 1; }
-      to { transform: translateY(-20px); opacity: 0; }
-    }
   </style>
   <script>
-    // Only use this if the browser supports it
+    // Only use if browser supports View Transitions
     if (document.startViewTransition) {
-      // Add event listener to all internal links
-      window.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('a[href^="/"]:not([target]), a[href^="./"]:not([target]), a[href^="../"]:not([target]), a[href^="index.html"]:not([target]), a[href^="features.html"]:not([target]), a[href^="about.html"]:not([target])').forEach(link => {
-          link.addEventListener('click', e => {
-            // Only handle transitions for internal links
-            if (link.origin === window.location.origin) {
-              e.preventDefault();
-              
-              // Use View Transitions API for navigation
-              const href = link.href;
-              document.startViewTransition(() => {
-                window.location.href = href;
-              });
-            }
+      window.addEventListener('click', (e) => {
+        // Only handle internal links
+        if (e.target.tagName === 'A' && e.target.origin === window.location.origin) {
+          e.preventDefault();
+          document.startViewTransition(() => {
+            window.location.href = e.target.href;
           });
-        });
+        }
       });
     }
   </script>
@@ -107,7 +56,7 @@
         <ul class="flex space-x-6">
           <li><a href="index.html" class="hover:underline nav-item">Home</a></li>
           <li><a href="features.html" class="hover:underline nav-item">Features</a></li>
-          <li><a href="about.html" class="hover:underline nav-item active relative">
+          <li><a href="about.html" class="hover:underline nav-item active relative" aria-current="page">
             About
             <span class="absolute bottom-0 left-0 w-full h-0.5 bg-white"></span>
           </a></li>

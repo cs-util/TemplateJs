@@ -28,7 +28,8 @@ additional explanations what you change are nice to have but not necessary.
       navigation: auto;
     }
     
-    .nav-indicator {
+    nav a[aria-current="page"]:after {
+      border-color: white;
       view-transition-name: posts-nav;
     }
     
@@ -50,14 +51,12 @@ additional explanations what you change are nice to have but not necessary.
     }
   </style>
   <script>
-    // Only run if browser supports View Transitions
+    // Only use if browser supports View Transitions
     if (document.startViewTransition) {
       window.addEventListener('click', (e) => {
-        // Only handle clicks on internal navigation links
+        // Only handle internal links
         if (e.target.tagName === 'A' && e.target.origin === window.location.origin) {
           e.preventDefault();
-          
-          // Use View Transitions API
           document.startViewTransition(() => {
             window.location.href = e.target.href;
           });
@@ -71,15 +70,12 @@ additional explanations what you change are nice to have but not necessary.
     <header class="mb-8">
       <h1 class="text-3xl font-bold text-blue-600 mb-4">Template Web App</h1>
       <nav class="bg-blue-600 text-white p-4 rounded-lg mb-4">
-        <ul class="flex space-x-6">
-          <li>
-            <a href="index.html" class="hover:underline font-bold relative">Home
-              <span class="nav-indicator absolute bottom-0 left-0 w-full h-0.5 bg-white"></span>
-            </a>
-          </li>
-          <li><a href="features.html" class="hover:underline">Features</a></li>
-          <li><a href="about.html" class="hover:underline">About</a></li>
-        </ul>
+        <a href="index.html" class="mr-6 hover:underline font-bold relative" aria-current="page">
+          Home
+          <span class="absolute bottom-0 left-0 w-full h-0.5 bg-white"></span>
+        </a>
+        <a href="features.html" class="mr-6 hover:underline">Features</a>
+        <a href="about.html" class="hover:underline">About</a>
       </nav>
       <div class="bg-blue-100 border-l-4 border-blue-500 p-4 mb-6">
         <p class="text-sm text-blue-700">This is a Tailwind CSS demonstration with modular JavaScript.</p>
