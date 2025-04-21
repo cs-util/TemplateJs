@@ -19,6 +19,7 @@ This approach enables rapid prototyping and structured iteration.
 4. Install VsCode plugins in CodeSpaces
    - "**Live Server**" to render the resulting page including live updates while you edit etc
    - "**GitHub Copilot**" to do smaller iterations inside of CodeSpaces
+   - "**Git Graph**" if you need to keep a simple overview on your different git branches 
 5. Edit the index.html and regularly commit and push in CodeSpaces to "release" your latest app version 
 
 ## AI Iteration Workflow
