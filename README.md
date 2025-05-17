@@ -1,33 +1,110 @@
-# TemplateJs
-TemplateJs is a minimal single-page web app template designed for quick deployment. 
-It follows an AI-assisted iterative development process:
+````markdown
+# AIsistBubble.js
 
-- User stories and requirements drive feature development.
-- Each iteration is a single commit for easy review.
-- AI-assisted coding minimizes manual intervention.
-- The focus is on defining clear requirements rather than manual coding.
+Lightweight, zero-dependency JavaScript support bubble that captures browser console logs and forwards user questions, bug reports, and feature requests to ChatGPT—pre‐filled with your repo context and intelligent prompts.
 
-This approach enables rapid prototyping and structured iteration.
+---
 
-## Using the Template
-1. Fork this repository and open the fork via GitHub CodeSpaces
-2. Go to your repos Settings -> Pages and there in the "Branch" section select the main branch to be auto-deployed by GitHub for you
-3. If your fork is 
-   <br> github.com/**YourUserName**/**YourFork** 
-   <br> then your WebApp should now be live at 
-   <br> **YourUserName**.github.io/**YourFork** 
-4. Install VsCode plugins in CodeSpaces
-   - "**Live Server**" to render the resulting page including live updates while you edit etc
-   - "**GitHub Copilot**" to do smaller iterations inside of CodeSpaces
-   - "**Git Graph**" if you need to keep a simple overview on your different git branches 
-5. Edit the index.html and regularly commit and push in CodeSpaces to "release" your latest app version 
+🔗 **Live Demo:**  
+https://cs-util-com.github.io/AIsistBubbleJs/
 
-## AI Iteration Workflow
-1. Copy `index.html` into ChatGPT.
-2. Modify or extend the requirements listed at the top
-3. Test the changes via Right-Click on the index.html -> "Open with Live Server"
-4. Clean up modifications done by the AI via the "Source Control" -> "Changes" UX of VsCode (in GitHub CodeSpaces)
-5. Commit
+---
 
-## Disclaimer
-TemplateJs is provided as-is. It is a general-purpose template and does not include domain-specific functionality. Use and modify as needed.
+## Features
+
+- 📍 Fixed chat bubble in bottom-right corner (blue circle with white chat icon)  
+- 💬 Small pop-over input for free-text questions, bug reports, or feature requests  
+- 🐞 Captures all `console.log`, `console.warn`, `console.error`, and `console.info` messages  
+- ✂️ Automatic truncation of logs to keep the URI-encoded query ≤ 2 000 characters  
+- 📄 Hard-coded `GITHUB_URL` prompt prefix so ChatGPT can inspect your code & README  
+- 🔗 Opens ChatGPT in a new tab with `https://chat.openai.com/?q=<encoded prompt>`  
+- 🚫 No backend, cookies, or localStorage—100% client-side  
+
+---
+
+## Installation
+
+1. **Download** or **clone** this repository:  
+   ```bash
+   git clone https://github.com/your-org/AIsistBubble.js.git
+````
+
+2. **Include** the HTML snippet (or copy the entire file) into your app:
+
+   ```html
+   <!-- support-bubble -->
+   <div id="support-bubble" title="Ask question or report bugs or feature requests">
+     <!-- chat icon SVG… -->
+   </div>
+   <div id="support-popover">…</div>
+   <script src="support-bubble.js"></script>
+   ```
+3. **Customize** the `GITHUB_URL` in `support-bubble.js` (see Configuration below).
+
+---
+
+## Usage
+
+1. **Click** the blue support bubble in the bottom-right corner.
+2. **Type** your question, bug report, or feature request into the pop-over textarea.
+3. **Click** **Send to ChatGPT** (or press Ctrl/⌘ + Enter).
+4. A new tab opens: ChatGPT’s compose box is pre-filled with:
+
+   * A rules-based prompt (Q\&A vs. GitHub issue)
+   * Your text
+   * Captured console log (truncated if needed)
+5. **Edit** or **submit** directly in ChatGPT.
+
+---
+
+## Configuration
+
+Edit the top of `support-bubble.js`:
+
+```js
+// Replace with your repo’s URL
+const GITHUB_URL = "https://github.com/your/repo";
+
+// Maximum allowed URI-encoded length of the full prompt
+const CHAR_LIMIT = 2000;
+```
+
+---
+
+## Customization
+
+* **Position & Style:** tweak the CSS in `support-bubble.css` (or inline `<style>`)
+* **Log Capture:** modify `captureConsole()` to include/exclude methods or filter entries
+* **Truncation Strategy:** adjust slice size or add markers in `buildPrompt()`
+* **UI Text:** change the `title`, `placeholder`, or button label in the HTML
+
+---
+
+## Development
+
+1. Fork & clone this repo
+2. Open `support-bubble.html` in your browser to test changes
+3. Make CSS/JS edits in place—no build step required
+4. Commit, push, and open a PR
+
+---
+
+## Testing Recommendations
+
+* **Cross-Browser:** Chrome, Firefox, Edge, Safari
+* **Prompt Length:** simulate large console logs via DevTools
+* **Accessibility:** ensure keyboard navigation & ARIA attributes (if you add them)
+* **Popup Blockers:** verify `window.open` behavior when popups are disabled
+
+---
+
+## Contributing
+
+1. ⭐ Star the repo
+2. 🐛 Report issues or request features via GitHub
+3. 🚀 Submit pull requests—with descriptive commit messages & tests if applicable
+
+---
+
+## License
+See [LICENSE](./LICENSE)
