@@ -26,7 +26,7 @@ https://cs-util-com.github.io/AIsistBubbleJs/
 1. **Download** or **clone** this repository:  
    ```bash
    git clone https://github.com/your-org/AIsistBubble.js.git
-````
+   ```
 
 2. **Include** the HTML snippet (or copy the entire file) into your app:
 
