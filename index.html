@@ -1,147 +1,180 @@
-<!-- User Stories & Requirements for the code below:
-
-- This is a template for a single-page HTML web app.
-- A monospace font should be used.
-- No backend; all data is stored locally.
-
-Main user stories:
-- ...
-
-Keep this comment block in the code.
-Simplify the code if possible (without removing the functionality described above). 
-You MUST keep all comments in the code below, even if you think they are redundant.
-Always respond with the full new html file (including these comments here), 
-additional explanations what you change are nice to have but not necessary. 
--->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Decoupled Modules Example with Person Class</title>
-  <!-- Favicon: A white box --> <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23fff'/%3E%3C/svg%3E" type="image/svg+xml">
-  <!-- Added Tailwind CSS via CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    @view-transition {
-      navigation: auto;
-    }
-    
-    nav a[aria-current="page"]:after {
-      border-color: white;
-      view-transition-name: posts-nav;
-    }
-    
-    /* Old stuff going out */
-    ::view-transition-old(posts-nav) {
-      animation: fade 0.2s linear forwards;
-      height: 100%;
-    }
-    
-    /* New stuff coming in */
-    ::view-transition-new(posts-nav) {
-      animation: fade 0.3s linear reverse;
-      height: 100%;
-    }
-    
-    @keyframes fade {
-      from { opacity: 1; }
-      to { opacity: 0; }
-    }
-  </style>
-  <script>
-    // Only use if browser supports View Transitions
-    if (document.startViewTransition) {
-      window.addEventListener('click', (e) => {
-        // Only handle internal links
-        if (e.target.tagName === 'A' && e.target.origin === window.location.origin) {
-          e.preventDefault();
-          document.startViewTransition(() => {
-            window.location.href = e.target.href;
-          });
-        }
-      });
-    }
-  </script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Support Bubble Demo</title>
+<style>
+  /* —— Bubble —— */
+  #support-bubble {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #007bff; /* blue */
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    z-index: 10000;
+  }
+  #support-bubble:hover {
+    opacity: 0.9;
+  }
+  /* —— Pop‑over —— */
+  #support-popover {
+    position: fixed;
+    bottom: 90px; /* bubble height + margin */
+    right: 24px;
+    width: 320px;
+    background: #ffffff;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    padding: 12px;
+    display: none;
+    z-index: 10000;
+  }
+  #support-popover textarea {
+    width: 100%;
+    min-height: 80px;
+    resize: vertical;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px;
+    font-family: inherit;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+  #support-send {
+    margin-top: 8px;
+    width: 100%;
+    padding: 8px 0;
+    border: none;
+    border-radius: 4px;
+    background: #007bff;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  #support-send:hover {
+    opacity: 0.9;
+  }
+</style>
 </head>
-<body class="font-mono p-8 bg-gray-50">
-  <div class="max-w-4xl mx-auto">
-    <header class="mb-8">
-      <h1 class="text-3xl font-bold text-blue-600 mb-4">Template Web App</h1>
-      <nav class="bg-blue-600 text-white p-4 rounded-lg mb-4">
-        <a href="index.html" class="mr-6 hover:underline font-bold relative" aria-current="page">
-          Home
-          <span class="absolute bottom-0 left-0 w-full h-0.5 bg-white"></span>
-        </a>
-        <a href="features.html" class="mr-6 hover:underline">Features</a>
-        <a href="about.html" class="hover:underline">About</a>
-      </nav>
-      <div class="bg-blue-100 border-l-4 border-blue-500 p-4 mb-6">
-        <p class="text-sm text-blue-700">This is a Tailwind CSS demonstration with modular JavaScript.</p>
-      </div>
-    </header>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-      <!-- Card 1 -->
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-bold mb-4 text-gray-800">Greeting Card</h2>
-        <p class="text-gray-600 mb-4">Click the button below to greet the person.</p>
-        <button id="greetBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
-          Greet
-        </button>
-      </div>
-      
-      <!-- Card 2 -->
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-bold mb-4 text-gray-800">Tailwind Features</h2>
-        <ul class="list-disc pl-5 space-y-2 text-gray-600">
-          <li>Responsive design with <span class="font-bold text-blue-500">breakpoints</span></li>
-          <li>Utility-first CSS framework</li>
-          <li>Customizable with configuration</li>
-        </ul>
-        <div class="mt-4">
-          <div class="flex gap-2">
-            <span class="bg-red-200 text-red-800 text-xs p-1 rounded">Tag</span>
-            <span class="bg-green-200 text-green-800 text-xs p-1 rounded">Utility</span>
-            <span class="bg-yellow-200 text-yellow-800 text-xs p-1 rounded">Responsive</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="bg-white p-6 rounded-lg shadow">
-      <h2 class="text-xl font-bold mb-4 text-gray-800">Interactive Components</h2>
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-          Username
-        </label>
-        <input class="w-full p-2 border rounded text-gray-700 focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username">
-      </div>
-      <div class="flex justify-between">
-        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none transition">
-          Save
-        </button>
-        <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none transition">
-          Cancel
-        </button>
-      </div>
-    </div>
+<body>
+  <!-- —— Bubble —— -->
+  <div id="support-bubble" title="Ask question or report bugs or feature requests">
+    <!-- simple chat icon (SVG) -->
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </svg>
   </div>
-  
-  <!-- Load the main module -->
-  <script type="module">
 
-    import { tellBirthday } from './utils.js';
-    import { Person } from './person.js';
+  <!-- —— Pop‑over —— -->
+  <div id="support-popover">
+    <textarea id="support-input" placeholder="Type your question, bug report, or feature request…"></textarea>
+    <button id="support-send">Send to ChatGPT</button>
+  </div>
 
-    // Create a new Person instance with values defined in the HTML.
-    const person = new Person('Alice', 40);
-    document.getElementById('greetBtn').addEventListener('click', () => {
-      alert(tellBirthday(person));
-    });
+<script>
+/**********************
+ * Configuration
+ **********************/
+const GITHUB_URL = "https://github.com/your/repo"; // ← Replace with your repo
+const CHAR_LIMIT = 2000; // post‑encoding limit
 
-  </script>
+/**********************
+ * Console log capture
+ **********************/
+(function captureConsole() {
+  const methods = ["log", "error", "warn", "info"];
+  const original = {};
+  const buffer = [];
 
+  methods.forEach(m => {
+    original[m] = console[m];
+    console[m] = function(...args) {
+      try {
+        const line = `[${m.toUpperCase()}] "${args.map(a => (typeof a === "string" ? a : JSON.stringify(a))).join(" ")}"`;
+        buffer.push(line);
+      } catch (_) {/* ignore serialization issues */}
+      original[m].apply(console, args);
+    };
+  });
+
+  window.__supportLogs = buffer;
+})();
+
+/**********************
+ * UI behaviour
+ **********************/
+const bubble   = document.getElementById("support-bubble");
+const popover  = document.getElementById("support-popover");
+const textarea = document.getElementById("support-input");
+const sendBtn  = document.getElementById("support-send");
+
+function togglePopover() {
+  if (popover.style.display === "none" || !popover.style.display) {
+    popover.style.display = "block";
+    textarea.focus();
+  } else {
+    popover.style.display = "none";
+  }
+}
+
+bubble.addEventListener("click", togglePopover);
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") popover.style.display = "none";
+});
+
+function buildPrompt(userText, consoleLog) {
+  const prefix = `Here is some user information related to the application at ${GITHUB_URL} (take a look at the code and readme to learn what this app does).\n\nIn case the provided user information sounds like question on how to do something or how something works use these rules:\nTake as much context as possible (especially from the github repo) to help the user as well as you can.\n\nIn case the provided user information sounds like an bug report or a feature request use these rules:\nYour task is to write a well structured github issue with a focus on the underlying user story.\n\nTo get to the fundamental goal for the issue, review if the provided user information already answers the \"5 Whys\" and if not ask me one question at a time until you have all information needed for the issue.\n\nProvide the full text for the issue in raw markdown notation (for copy paste) and since you reviewed the code, feel free to also include a section with an implementation suggestion, if applicable.\n\nHere is the provided user information:\n`;
+
+  let prompt = `${prefix}${userText}\n\nConsole log:\n${consoleLog}`;
+
+  // Encoding length helper
+  const encodedLength = str => encodeURIComponent(str).length;
+
+  // Trim console log until total ≤ limit
+  if (encodedLength(prompt) > CHAR_LIMIT) {
+    let trimmedLog = consoleLog;
+    while (encodedLength(prompt) > CHAR_LIMIT && trimmedLog.length > 0) {
+      // drop first 200 characters at a time
+      trimmedLog = trimmedLog.slice(200);
+      prompt = `${prefix}${userText}\n\nConsole log:\n${trimmedLog}...`;
+    }
+  }
+
+  return prompt;
+}
+
+function sendToChatGPT() {
+  const userText = textarea.value.trim();
+  if (!userText) return;
+
+  const consoleLog = window.__supportLogs.join("\n");
+  const prompt = buildPrompt(userText, consoleLog);
+
+  const url = `https://chat.openai.com/?q=${encodeURIComponent(prompt)}`;
+  window.open(url, "_blank", "noopener");
+  textarea.value = ""; // reset
+  popover.style.display = "none";
+}
+
+sendBtn.addEventListener("click", sendToChatGPT);
+
+// allow Ctrl+Enter to send
+textarea.addEventListener("keydown", e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+    sendToChatGPT();
+  }
+});
+</script>
 </body>
 </html>
