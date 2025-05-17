@@ -1,4 +1,3 @@
-````markdown
 # AIsistBubble.js
 
 Lightweight, zero-dependency JavaScript support bubble that captures browser console logs and forwards user questions, bug reports, and feature requests to ChatGPT—pre‐filled with your repo context and intelligent prompts.
