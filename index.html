@@ -79,7 +79,19 @@ document.addEventListener("keydown", e => {
 });
 
 function buildPrompt(userText, consoleLog) {
-  const prefix = `Here is some user information related to the application at ${GITHUB_URL} (take a look at the code and readme to learn what this app does).\n\nIn case the provided user information sounds like question on how to do something or how something works use these rules:\nTake as much context as possible (especially from the github repo) to help the user as well as you can.\n\nIn case the provided user information sounds like an bug report or a feature request use these rules:\nYour task is to write a well structured github issue with a focus on the underlying user story.\n\nTo get to the fundamental goal for the issue, review if the provided user information already answers the "5 Whys" and if not ask me one question at a time until you have all information needed for the issue.\n\nProvide the full text for the issue in raw markdown notation (for copy paste) and since you reviewed the code, feel free to also include a section with an implementation suggestion, if applicable.\n\nHere is the provided user information:\n`;
+  const prefix = `Here is some user information related to the application at ${GITHUB_URL} (take a look at the code and readme to learn what this app does).`
+  +`\n`
+  +`\nIn case the provided user information sounds like question on how to do something or how something works use these rules:`
+  +`\nTake as much context as possible (especially from the github repo) to help the user as well as you can.`
+  +`\n`
+  +`\nIn case the provided user information sounds like an bug report or a feature request use these rules:`
+  +`\nYour task is to write a well structured github issue with a focus on the underlying user story.`
+  +`\n`
+  +`\nTo get to the fundamental goal for the issue, review if the provided user information already answers the "5 Whys" and if not ask me one question at a time until you have all information needed for the issue.`
+  +`\n`
+  +`\nProvide the full text for the issue in raw markdown notation (for copy paste) and since you reviewed the code, feel free to also include a section with an implementation suggestion, if applicable.`
+  +`\n`
+  +`\nHere is the provided user information:\n`;
 
   let prompt = `${prefix}${userText}\n\nConsole log:\n${consoleLog}`;
 
