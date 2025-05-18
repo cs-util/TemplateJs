@@ -5,14 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Support Bubble Demo</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<style>
-  /* Tailwind CSS is now used for styling. 
-     The original CSS rules have been replaced by utility classes on the HTML elements. 
-     This style block can be removed if no additional custom CSS is needed. */
-</style>
 </head>
 <body>
-  <!-- —— Bubble —— -->
+  <!-- —— Support Bubble —— -->
   <div id="support-bubble" title="Ask question or report bugs or feature requests" class="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-blue-600 text-white flex justify-center items-center shadow-md cursor-pointer z-50 hover:opacity-90">
     <!-- simple chat icon (SVG) -->
     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -79,8 +74,8 @@ document.addEventListener("keydown", e => {
 });
 
 function buildPrompt(userText, consoleLog) {
-  const prefix = `Here is some user information related to the application at ${GITHUB_URL} (take a look at the code and readme to learn what this app does).`
-  +`\n`
+  const prefix = `I am a user (not a developer) of ${GITHUB_URL} (browse to that url and take a look at the code and readme to learn what this app does).`
+  +`\nBelow you find user information that explains my current intent.`
   +`\nIn case the provided user information sounds like question on how to do something or how something works use these rules:`
   +`\nTake as much context as possible (especially from the github repo) to help the user as well as you can.`
   +`\n`
