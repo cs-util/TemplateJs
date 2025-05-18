@@ -74,7 +74,13 @@ document.addEventListener("keydown", e => {
 });
 
 function buildPrompt(userText, consoleLog) {
-  const prefix = `I am a user (not a developer) of ${GITHUB_URL} (browse to that url and take a look at the code and readme to learn what this app does).`
+  const githubUrlParts = GITHUB_URL.split('/');
+  const repoOwner = githubUrlParts[githubUrlParts.length - 2];
+  const repoName = githubUrlParts[githubUrlParts.length - 1];
+
+  const prefix = `I am a user (not a developer) of ${GITHUB_URL} `
+  +`\nBrowse to that url and take a look at the code and readme to learn what this app does).`
+  +`\nEspecially look at the readme at https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/readme.md and also at the source in https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/index.html.`
   +`\nYour goal is to to be a support assistant and help me with my question, bug report or feature request.`
   +`\nBelow you find user information that explains my current intent.`
   +`\nIn case the provided user information sounds like question on how to do something or how something works use these rules:`
