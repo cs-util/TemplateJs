@@ -64,7 +64,7 @@ additional explanations what you change are nice to have but not necessary.
       });
     }
   </script>
-  <script src="../src/index.js"></script>
+  <script src="src/index.js"></script>
 </head>
 <body class="font-mono p-8 bg-gray-50">
   <div class="max-w-4xl mx-auto">
@@ -133,8 +133,8 @@ additional explanations what you change are nice to have but not necessary.
   <!-- Load the main module -->
   <script type="module">
 
-    import { tellBirthday } from './utils.js';
-    import { Person } from './person.js';
+    import { tellBirthday } from './src/utils/utils.js';
+    import { Person } from './src/components/person.js';
 
     // Create a new Person instance with values defined in the HTML.
     const person = new Person('Alice', 40);
