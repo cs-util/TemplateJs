@@ -114,12 +114,17 @@
       const prefix = buildPrefix(pageUrl, bugEmail);
 
       let consoleLog = window.__supportLogs.join('\n');
-      let prompt = `${prefix}${userText}\n\nConsole log:\n${consoleLog}`;
+      let prompt = `${prefix}${userText}`;
 
-      while (encodeURIComponent(prompt).length > CHAR_LIMIT && consoleLog.length) {
-        consoleLog = consoleLog.slice(200); // trim oldest 200 chars
-        prompt = `${prefix}${userText}\n\nConsole log:\n${consoleLog}...`;
+      if (consoleLog.trim()) {
+        let consoleLogText = `\n\nConsole log:\n${consoleLog}`;
+        while (encodeURIComponent(prompt + consoleLogText).length > CHAR_LIMIT && consoleLog.length > 200) {
+          consoleLog = consoleLog.slice(200); // trim oldest 200 chars
+          consoleLogText = `\n\nConsole log:\n${consoleLog}...`;
+        }
+        prompt += consoleLogText;
       }
+
       return prompt;
     }
 
