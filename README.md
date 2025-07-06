@@ -1,6 +1,6 @@
-# AIsistBubble.js
+# AIsistBubble
 
-Lightweight, zero-dependency JavaScript support bubble that captures browser console logs and forwards user questions, bug reports, and feature requests to ChatGPT—pre‐filled with your repo context and intelligent prompts.
+Lightweight support bubble that captures browser console logs and forwards user questions, bug reports, and feature requests to ChatGPT—pre‐filled with your repo context and intelligent prompts.
 
 ---
 
@@ -24,27 +24,15 @@ https://cs-util-com.github.io/AIsistBubbleJs/
 
 ## Installation
 
-1. **Download** or **clone** this repository:  
-   ```bash
-   git clone https://github.com/your-org/AIsistBubble.js.git
-   ```
+1. **Download** or **clone** this repository.
 
 2. **Option A: Use the complete file**
-   - Copy `index.html` to your project and rename it as needed
+   - Copy `index.html` to your project.
    - Customize the `BUG_REPORT_EMAIL` in the `<script>` section (see Configuration below)
 
-3. **Option B: Extract and embed into your existing HTML**
-   - Copy the support bubble HTML elements and the entire `<script>` section from `index.html`
-   - Add Tailwind CSS to your project: `<script src="https://cdn.tailwindcss.com"></script>`
-
-Then customize the `BUG_REPORT_EMAIL` and `CHAR_LIMIT` constants in the script:
-
-```html
-<script>
-  // Optional: Replace with your support email
-  window.BUG_REPORT_EMAIL = "support@example.com";
-</script>
-```
+3. **Option B: Embed into your existing HTML**
+   - Copy the support bubble HTML elements (the `<button>` and `<div>` with `id="support-bubble"` and `id="support-popover"`) and the entire `<script>` section from `index.html` into your file.
+   - Ensure your project includes Tailwind CSS: `<script src="https://cdn.tailwindcss.com"></script>`.
 
 ---
 
@@ -53,7 +41,7 @@ Then customize the `BUG_REPORT_EMAIL` and `CHAR_LIMIT` constants in the script:
 1. **Click** the blue support bubble in the bottom-right corner.
 2. **Type** your question, bug report, or feature request into the pop-over textarea.
 3. **Click** **Submit** (or press Ctrl/⌘ + Enter).
-4. A new tab opens: ChatGPT’s compose box is pre-filled with:
+4. A new tab opens with ChatGPT, pre-filled with:
 
    * A rules-based prompt for Q&A or bug reports
    * Your text
@@ -64,23 +52,14 @@ Then customize the `BUG_REPORT_EMAIL` and `CHAR_LIMIT` constants in the script:
 
 ## Configuration
 
-You can configure the support bubble by setting a JavaScript variable and a constant inside the `<script>` tag in your `index.html`:
+You can configure the support bubble by setting JavaScript variables inside the `<script>` tag in your `index.html`.
 
-- `window.BUG_REPORT_EMAIL` (Optional): The email address where users should send bug reports. If not set, the prompt will ask ChatGPT to find a suitable support email.
-- `CHAR_LIMIT` (Constant): The maximum character limit for the URL-encoded prompt sent to ChatGPT. The default is `2000`.
+- `window.BUG_REPORT_EMAIL`: The email address where users should send bug reports. If not set, the prompt will ask ChatGPT to find a suitable support email.
 
-Example:
+To set the configuration, add a script tag before the main script tag like this:
 ```html
 <script>
-  // Optional: Replace with your support email
-  window.BUG_REPORT_EMAIL = "support@example.com";
-
-  /**********************
-   * Configuration
-   **********************/
-  const CHAR_LIMIT = 2000; // URL‑encoded length limit
-
-  // ... rest of the script
+  window.BUG_REPORT_EMAIL = "support@example.com"; // TODO: Replace with your support email
 </script>
 ```
 
@@ -93,31 +72,6 @@ Example:
 * **Truncation Strategy:** adjust slice size or add markers in `buildPrompt()`
 * **UI Text:** change the `title`, `placeholder`, or button label in the HTML
 
----
-
-## Development
-
-1. Fork & clone this repo
-2. Open `index.html` in your browser to test changes
-3. Make CSS/JS edits in place—no build step required
-4. Commit, push, and open a PR
-
----
-
-## Testing Recommendations
-
-* **Cross-Browser:** Chrome, Firefox, Edge, Safari
-* **Prompt Length:** simulate large console logs via DevTools
-* **Accessibility:** ensure keyboard navigation & ARIA attributes (if you add them)
-* **Popup Blockers:** verify `window.open` behavior when popups are disabled
-
----
-
-## Contributing
-
-1. ⭐ Star the repo
-2. 🐛 Report issues or request features via GitHub
-3. 🚀 Submit pull requests—with descriptive commit messages & tests if applicable
 
 ---
 
