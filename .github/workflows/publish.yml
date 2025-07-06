@@ -14,6 +14,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # Fetch all history for all tags and branches
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -46,11 +49,12 @@ jobs:
       - name: Update package.json and push
         if: steps.exists.outputs.found == 'false'
         run: |
+          git checkout ${{ github.event.release.target_commitish }}
           npm version ${{ steps.version.outputs.v }} --no-git-tag-version
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git commit -am "🔖 release ${{ steps.version.outputs.v }}"
-          git push
+          git push origin ${{ github.event.release.target_commitish }}
 
       - name: Publish to NPM
         if: steps.exists.outputs.found == 'false'
