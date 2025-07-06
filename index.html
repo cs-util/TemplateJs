@@ -91,13 +91,14 @@
       return `I am a user (not a developer) of ${pageUrl}.\n` +
         `Browse to that URL and inspect the page to assist me.\n\n` +
         `If my message is a question about how to do something, answer it directly.\n\n` +
-        `If my message appears to be a bug report:\n` +
-        ` • Ask follow‑up questions one at a time until you have enough detail.\n` +
+        `If my message appears to be a bug report or feature request:\n` +
+        ` • Ask follow‑up questions one at a time until you have enough detail. Provide numbered response suggestions to pick from. \n` +
         ` • Draft an email with the template below and instruct me to send it to ${bugEmail || '___BUG_REPORT_EMAIL___'}.\n` +
         ` • If BUG_REPORT_EMAIL is missing, try to discover a support email for the domain; if none is found, default to support@<domain>.\n\n` +
         `--- Email template ---\n` +
         `Subject: Bug report – <short title>\n\n` +
-        `• Summary\n` +
+        `• TLDR Summary\n` +
+        `• Detailed description\n` +
         `• Steps to reproduce\n` +
         `• Expected result\n` +
         `• Actual result\n` +
@@ -135,7 +136,7 @@
       if (!userText) return;
 
       const prompt = buildPrompt(userText);
-      const chatUrl = `https://chat.openai.com/?q=${encodeURIComponent(prompt)}`;
+      const chatUrl = `https://chat.openai.com/?model=o3&q=${encodeURIComponent(prompt)}`;
       const popup = window.open(chatUrl, '_blank', 'noopener');
 
       if (popup === null) {
