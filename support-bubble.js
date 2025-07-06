@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// AIsist - Support Bubble
+// support-bubble.js - Explainer what this script file is about:
 // --------------------------------------------------------------------------------
 //
 // This script adds a support bubble to your web application, allowing users
