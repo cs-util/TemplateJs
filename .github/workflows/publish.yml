@@ -1,0 +1,59 @@
+name: Publish to NPM
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write # to be able to commit package.json
+  id-token: write # to be able to publish with provenance
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Get version from tag
+        id: version
+        run: |
+          TAG=${{ github.event.release.tag_name }}
+          echo "v=${TAG#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Check if version exists
+        id: exists
+        run: |
+          if npm view $(jq -r .name < package.json)@${{ steps.version.outputs.v }} version > /dev/null; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Update package.json and push
+        if: steps.exists.outputs.found == 'false'
+        run: |
+          npm version ${{ steps.version.outputs.v }} --no-git-tag-version
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -am "🔖 release ${{ steps.version.outputs.v }}"
+          git push
+
+      - name: Publish to NPM
+        if: steps.exists.outputs.found == 'false'
+        run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

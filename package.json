@@ -1,0 +1,29 @@
+{
+  "name": "support-bubble",
+  "version": "1.0.0",
+  "description": "A support bubble that allows users to ask questions or report bugs by opening a pre-filled ChatGPT prompt.",
+  "main": "support-bubble.js",
+  "scripts": {
+    "test": "echo \"No tests specified in package.json\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cs-util-com/AIsistBubbleJs.git"
+  },
+  "keywords": [
+    "support",
+    "bubble",
+    "chatgpt",
+    "feedback",
+    "bug-report"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cs-util-com/AIsistBubbleJs/issues"
+  },
+  "homepage": "https://github.com/cs-util-com/AIsistBubbleJs#readme",
+  "files": [
+    "support-bubble.js"
+  ]
+}
