@@ -28,17 +28,23 @@ https://cs-util-com.github.io/AIsistBubbleJs/
    git clone https://github.com/your-org/AIsistBubble.js.git
    ```
 
-2. **Include** the HTML snippet (or copy the entire file) into your app:
+2. **Option A: Use the complete file**
+   - Copy `index.html` to your project and rename it as needed
+   - Customize the `GITHUB_URL` in the `<script>` section (see Configuration below)
 
-   ```html
-   <!-- support-bubble -->
-   <div id="support-bubble" title="Ask question or report bugs or feature requests">
-     <!-- chat icon SVG… -->
-   </div>
-   <div id="support-popover">…</div>
-   <script src="support-bubble.js"></script>
-   ```
-3. **Customize** the `GITHUB_URL` in `support-bubble.js` (see Configuration below).
+3. **Option B: Extract and embed into your existing HTML**
+   - Copy the support bubble HTML elements and the entire `<script>` section from `index.html`
+   - Add Tailwind CSS to your project: `<script src="https://cdn.tailwindcss.com"></script>`
+
+Then customize the `GITHUB_URL` and `CHAR_LIMIT` constants in the script:
+
+```js
+// Replace with your repo's URL
+const GITHUB_URL = "https://github.com/your/repo";
+
+// Maximum allowed URI-encoded length of the full prompt
+const CHAR_LIMIT = 2000;
+```
 
 ---
 
@@ -72,7 +78,7 @@ const CHAR_LIMIT = 2000;
 
 ## Customization
 
-* **Position & Style:** tweak the CSS in `support-bubble.css` (or inline `<style>`)
+* **Position & Style:** modify the Tailwind CSS classes in the HTML elements or add custom CSS
 * **Log Capture:** modify `captureConsole()` to include/exclude methods or filter entries
 * **Truncation Strategy:** adjust slice size or add markers in `buildPrompt()`
 * **UI Text:** change the `title`, `placeholder`, or button label in the HTML
@@ -82,7 +88,7 @@ const CHAR_LIMIT = 2000;
 ## Development
 
 1. Fork & clone this repo
-2. Open `support-bubble.html` in your browser to test changes
+2. Open `index.html` in your browser to test changes
 3. Make CSS/JS edits in place—no build step required
 4. Commit, push, and open a PR
 
