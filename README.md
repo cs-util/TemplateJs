@@ -15,7 +15,8 @@ https://cs-util-com.github.io/AIsistBubbleJs/
 - 💬 Small pop-over input for free-text questions, bug reports, or feature requests  
 - 🐞 Captures all `console.log`, `console.warn`, `console.error`, and `console.info` messages  
 - ✂️ Automatic truncation of logs to keep the URI-encoded query ≤ 2 000 characters  
-- 📄 Hard-coded `GITHUB_URL` prompt prefix so ChatGPT can inspect your code & README  
+- 📄 Intelligently prompts ChatGPT with the current page's URL for context.
+- 📧 Customizable bug report email address.
 - 🔗 Opens ChatGPT in a new tab with `https://chat.openai.com/?q=<encoded prompt>`  
 - 🚫 No backend, cookies, or localStorage—100% client-side  
 
@@ -30,20 +31,19 @@ https://cs-util-com.github.io/AIsistBubbleJs/
 
 2. **Option A: Use the complete file**
    - Copy `index.html` to your project and rename it as needed
-   - Customize the `GITHUB_URL` in the `<script>` section (see Configuration below)
+   - Customize the `BUG_REPORT_EMAIL` in the `<script>` section (see Configuration below)
 
 3. **Option B: Extract and embed into your existing HTML**
    - Copy the support bubble HTML elements and the entire `<script>` section from `index.html`
    - Add Tailwind CSS to your project: `<script src="https://cdn.tailwindcss.com"></script>`
 
-Then customize the `GITHUB_URL` and `CHAR_LIMIT` constants in the script:
+Then customize the `BUG_REPORT_EMAIL` and `CHAR_LIMIT` constants in the script:
 
-```js
-// Replace with your repo's URL
-const GITHUB_URL = "https://github.com/your/repo";
-
-// Maximum allowed URI-encoded length of the full prompt
-const CHAR_LIMIT = 2000;
+```html
+<script>
+  // Optional: Replace with your support email
+  window.BUG_REPORT_EMAIL = "support@example.com";
+</script>
 ```
 
 ---
@@ -52,10 +52,10 @@ const CHAR_LIMIT = 2000;
 
 1. **Click** the blue support bubble in the bottom-right corner.
 2. **Type** your question, bug report, or feature request into the pop-over textarea.
-3. **Click** **Send to ChatGPT** (or press Ctrl/⌘ + Enter).
+3. **Click** **Submit** (or press Ctrl/⌘ + Enter).
 4. A new tab opens: ChatGPT’s compose box is pre-filled with:
 
-   * A rules-based prompt (Q\&A vs. GitHub issue)
+   * A rules-based prompt for Q&A or bug reports
    * Your text
    * Captured console log (truncated if needed)
 5. **Edit** or **submit** directly in ChatGPT.
@@ -64,14 +64,24 @@ const CHAR_LIMIT = 2000;
 
 ## Configuration
 
-Edit the top of `support-bubble.js`:
+You can configure the support bubble by setting a JavaScript variable and a constant inside the `<script>` tag in your `index.html`:
 
-```js
-// Replace with your repo’s URL
-const GITHUB_URL = "https://github.com/your/repo";
+- `window.BUG_REPORT_EMAIL` (Optional): The email address where users should send bug reports. If not set, the prompt will ask ChatGPT to find a suitable support email.
+- `CHAR_LIMIT` (Constant): The maximum character limit for the URL-encoded prompt sent to ChatGPT. The default is `2000`.
 
-// Maximum allowed URI-encoded length of the full prompt
-const CHAR_LIMIT = 2000;
+Example:
+```html
+<script>
+  // Optional: Replace with your support email
+  window.BUG_REPORT_EMAIL = "support@example.com";
+
+  /**********************
+   * Configuration
+   **********************/
+  const CHAR_LIMIT = 2000; // URL‑encoded length limit
+
+  // ... rest of the script
+</script>
 ```
 
 ---
