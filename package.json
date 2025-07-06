@@ -1,6 +1,6 @@
 {
   "name": "@csutil/support-bubble",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "A support bubble that allows users to ask questions or report bugs by opening a pre-filled ChatGPT prompt.",
   "main": "support-bubble.js",
   "scripts": {
