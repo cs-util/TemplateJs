@@ -52,7 +52,7 @@
         justify-content:center;
         box-shadow:0 2px 4px rgba(0,0,0,.2); /* shadow-md */
         cursor:pointer;
-        z-index:50;                 /* z-50  */
+        z-index:2147483647;         /* z-max */
         transition:opacity .2s ease;
       }
       #support-bubble:hover{opacity:.9;}
@@ -69,7 +69,7 @@
         box-shadow:0 4px 6px rgba(0,0,0,.1); /* shadow-lg */
         background:#fff;            /* bg-white */
         color:#000;
-        z-index:50;
+        z-index:2147483647;         /* z-max */
       }
 
       /* ----------  textarea ---------- */
