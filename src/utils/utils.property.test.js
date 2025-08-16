@@ -1,7 +1,5 @@
 const fc = require('fast-check');
-const {
-    add
-} = require('./utils');
+const { add } = require('./utils');
 
 
 // Property-Based Test Example
