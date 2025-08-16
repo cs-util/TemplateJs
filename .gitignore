@@ -1,3 +1,6 @@
+# Stryker Mutation testing
+.stryker-tmp/
+
 # Logs
 logs
 *.log
