@@ -13,19 +13,25 @@ Instead, follow this specification process:
 - Continue until you have a complete understanding of the requirements
 
 ### 2. Specification Development
-The goal is to create a detailed specification that covers:
+Create a specification appropriate to the feature size:
+
+**For major features**, cover:
 - **Functional requirements** - What the feature should do
 - **Architecture choices** - How it fits into the existing codebase
-- **Data handling details** - Input/output, storage, validation
-- **Error handling strategies** - Edge cases and failure scenarios
-- **Testing plan** - Unit tests, integration tests, property-based tests
-- **User interface considerations** - If applicable
-- **Performance requirements** - If applicable
+- **Data handling** - Input/output, storage, validation
+- **Error handling** - Edge cases and failure scenarios
+- **Testing strategy** - Specify details on which test types will be needed (Unit tests, property-based tests, integration tests)
+- **UI/Performance considerations** - If applicable
+
+**For smaller changes**, focus on:
+- What the change accomplishes
+- How it integrates with existing code
+- Key edge cases to handle
 
 ### 3. Final Specification Document
 At the end of the requirements gathering process, compile all findings into a comprehensive, 
-developer-ready specification .md file that includes all the above elements so implementation can begin immediately. 
-Place this .md file next to the relevant code files.
+developer-ready specification .md file that includes all the above elements, so that implementation can begin immediately. 
+Place this .md file at an appropriate location next to the relevant code files.
 
 ### 4. Implementation Guidelines
 When implementing the feature, follow these strict rules:
