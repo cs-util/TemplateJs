@@ -7,7 +7,7 @@
     "test": "jest --coverage --config config/jest.config.js",
     "lint": "eslint . --config config/eslint.config.js",
     "test:watch": "jest --watch --config config/jest.config.js",
-    "mutation": "stryker run config/stryker.conf.json",
+    "mutation": "stryker run config/stryker.conf.json && node scripts/mutation-report-to-md.js",
     "check:dup": "jscpd --config config/.jscpd.json src",
     "check:cycles": "madge --circular --extensions js src",
     "check:boundaries": "depcruise -c config/.dependency-cruiser.js src",
