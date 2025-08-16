@@ -12,7 +12,7 @@
     "check:cycles": "madge --circular --extensions js src",
     "check:boundaries": "depcruise -c config/.dependency-cruiser.js src",
     "check:all": "npm run lint && npm run check:dup && npm run check:cycles && npm run check:boundaries",
-    "validate:all": "npm run test && npm run mutation && npm run check:all"
+    "validate:all": "npm run test && npm run check:all && npm run mutation"
   },
   "keywords": [],
   "author": "",
