@@ -1,0 +1,7 @@
+{
+  "testRunner": "jest",
+  "reporters": ["html", "clear-text", "progress"],
+  "mutate": ["src/**/*.js", "!src/**/*.test.js"],
+  "coverageAnalysis": "perTest",
+  "thresholds": { "high": 90, "low": 80, "break": 80 }
+}

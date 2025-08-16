@@ -1,0 +1,7 @@
+{
+  "threshold": 1,
+  "minTokens": 50,
+  "reporters": ["consoleFull"],
+  "files": ["src/**/*.js"],
+  "exclude": ["**/node_modules/**", "**/dist/**", "**/*.test.js"]
+}

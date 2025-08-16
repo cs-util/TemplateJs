@@ -1,0 +1,30 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm ci
+      - name: Unit & property tests
+        run: npm test
+
+  quality:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm ci
+      - name: Mutation Test
+        run: npm run mutation
+      - name: Duplication guard (jscpd)
+        run: npm run check:dup
+      - name: Cycle guard (madge)
+        run: npm run check:cycles
+      - name: Boundaries (dependency-cruiser)
+        run: npm run check:boundaries
