@@ -27,6 +27,13 @@ At the end of the requirements gathering process, compile all findings into a co
 developer-ready specification .md file that includes all the above elements so implementation can begin immediately. 
 Place this .md file next to the relevant code files.
 
+### 4. Implementation Guidelines
+When implementing the feature, follow these strict rules:
+
+- **Stay focused**: Only change code directly related to the current task to keep pull requests focused
+- **Preserve existing comments**: Don't remove unrelated comments from the codebase
+- **Add meaningful documentation**: Only add comments that provide long-term value for explaining/documenting the code. Avoid temporary comments that merely explain what you just did
+
 **Remember**: A well-specified feature prevents rework and ensures quality. Take the time to understand before building.
 
 ---
