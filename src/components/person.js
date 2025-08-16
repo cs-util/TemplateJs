@@ -23,6 +23,15 @@ class Person {
         return this.age >= 18;
     }
 
+    introduce() {
+        return `Hi, I'm ${this.name} and I'm ${this.age} years old.`;
+    }
+
+    getBirthYear() {
+        const currentYear = new Date().getFullYear();
+        return currentYear - this.age;
+    }
+
     static fromJSON(json) {
         const data = JSON.parse(json);
         return new Person(data.name, data.age);

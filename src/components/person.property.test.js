@@ -20,6 +20,8 @@ describe('Person Component Tests', () => {
                     expect(person.getGreeting()).toEqual(personRef.getGreeting());
                     expect(person.getAgeInMonths()).toEqual(personRef.getAgeInMonths());
                     expect(person.canVote()).toEqual(personRef.canVote());
+                    expect(person.introduce()).toEqual(personRef.introduce());
+                    expect(person.getBirthYear()).toEqual(personRef.getBirthYear());
                 })
             );
         });

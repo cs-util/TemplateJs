@@ -17,4 +17,16 @@ describe('Person', () => {
     const currentYear = new Date().getFullYear();
     expect(person.getBirthYear()).toBe(currentYear - 30);
   });
+
+  test('should throw error for invalid name', () => {
+    expect(() => new Person('', 25)).toThrow('Invalid name');
+    expect(() => new Person('   ', 25)).toThrow('Invalid name');
+    expect(() => new Person(null, 25)).toThrow('Invalid name');
+  });
+
+  test('should throw error for invalid age', () => {
+    expect(() => new Person('John Doe', -5)).toThrow('Invalid age');
+    expect(() => new Person('John Doe', '25')).toThrow('Invalid age');
+    expect(() => new Person('John Doe', null)).toThrow('Invalid age');
+  });
 });
