@@ -24,34 +24,37 @@
 
 ## 3) Tooling Stack
 
-* **Test runner**: Jest (or Vitest as fallback alternative, pick one per repo)
+* **Test runner**: Jest
 * **Property-based & fuzz testing**: `fast-check`
 * **Mutation testing**: `@stryker-mutator/core` (Stryker JS)
-* **Coverage**: `babel-jest`/`ts-jest` + Istanbul (via Jest) or Vitest+V8; report via `lcov`/`cobertura`
+* **Coverage**: `babel-jest` + Istanbul (via Jest)
 * **Performance checks** (recommended for algorithmic hot paths): `benchmark.js` (+ CI tracking)
 * **Linting**: ESLint (with security and anti-cheat rules)
 * **Architecture & reuse**: `jscpd`, `dependency-cruiser`, `madge`
-* **Monorepo**: Nx or pnpm workspaces; same rules apply per package
 
 ---
 
-## 4) Repository Layout (suggestion with focus on tools above)
+## 4) Repository Layout (co-located tests)
+
+This project follows a co-located testing approach, where test files live alongside the source files they are testing. This is a common and effective pattern for JavaScript projects.
 
 ```
 / .github/workflows/ci.yml
 / package.json
-/ tsconfig.json
-/ jest.config.ts            # or vitest.config.ts
+/ jest.config.js
 / stryker.conf.json
-/ .eslintrc.cjs
+/ .eslintrc.js
 / .dependency-cruiser.js
 / .jscpd.json
-/ scripts/                  # shared CI helpers (optional)
-/ src/                      # production code
-/ tests/                    # test code (PBT/metamorphic/differential)
-  - unit/
-  - properties/             # *required* properties live here
-  - fixtures/               # generated at CI if needed
+/ src/
+  - components/
+    - person.js
+    - person.test.js          # Standard unit tests
+    - person.property.test.js # Property/metamorphic tests
+    - person.reference.js     # Reference implementation for differential tests
+  - utils/
+    - utils.js
+    - utils.test.js
 ```
 
 ---
@@ -121,7 +124,7 @@
 ### 6.3 Property Presence & Test Shape
 
 * Require at least **one property test** per core function.
-* Convention: property test files end with `.property.spec.ts` (or `.property.test.ts`).
+* Convention: property test files end with `.property.test.js`.
 * CI step: count property specs touched in the PR for new modules; if none are added where core functions are added/modified, **fail** with guidance.
 
 ---
@@ -173,30 +176,25 @@
 ```json
 {
   "scripts": {
-    "build": "tsc -p .",
+    "test": "jest --coverage",
     "lint": "eslint .",
-    "test": "vitest run --reporter=verbose",
-    "test:watch": "vitest",
-    "test:ci": "FAST_CHECK_SEED=${FAST_CHECK_SEED:-1337} vitest run --coverage",
-    "mutation": "stryker run --fileLogLevel off",
-    "check:dup": "jscpd --threshold 1 --reporters consoleFull",
-    "check:cycles": "madge --circular --extensions ts,tsx src",
-    "check:boundaries": "depcruise -v -c .dependency-cruiser.js src",
-    "check:all": "npm run lint && npm run test:ci && npm run mutation && npm run check:dup && npm run check:cycles && npm run check:boundaries"
+    "test:watch": "jest --watch",
+    "mutation": "stryker run",
+    "check:dup": "jscpd",
+    "check:cycles": "madge --circular --extensions js src",
+    "check:boundaries": "depcruise -c .dependency-cruiser.js src",
+    "check:all": "npm run lint && npm run test && npm run mutation && npm run check:dup && npm run check:cycles && npm run check:boundaries"
   }
 }
 ```
-
-*(Swap `vitest` with `jest` equivalents if Jest is preferred.)*
 
 ### 9.2 `stryker.conf.json`
 
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/stryker-mutator/stryker-js/master/packages/core/schema/stryker-schema.json",
-  "testRunner": "vitest",
-  "mutate": ["src/**/*.ts", "!src/**/__tests__/**"],
-  "vitest": { "configFile": "vitest.config.ts" },
+  "testRunner": "jest",
+  "reporters": ["html", "clear-text", "progress"],
+  "mutate": ["src/**/*.js", "!src/**/*.test.js"],
   "coverageAnalysis": "perTest",
   "thresholds": { "high": 90, "low": 80, "break": 80 }
 }
@@ -209,8 +207,8 @@
   "threshold": 1,
   "minTokens": 50,
   "reporters": ["consoleFull"],
-  "files": ["src/**/*.ts", "tests/**/*.ts"],
-  "exclude": ["**/node_modules/**", "**/dist/**"]
+  "files": ["src/**/*.js"],
+  "exclude": ["**/node_modules/**", "**/dist/**", "**/*.test.js"]
 }
 ```
 
@@ -222,65 +220,39 @@ module.exports = {
   options: {
     doNotFollow: { path: 'node_modules' },
     includeOnly: 'src',
-    tsConfig: { fileName: 'tsconfig.json' },
     reporterOptions: { dot: { collapsePattern: 'node_modules/[^/]*' } }
   },
   forbidden: [
-    // No circular dependencies
     { name: 'no-circular', severity: 'error', from: {}, to: { circular: true } },
-
-    // No orphan modules
-    { name: 'no-orphans', severity: 'warn', from: {}, to: { orphan: true } },
-
-    // Enforce layered architecture
+    { name: 'no-orphans', severity: 'warn', from: {}, to: { orphan: true, pathNot: '\\\\.test\\\\.js$' } },
     {
-      name: 'no-app-to-domain-internal', severity: 'error',
-      from: { path: '^src/app' },
-      to:   { path: '^src/domain/(?!index\\.ts$).*' } // only via domain/index.ts
-    },
-    {
-      name: 'no-domain-to-app', severity: 'error',
-      from: { path: '^src/domain' },
-      to:   { path: '^src/app' }
-    },
-    {
-      name: 'no-domain-to-app-internals', severity: 'error',
-      from: { path: '^src/domain' },
-      to:   { path: '^src/app/.+' }
-    },
-    {
-      name: 'domain-can-use-shared', severity: 'error',
-      from: { path: '^src/domain' },
-      to:   { path: '^src/shared' }
-    },
-    {
-      name: 'app-can-use-domain-and-shared', severity: 'error',
-      from: { path: '^src/app' },
-      to:   { pathNot: '^(src/domain|src/shared)' }
+        name: 'no-utils-importing-from-components',
+        severity: 'error',
+        from: { path: '^src/utils' },
+        to:   { path: '^src/components' }
     }
   ]
 }
 ```
 
-### 9.5 Vitest Config (coverage thresholds)
+### 9.5 Jest Config (coverage thresholds)
 
-```ts
-// vitest.config.ts
-import { defineConfig } from 'vitest/config';
-export default defineConfig({
-  test: {
-    coverage: {
-      reporter: ['text', 'lcov'],
-      statements: 90,
+```js
+// jest.config.js
+module.exports = {
+  collectCoverage: true,
+  coverageReporters: ["json", "lcov", "text", "clover"],
+  coverageThreshold: {
+    global: {
       branches: 90,
+      functions: 90,
       lines: 90,
-      functions: 90
-    }
-  }
-});
+      statements: 90,
+    },
+  },
+  testEnvironment: 'jsdom',
+};
 ```
-
-*(Jest users: set `coverageThreshold` in `jest.config.ts`.)*
 
 ---
 
@@ -293,34 +265,24 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        seed: [1337, 424242, 1234]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: '20' }
       - run: npm ci
-      - name: Unit & property tests (seeded)
-        run: FAST_CHECK_SEED=${{ matrix.seed }} npm run test:ci
-
-  mutation:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: '20' }
-      - run: npm ci
-      - run: npm run mutation
+      - name: Unit & property tests
+        run: npm test
 
   quality:
     runs-on: ubuntu-latest
+    needs: test
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: '20' }
       - run: npm ci
+      - name: Mutation Test
+        run: npm run mutation
       - name: Duplication guard (jscpd)
         run: npm run check:dup
       - name: Cycle guard (madge)
@@ -333,30 +295,38 @@ jobs:
 
 ---
 
-## 11) Example Property Test (normalize)
+## 11) Example Property Test (Person component)
 
-```ts
-import fc from 'fast-check';
-import { normalize } from '../src/shared/vec2';
+```js
+const fc = require('fast-check');
+const Person = require('../src/components/person');
 
-describe('normalize()', () => {
-  it('has unit length and is scale-invariant', () => {
-    const seed = process.env.FAST_CHECK_SEED ? Number(process.env.FAST_CHECK_SEED) : undefined;
-    fc.assert(
-      fc.property(fc.double(), fc.double(), (x, y) => {
-        const [nx, ny] = normalize(x, y);
-        const len = Math.hypot(nx, ny);
-        if (x === 0 && y === 0) return nx === 0 && ny === 0;
-        if (!(len > 0.999 && len < 1.001)) return false;
-        return fc.sample(fc.double({ noNaN: true, min: 1e-6, max: 1e6 }), 1).every(s => {
-          const [mx, my] = normalize(x * s, y * s);
-          const dot = nx * mx + ny * my;
-          return dot > 0.999;
-        });
-      }),
-      { numRuns: 200, seed }
-    );
-  });
+describe('Person Component Property Tests', () => {
+    const validNameArb = fc.string({ minLength: 1, maxLength: 50 }).map(s => s.trim()).filter(s => s.length > 0);
+    const validAgeArb = fc.integer({ min: 0, max: 150 });
+
+    // Property: The greeting should always contain the name and age
+    it('should always include the name and age in the greeting', () => {
+        fc.assert(
+            fc.property(validNameArb, validAgeArb, (name, age) => {
+                const person = new Person(name, age);
+                const greeting = person.getGreeting();
+                expect(greeting).toContain(name);
+                expect(greeting).toContain(age.toString());
+            })
+        );
+    });
+
+    // Metamorphic Relation: Increasing age by 1 year should increase age in months by 12.
+    it('should increase age in months by 12 when age in years increases by 1', () => {
+        fc.assert(
+            fc.property(validNameArb, validAgeArb, (name, age) => {
+                const person1 = new Person(name, age);
+                const person2 = new Person(name, age + 1);
+                expect(person2.getAgeInMonths()).toBe(person1.getAgeInMonths() + 12);
+            })
+        );
+    });
 });
 ```
 
