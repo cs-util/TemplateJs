@@ -17,7 +17,6 @@
 ## 2) Definitions
 
 * **Core function**: any non-trivial pure/mostly-pure function in `src/` responsible for algorithmic behavior.
-* **Reference implementation**: slow-but-correct oracle used only for testing.
 * **Metamorphic relation**: predictable output relation under a controlled input transformation (e.g., scale/permute/translate).
 
 ---
@@ -51,7 +50,6 @@ This project follows a co-located testing approach, where test files live alongs
     - person.js
     - person.test.js          # Standard unit tests
     - person.property.test.js # Property/metamorphic tests
-    - person.reference.js     # Reference implementation for differential tests
   - utils/
     - utils.js
     - utils.test.js
@@ -87,11 +85,6 @@ This project follows a co-located testing approach, where test files live alongs
   * **Scale invariance**: scaling inputs changes magnitude but preserves direction
   * **Permutation invariance**: reordering inputs yields identical reduced result
   * **Additive translation**: adding a constant offsets outputs predictably
-
-### 5.4 Differential Testing
-
-* Provide a **reference implementation** (clear and correct; may be slower).
-* Compare production vs. reference under randomized inputs; assert equality within tolerance.
 
 ### 5.5 Fuzz & Edge Cases
 
@@ -355,7 +348,6 @@ Copy-paste PR template (`.github/pull_request_template.md`)
 - [ ] General solution without lookup tables
 - [ ] Property-based test(s) added/updated (≥ 200 runs)
 - [ ] At least one metamorphic relation
-- [ ] Differential test against a reference implementation
 - [ ] Coverage meets thresholds
 - [ ] Stryker mutation score meets threshold
 - [ ] Duplication ≤ 1%

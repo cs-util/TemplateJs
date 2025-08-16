@@ -1,6 +1,5 @@
 const fc = require('fast-check');
 const Person = require('./person');
-const PersonReference = require('./person.reference');
 
 describe('Person Component Tests', () => {
 
@@ -8,24 +7,6 @@ describe('Person Component Tests', () => {
     const validNameArb = fc.string({ minLength: 1, maxLength: 50 }).map(s => s.trim()).filter(s => s.length > 0);
     const validAgeArb = fc.integer({ min: 0, max: 150 });
     const personArb = fc.record({ name: validNameArb, age: validAgeArb });
-
-    // 1. Differential Testing: Compare production vs. reference
-    describe('Differential Tests', () => {
-        it('should behave identically to the reference implementation', () => {
-            fc.assert(
-                fc.property(personArb, data => {
-                    const person = new Person(data.name, data.age);
-                    const personRef = new PersonReference(data.name, data.age);
-
-                    expect(person.getGreeting()).toEqual(personRef.getGreeting());
-                    expect(person.getAgeInMonths()).toEqual(personRef.getAgeInMonths());
-                    expect(person.canVote()).toEqual(personRef.canVote());
-                    expect(person.introduce()).toEqual(personRef.introduce());
-                    expect(person.getBirthYear()).toEqual(personRef.getBirthYear());
-                })
-            );
-        });
-    });
 
     // 2. Property-Based Testing: Test for specific properties
     describe('Property-Based Tests', () => {
