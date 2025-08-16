@@ -1,4 +1,5 @@
 module.exports = {
+  rootDir: '../',
   collectCoverage: true,
   coverageReporters: ["json", "lcov", "text", "clover"],
   coverageThreshold: {
