@@ -52,6 +52,8 @@ This repository has a comprehensive testing setup with the following key command
 2. **Before committing:** Run `npm test` to ensure all tests pass, then run `npm run check:all` (Runs all quality checks: linting, duplication detection, circular dependency checks, and architectural boundaries)
 3. **Before releases:** Run `npm run validate:all` for complete validation (tests + mutation + all checks)
 
+**IMPORTANT**: Always use the `run_in_terminal` tool to actually execute these commands. Never assume or report test results without actually running the commands and showing the real output. If you claim tests pass or fail, you must demonstrate this with actual command execution.
+
 ## Test Structure
 
 - `*.test.js` - Standard unit tests  
@@ -66,7 +68,9 @@ When tests fail during development:
 1. **Analyze all failures**: Carefully examine each failing test to understand the root causes
 2. **Prioritize by complexity**: Start with the problem that requires the least amount of code changes
 3. **Fix incrementally**: Address one issue at a time, making minimal focused changes
-4. **Verify immediately**: After each fix, run the tests again to confirm that specific failure is resolved
+4. **Verify immediately**: After each fix, run the tests again using `run_in_terminal` to confirm that specific failure is resolved
 5. **Iterate**: Continue this process until all tests pass
+
+**CRITICAL**: Never claim that tests pass or fail without actually executing the test commands using the `run_in_terminal` tool and showing the real output. Always provide evidence of test execution.
 
 This approach minimizes the risk of introducing new issues and makes debugging more manageable.
