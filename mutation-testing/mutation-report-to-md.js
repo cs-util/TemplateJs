@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 function generateMarkdownReport() {
-  const jsonPath = path.join(__dirname, '../reports/mutation/mutation-report.json');
+  const jsonPath = path.join(__dirname, '/reports/mutation-report.json');
   
   if (!fs.existsSync(jsonPath)) {
     console.error('No mutation report found at:', jsonPath);
@@ -56,7 +56,7 @@ function generateMarkdownReport() {
   });
 
   // Write markdown file
-  const mdPath = path.join(__dirname, '../reports/mutation/mutation-report.md');
+  const mdPath = path.join(__dirname, '/reports/mutation-report.md');
   fs.writeFileSync(mdPath, markdown);
   console.log('Markdown report generated at:', mdPath);
 }
