@@ -176,7 +176,8 @@ This project follows a co-located testing approach, where test files live alongs
     "check:dup": "jscpd",
     "check:cycles": "madge --circular --extensions js src",
     "check:boundaries": "depcruise -c .dependency-cruiser.js src",
-    "check:all": "npm run lint && npm run test && npm run mutation && npm run check:dup && npm run check:cycles && npm run check:boundaries"
+    "check:all": "npm run lint && npm run check:dup && npm run check:cycles && npm run check:boundaries",
+    "validate:all": "npm run test && npm run mutation && npm run check:all"
   }
 }
 ```

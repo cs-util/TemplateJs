@@ -86,8 +86,9 @@ AI-assisted iterative development process:
 ```bash
 npm run test:watch    # Continuous testing during development
 npm test             # Run all tests
-npm run check:all    # All quality checks before committing
+npm run check:all    # Quality checks before committing (lint, duplication, cycles, boundaries)
 npm run mutation     # Mutation testing before releases
+npm run validate:all # Complete validation (tests + mutation + all checks)
 ```
 
 ### 5.2 Commit Standards
@@ -95,10 +96,10 @@ npm run mutation     # Mutation testing before releases
 - All tests must pass
 - Quality checks must pass (`npm run check:all`)
 
-### 5.3 Commit Standards
+### 5.3 Release Standards
 - Single feature per commit with clear messages
 - All tests must pass
-- Quality checks must pass (`npm run check:all`)
+- Complete validation must pass (`npm run validate:all`)
 
 ---
 
