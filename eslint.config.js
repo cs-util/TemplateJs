@@ -4,6 +4,7 @@ const js = require('@eslint/js');
 module.exports = [
   js.configs.recommended,
   {
+    ignores: ['coverage/**', 'reports/**', 'node_modules/**'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
