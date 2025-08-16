@@ -1,4 +1,4 @@
-const { Person } = require('./person');
+const Person = require('./person');
 
 describe('Person', () => {
   test('should create a person with name and age', () => {

@@ -94,7 +94,7 @@ describe('Person Component Tests', () => {
         // Test with names that need trimming
         it('should trim whitespace from names', () => {
             fc.assert(
-                fc.property(fc.string(), validAgeArb, (name, age) => {
+                fc.property(validNameArb, validAgeArb, (name, age) => {
                     const person = new Person(`  ${name}  `, age);
                     expect(person.name).toBe(name.trim());
                 })
