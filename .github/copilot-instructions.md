@@ -2,36 +2,35 @@
 
 ## New Feature Specification Requirements
 
-If (and only if) a user requests a new feature to be built/added, **DO NOT START IMPLEMENTATION IMMEDIATELY**. 
-Instead, follow this specification process:
+If (and only if) a user requests a new feature, **DO NOT START IMPLEMENTATION IMMEDIATELY**. 
+Follow this specification process:
 
 ### 1. Requirements Gathering
-- Ask **one question at a time** to develop a thorough, step-by-step specification
-- Each question should build on previous answers
-- Provide **numbered response suggestions** when possible to guide the conversation
-- Work iteratively to dig into every relevant detail
-- Continue until you have a complete understanding of the requirements
+- Ask **one question at a time** for thorough, step-by-step specification
+- Build each question on previous answers
+- Provide **numbered response suggestions** when possible
+- Work iteratively to understand all relevant details
+- Continue until requirements are complete
 
 ### 2. Specification Development
-Create a specification appropriate to the feature size:
+Create specification appropriate to feature size:
 
-**For major features**, cover:
-- **Functional requirements** - What the feature should do
-- **Architecture choices** - How it fits into the existing codebase
+**For major features**:
+- **Functional requirements** - What the feature does
+- **Architecture choices** - Integration with existing codebase
 - **Data handling** - Input/output, storage, validation
 - **Error handling** - Edge cases and failure scenarios
 - **Testing strategy** - Specify details on which test types will be needed (Unit tests, property-based tests, integration tests)
 - **UI/Performance considerations** - If applicable
 
-**For smaller changes**, focus on:
+**For smaller changes**:
 - What the change accomplishes
 - How it integrates with existing code
 - Key edge cases to handle
 
 ### 3. Final Specification Document
-At the end of the requirements gathering process, compile all findings into a comprehensive, 
-developer-ready specification .md file that includes all the above elements, so that implementation can begin immediately. 
-Place this .md file at an appropriate location next to the relevant code files.
+Compile findings into a comprehensive, developer-ready specification .md file with all above elements. 
+Place at appropriate location next to relevant code files.
 
 ### 4. Implementation Guidelines
 When implementing the feature, follow these strict rules:
@@ -46,7 +45,7 @@ When implementing the feature, follow these strict rules:
 
 # Testing and Quality Checks
 
-This repository has a comprehensive testing setup with the following key commands that should be used during development:
+This repository has a comprehensive testing setup with the following key commands:
 
 1. **During development:** Use `npm run test:watch` for continuous testing
 2. **Before committing:** Run `npm test` to ensure all tests pass, then run `npm run check:all` (Runs all quality checks: linting, duplication detection, circular dependency checks, and architectural boundaries)
