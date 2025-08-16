@@ -58,3 +58,15 @@ This repository has a comprehensive testing setup with the following key command
 - `*.property.test.js` - Property-based tests using fast-check library
 - All tests require 100% code coverage
 - Mutation testing ensures test quality with >80% mutation score
+
+## Test Failure Resolution
+
+When tests fail during development:
+
+1. **Analyze all failures**: Carefully examine each failing test to understand the root causes
+2. **Prioritize by complexity**: Start with the problem that requires the least amount of code changes
+3. **Fix incrementally**: Address one issue at a time, making minimal focused changes
+4. **Verify immediately**: After each fix, run the tests again to confirm that specific failure is resolved
+5. **Iterate**: Continue this process until all tests pass
+
+This approach minimizes the risk of introducing new issues and makes debugging more manageable.
