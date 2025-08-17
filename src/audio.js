@@ -31,11 +31,14 @@ export class AudioModule extends EventTarget {
         const { type, data } = event.data;
         
         switch (type) {
+          case 'next_chunk':
+            this.dispatchEvent(new CustomEvent('next_chunk', { detail: data }));
+            break;
           case 'chunk-complete':
             this.dispatchEvent(new CustomEvent('chunk-complete', { detail: data }));
             break;
-          case 'playback-ended':
-            this.dispatchEvent(new CustomEvent('playback-ended'));
+          case 'playback_ended':
+            this.dispatchEvent(new CustomEvent('playback_ended'));
             break;
           case 'buffer-underrun':
             this.dispatchEvent(new CustomEvent('buffer-underrun'));
@@ -49,6 +52,10 @@ export class AudioModule extends EventTarget {
       console.error('Failed to initialize AudioModule:', error);
       throw new Error(`Audio initialization failed: ${error.message}`);
     }
+  }
+
+  get port() {
+    return this.workletNode?.port;
   }
 
   async resumeAudioContext() {

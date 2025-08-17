@@ -7,6 +7,7 @@ export class TTSModule {
     this.useWebSpeech = false;
     this.isLoading = false;
     this.currentUtterance = null;
+    this.currentSplitter = null;
     this.sentences = [];
     this.currentSentenceIndex = 0;
     this.isPaused = false;
@@ -21,7 +22,7 @@ export class TTSModule {
   }
 
   initializeWebSpeech() {
-    if ('speechSynthesis' in window) {
+    if ('speechSynthesis' in window && speechSynthesis) {
       // Load voices
       this.loadVoices();
       
@@ -33,6 +34,8 @@ export class TTSModule {
   }
 
   loadVoices() {
+    if (!('speechSynthesis' in window) || !speechSynthesis) return;
+    
     const voices = speechSynthesis.getVoices();
     const voiceSelect = document.getElementById('tts-voice');
     
@@ -70,11 +73,29 @@ export class TTSModule {
     try {
       onProgress?.({ percentage: 0, text: 'Loading Kokoro TTS model...' });
       
-      // Simulate model loading for demonstration
-      await this._simulateModelLoad(onProgress);
+      // Check for WebGPU availability first
+      if (!navigator.gpu) {
+        throw new Error('WebGPU not available');
+      }
 
-      // For now, we'll fall back to Web Speech API
-      throw new Error('Kokoro model not available in this demo');
+      // Try to load Kokoro model
+      const { KokoroTTS } = await import('kokoro-js');
+      
+      this.kokoroModel = await KokoroTTS.from_pretrained("onnx-community/Kokoro-82M-v1.0-ONNX", {
+        dtype: "fp32",
+        device: "webgpu",
+        progress_callback: (item) => {
+          if (item.status === "progress" && item.file?.endsWith?.("onnx")) {
+            const progress = Math.round(item.progress * 100);
+            onProgress?.({ percentage: progress, text: `Loading Kokoro model: ${progress}%` });
+          }
+        },
+      });
+
+      onProgress?.({ percentage: 100, text: 'Kokoro TTS loaded successfully' });
+      this.useWebSpeech = false;
+      return this.kokoroModel;
+
     } catch (error) {
       console.warn('Kokoro TTS not available, falling back to Web Speech API:', error);
 
@@ -107,7 +128,7 @@ export class TTSModule {
   }
 
   async speak(text, options = {}) {
-    const { outputElement, onProgress } = options;
+    const { outputElement, onProgress, audioModule } = options;
 
     try {
       // Initialize TTS system
@@ -127,7 +148,7 @@ export class TTSModule {
       if (this.useWebSpeech) {
         await this.speakWithWebSpeech(outputElement);
       } else {
-        await this.speakWithKokoro();
+        await this.speakWithKokoro(audioModule, outputElement);
       }
 
     } catch (error) {
@@ -198,15 +219,148 @@ export class TTSModule {
     });
   }
 
-  async speakWithKokoro() {
-    // Placeholder for Kokoro implementation
-    // In a real implementation, this would:
-    // 1. Load the Kokoro ONNX model
-    // 2. Generate audio for each sentence
-    // 3. Stream audio to the AudioWorklet
-    // 4. Mark sentences as spoken based on audio playback progress
+  async speakWithKokoro(audioModule, outputElement) {
+    // Import Kokoro TTS modules
+    const { KokoroTTS, TextSplitterStream } = await import('kokoro-js');
     
-    throw new Error('Kokoro TTS not implemented in this demo');
+    // 0) Guards
+    if (!navigator.gpu) {
+      throw new Error("WebGPU is required for Kokoro TTS");
+    }
+    if (!audioModule?.port) {
+      throw new Error("Audio worklet not initialized");
+    }
+
+    // 1) Load TTS model (cache instance in class to avoid reloading)
+    if (!this.kokoroModel) {
+      this.kokoroModel = await KokoroTTS.from_pretrained("onnx-community/Kokoro-82M-v1.0-ONNX", {
+        dtype: "fp32",
+        device: "webgpu",
+        progress_callback: (item) => {
+          if (item.status === "progress" && item.file?.endsWith?.("onnx")) {
+            // Update progress for ONNX files only
+            const progress = Math.round(item.progress * 100);
+            console.log(`Loading Kokoro model: ${progress}%`);
+            // You can emit a progress event here if needed
+          }
+        },
+      });
+    }
+
+    // 2) Get text content and prepare sentences
+    const text = outputElement.textContent ?? "";
+    if (!text.trim()) {
+      throw new Error("No text content to speak");
+    }
+
+    // Split into sentences and render as spans for highlighting
+    this.sentences = this.splitIntoSentences(text);
+    this.displaySentences(outputElement);
+
+    // 3) Initialize tracking variables
+    this.pendingTexts = [];
+    this.currentSentenceIndex = 0;
+    this.isStopped = false;
+    this.isPaused = false;
+
+    // 4) Set up worklet message handler
+    const originalHandler = audioModule.port.onmessage;
+    const onWorkletMsg = (evt) => {
+      const data = evt?.data;
+      if (!data || typeof data !== "object") return;
+      
+      if (data.type === "next_chunk") {
+        this.advanceHighlight();
+      } else if (data.type === "playback_ended") {
+        this.finalizeUIState();
+      }
+      
+      // Call original handler if it exists
+      if (originalHandler) {
+        originalHandler(evt);
+      }
+    };
+    audioModule.port.onmessage = onWorkletMsg;
+
+    // 5) Create splitter and stream
+    this.currentSplitter = new TextSplitterStream();
+    const stream = this.kokoroModel.stream(this.currentSplitter);
+
+    // 6) Start consuming the stream
+    const consume = (async () => {
+      try {
+        for await (const chunk of stream) {
+          if (this.isStopped) break;
+          
+          if (chunk.audio && chunk.audio.audio) {
+            // Send Float32Array PCM data to worklet
+            audioModule.port.postMessage(chunk.audio.audio);
+          }
+          
+          if (chunk.text) {
+            this.pendingTexts.push(chunk.text);
+            this.tryResolveHighlights();
+          }
+        }
+      } catch (error) {
+        console.error('TTS streaming error:', error);
+        throw error;
+      }
+    })();
+
+    // 7) Feed text to splitter
+    try {
+      for (const sentence of this.sentences) {
+        if (this.isStopped) break;
+        this.currentSplitter.push(sentence + " ");
+      }
+      this.currentSplitter.close();
+
+      // Wait for stream to complete
+      await consume;
+      
+    } catch (error) {
+      console.error('Kokoro TTS failed:', error);
+      throw error;
+    } finally {
+      // Restore original message handler
+      audioModule.port.onmessage = originalHandler;
+      this.currentSplitter = null;
+    }
+  }
+
+  // Helper method to advance sentence highlighting
+  advanceHighlight() {
+    if (this.currentSentenceIndex < this.sentences.length) {
+      this.markSentenceSpoken(this.currentSentenceIndex);
+      this.currentSentenceIndex++;
+    }
+  }
+
+  // Helper method to finalize UI state when playback ends
+  finalizeUIState() {
+    this.isStopped = true;
+    this.isPaused = false;
+    this.currentSentenceIndex = 0;
+    
+    // Clear all highlights
+    document.querySelectorAll('.sentence.spoken').forEach(el => {
+      el.classList.remove('spoken');
+    });
+  }
+
+  // Helper method to try resolving pending text snippets to highlights
+  tryResolveHighlights() {
+    // For simplicity, we'll assume the chunks align with sentences
+    // In a more sophisticated implementation, you would normalize text
+    // and map character ranges as described in the reference
+    while (this.pendingTexts.length > 0 && this.currentSentenceIndex < this.sentences.length) {
+      const pendingText = this.pendingTexts.shift();
+      // Simple matching - in production you'd want more robust text alignment
+      if (pendingText && pendingText.trim()) {
+        // Text is available, highlight will be triggered by worklet next_chunk message
+      }
+    }
   }
 
   markSentenceSpoken(index) {
@@ -244,6 +398,16 @@ export class TTSModule {
     
     if (this.useWebSpeech) {
       speechSynthesis.cancel();
+    }
+    
+    // For Kokoro, stop the stream and clear worklet queue
+    if (this.currentSplitter) {
+      try {
+        this.currentSplitter.close?.();
+      } catch (e) {
+        // Ignore errors when closing splitter
+      }
+      this.currentSplitter = null;
     }
     
     // Clear highlights

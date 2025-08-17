@@ -24,21 +24,26 @@ class PCMQueueProcessor extends AudioWorkletProcessor {
   }
 
   handleMessage(data) {
-    const { type } = data;
-    
-    switch (type) {
-      case 'queue-audio':
-        this.queueAudio(data.audioData, data.metadata);
-        break;
-      case 'pause':
-        this.isPaused = true;
-        break;
-      case 'resume':
-        this.isPaused = false;
-        break;
-      case 'stop':
-        this.stop();
-        break;
+    if (typeof data === 'object' && data !== null) {
+      const { type } = data;
+      
+      switch (type) {
+        case 'queue-audio':
+          this.queueAudio(data.audioData, data.metadata);
+          break;
+        case 'pause':
+          this.isPaused = true;
+          break;
+        case 'resume':
+          this.isPaused = false;
+          break;
+        case 'stop':
+          this.stop();
+          break;
+      }
+    } else if (data instanceof Float32Array) {
+      // Direct Float32Array data from Kokoro
+      this.queueAudio(data);
     }
   }
 
@@ -160,7 +165,7 @@ class PCMQueueProcessor extends AudioWorkletProcessor {
     const samplesPerChunk = sampleRate * 0.1; // Assuming 100ms chunks
     if (this.bufferPosition > 0 && this.bufferPosition % samplesPerChunk < samplesWritten) {
       this.port.postMessage({
-        type: 'chunk-complete',
+        type: 'next_chunk',
         data: {
           chunkIndex: Math.floor(this.bufferPosition / samplesPerChunk),
           timestamp: currentTime
@@ -174,7 +179,7 @@ class PCMQueueProcessor extends AudioWorkletProcessor {
   _maybeReportPlaybackEnded(wasPlaying) {
     if (wasPlaying && this.availableSamples === 0 && this.audioQueue.length === 0) {
       this.isPlaying = false;
-      this.port.postMessage({ type: 'playback-ended' });
+      this.port.postMessage({ type: 'playback_ended' });
     }
   }
 
