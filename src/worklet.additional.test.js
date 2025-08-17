@@ -34,6 +34,30 @@ describe('PCMQueueProcessor', () => {
     expect(postedMessages.some(m => m.type === 'chunk-queued')).toBe(true);
   });
 
+  test('queue invalid audio data path', () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    processor.queueAudio({ not: 'array' });
+    expect(consoleSpy).toHaveBeenCalled();
+    consoleSpy.mockRestore();
+  });
+
+  test('process with no samples triggers underrun message', () => {
+    // Ensure no queued audio but mark playing state
+    const out = [[new Float32Array(32)]];
+    // Force availableSamples to 1 to write then underrun
+    processor.availableSamples = 1;
+    processor.ringBuffer[0] = 0.5;
+    processor.process([], out);
+    expect(postedMessages.find(m => m.type === 'buffer-underrun')||{}).toBeDefined();
+  });
+
+  test('process while paused outputs silence', () => {
+    const out = [[new Float32Array(16)]];
+    processor.isPaused = true;
+    processor.process([], out);
+    expect(Array.from(out[0][0]).every(v => v === 0)).toBe(true);
+  });
+
   test('pause and stop reset state', () => {
     processor.handleMessage({ type: 'queue-audio', audioData: new Float32Array([0.1, 0.2]) });
     processor.handleMessage({ type: 'pause' });

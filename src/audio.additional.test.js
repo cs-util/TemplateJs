@@ -56,10 +56,62 @@ describe('AudioModule', () => {
     expect(instance.isPaused).toBe(false);
   });
 
+  test('queueAudio while paused stores then flushes', async () => {
+    await instance.initialize();
+    await instance.pause();
+    const initialQueueLen = instance.queue.length;
+    await instance.queueAudio(new Float32Array([0.2, 0.3]));
+    expect(instance.queue.length).toBe(initialQueueLen + 1);
+    await instance.resume();
+    // Queue should be flushed
+    expect(instance.queue.length).toBe(0);
+  });
+
+  test('event forwarding from worklet port', async () => {
+    await instance.initialize();
+    const events = [];
+  instance.addEventListener('next_chunk', () => events.push('next_chunk'));
+    instance.addEventListener('chunk-complete', () => events.push('chunk-complete'));
+    instance.addEventListener('playback_ended', () => events.push('playback_ended'));
+    instance.addEventListener('buffer-underrun', () => events.push('buffer-underrun'));
+    const port = instance.workletNode.port;
+    port.onmessage({ data: { type: 'next_chunk', data: {} } });
+    port.onmessage({ data: { type: 'chunk-complete', data: {} } });
+    port.onmessage({ data: { type: 'playback_ended' } });
+    port.onmessage({ data: { type: 'buffer-underrun' } });
+    expect(events).toEqual([
+      'next_chunk','chunk-complete','playback_ended','buffer-underrun'
+    ]);
+  });
+
+  test('initialize error path', async () => {
+    // Force failure on addModule
+    jest.resetModules();
+    const failingPort = { postMessage: jest.fn(), onmessage: null };
+    const failingWorkletNode = { port: failingPort, connect: jest.fn(), disconnect: jest.fn() };
+    global.AudioWorkletNode = jest.fn().mockImplementation(() => failingWorkletNode);
+    const mockContext = {
+      state: 'running',
+      audioWorklet: { addModule: jest.fn().mockRejectedValue(new Error('boom')) },
+      resume: jest.fn().mockResolvedValue(undefined),
+      close: jest.fn().mockResolvedValue(undefined),
+      destination: {}
+    };
+    global.AudioContext = jest.fn().mockImplementation(() => mockContext);
+    ({ AudioModule } = require('./audio.js'));
+    const inst = new AudioModule();
+    await expect(inst.initialize()).rejects.toThrow('Audio initialization failed');
+  });
+
   test('resume ignores if not paused', async () => {
     await instance.initialize();
     await instance.resume();
     // Should not throw
+  });
+
+  test('stop without initialization does nothing', () => {
+    const fresh = new AudioModule();
+    expect(() => fresh.stop()).not.toThrow();
   });
 
   test('destroy cleans resources', async () => {
@@ -68,5 +120,9 @@ describe('AudioModule', () => {
     expect(instance.audioContext).toBeNull();
     expect(instance.workletNode).toBeNull();
     expect(instance.isInitialized).toBe(false);
+  });
+
+  test('getBufferStatus returns placeholder', () => {
+    expect(instance.getBufferStatus()).toEqual({ length: 0, duration: 0 });
   });
 });

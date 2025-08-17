@@ -179,4 +179,144 @@ describe('AppController (app.js)', () => {
     await controller.detectDevice();
     expect(document.getElementById('device-status').textContent).toContain('unavailable');
   });
+
+  test('showError displays then hides message', () => {
+    jest.useFakeTimers();
+    window.app.showError('Problem occurred');
+    const container = document.getElementById('error-container');
+    expect(container.classList.contains('hidden')).toBe(false);
+    jest.advanceTimersByTime(5000);
+    expect(container.classList.contains('hidden')).toBe(true);
+    jest.useRealTimers();
+  });
+
+  test('generateText handles generation error path', async () => {
+    // Replace llm.generate to throw
+    const original = window.app.llm.generate;
+    window.app.llm.generate = jest.fn(async () => { throw new Error('boom'); });
+    const prompt = document.getElementById('llm-prompt');
+    prompt.value = 'Err path';
+    await window.app.generateText();
+    expect(document.getElementById('error-container').classList.contains('hidden')).toBe(false);
+    window.app.llm.generate = original;
+  });
+
+  test('playTTS handles speak error path', async () => {
+    const original = window.app.tts.speak;
+    window.app.tts.speak = jest.fn(async () => { throw new Error('tts fail'); });
+    const text = document.getElementById('tts-text');
+    text.value = 'Err path';
+    await window.app.playTTS();
+    expect(document.getElementById('error-container').classList.contains('hidden')).toBe(false);
+    window.app.tts.speak = original;
+  });
+
+  test('generateAndSpeak error during generation', async () => {
+    const original = window.app.llm.generate;
+    window.app.llm.generate = jest.fn(async () => { throw new Error('gen fail'); });
+    const prompt = document.getElementById('combined-prompt');
+    prompt.value = 'Err path';
+    await window.app.generateAndSpeak();
+    expect(document.getElementById('error-container').classList.contains('hidden')).toBe(false);
+    window.app.llm.generate = original;
+  });
+
+  test('detectDevice error branch (adapter throw)', async () => {
+    navigator.gpu = { requestAdapter: jest.fn().mockRejectedValue(new Error('fail')) };
+    buildDOM();
+    const controller = new AppController();
+    await controller.detectDevice();
+    expect(document.getElementById('device-status').textContent).toContain('error');
+  });
+
+  test('updateTTSControls is callable (no-op)', () => {
+    expect(() => window.app.updateTTSControls()).not.toThrow();
+  });
+
+  test('generateText early return when already generating', async () => {
+    window.app.isGenerating = true;
+    const spy = jest.spyOn(window.app.llm, 'generate');
+    await window.app.generateText();
+    expect(spy).not.toHaveBeenCalled();
+    window.app.isGenerating = false;
+  });
+
+  test('generateAndSpeak early return when busy', async () => {
+    window.app.isGenerating = true;
+    const spy = jest.spyOn(window.app.llm, 'generate');
+    await window.app.generateAndSpeak();
+    expect(spy).not.toHaveBeenCalled();
+    window.app.isGenerating = false;
+  });
+
+  test('playTTS stops existing speech first', async () => {
+    window.app.isSpeaking = true;
+    const stopSpy = jest.spyOn(window.app, 'stopTTS');
+    const text = document.getElementById('tts-text');
+    text.value = 'Re-speak';
+    await window.app.playTTS();
+    expect(stopSpy).toHaveBeenCalled();
+  });
+
+  test('pauseTTS and resumeTTS call underlying modules', () => {
+    const pauseSpy = jest.spyOn(window.app.tts, 'pause');
+    const resumeSpy = jest.spyOn(window.app.tts, 'resume');
+    window.app.pauseTTS();
+    window.app.resumeTTS();
+    expect(pauseSpy).toHaveBeenCalled();
+    expect(resumeSpy).toHaveBeenCalled();
+  });
+
+  test('stopTTS sets flags and calls underlying modules', () => {
+    const stopSpy = jest.spyOn(window.app.tts, 'stop');
+    window.app.isSpeaking = true;
+    window.app.stopTTS();
+    expect(stopSpy).toHaveBeenCalled();
+    expect(window.app.isSpeaking).toBe(false);
+  });
+
+  test('event listeners wiring invokes handlers', async () => {
+    const generateBtn = document.getElementById('generate-btn');
+    document.getElementById('llm-prompt').value = 'Prompt via click';
+    generateBtn.click();
+    // Allow async generate
+    await Promise.resolve();
+
+    const ttsText = document.getElementById('tts-text');
+    ttsText.value = 'Play via click';
+    document.getElementById('tts-play').click();
+    await Promise.resolve();
+
+    document.getElementById('tts-pause').click();
+    document.getElementById('tts-resume').click();
+    document.getElementById('tts-stop').click();
+
+    // Rate/pitch change
+    const rate = document.getElementById('tts-rate');
+    rate.value = '1.2';
+    rate.dispatchEvent(new Event('input'));
+    const pitch = document.getElementById('tts-pitch');
+    pitch.value = '0.8';
+    pitch.dispatchEvent(new Event('input'));
+    const voice = document.getElementById('tts-voice');
+    voice.value = 'voice1';
+    voice.dispatchEvent(new Event('change'));
+
+    // Combined generate & speak
+    document.getElementById('combined-prompt').value = 'Combined via click';
+    document.getElementById('generate-speak-btn').click();
+    await Promise.resolve();
+
+    document.getElementById('combined-pause').click();
+    document.getElementById('combined-stop').click();
+
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.click());
+
+    expect(window.app.llm.generate).toHaveBeenCalled();
+    expect(window.app.tts.speak).toHaveBeenCalled();
+    expect(window.app.tts.setRate).toHaveBeenCalledWith(1.2);
+    expect(window.app.tts.setPitch).toHaveBeenCalledWith(0.8);
+    expect(window.app.tts.setVoice).toHaveBeenCalledWith('voice1');
+  });
 });
