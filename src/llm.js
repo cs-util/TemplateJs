@@ -1,5 +1,10 @@
 // Configuration
+// Primary model (ONNX format) – file set contains onnx/model*.onnx
+// Using the v3 transformers.js package already declared in package.json.
 const LLM_MODEL_ID = 'onnx-community/Qwen2.5-0.5B-Instruct-ONNX';
+
+// Local model base is read dynamically during environment configuration so tests
+// (or host pages) can set window.LOCAL_LLM_MODELS_BASE before first generate().
 
 export class LLMModule {
   constructor() {
@@ -10,18 +15,25 @@ export class LLMModule {
   }
 
   setupEnvironment() {
-    // Configure Transformers.js environment
+    // env config applied after dynamic import if not already available.
     if (typeof window !== 'undefined' && window.transformers) {
-      const { env } = window.transformers;
-      
-      // Enable browser caching for offline use
-      env.useBrowserCache = true;
-      
-      // Allow local models when serving from local server
-      env.allowRemoteModels = true;
-      env.allowLocalModels = true;
-      
-      // Optimize ONNX WASM performance
+      this._configureEnv(window.transformers.env);
+    }
+  }
+
+  _configureEnv(env) {
+    // Enable browser cache between sessions
+    env.useBrowserCache = true;
+    env.allowLocalModels = true;
+    // Allow remote models unless user explicitly sets local-only flag
+    const forceLocalOnly = (typeof window !== 'undefined' && window.LOCAL_LLM_LOCAL_ONLY) || false;
+    env.allowRemoteModels = !forceLocalOnly;
+    const base = (typeof window !== 'undefined' && window.LOCAL_LLM_MODELS_BASE) || null;
+    if (base) {
+      env.localModelPath = base.endsWith('/') ? base : `${base}/`;
+    }
+    // Optimize ONNX WASM threads (safe fallback 4)
+    if (env.backends?.onnx?.wasm) {
       env.backends.onnx.wasm.numThreads = navigator.hardwareConcurrency || 4;
     }
   }
@@ -54,23 +66,17 @@ export class LLMModule {
     this.isLoading = true;
 
     try {
-      // Dynamically import Transformers.js
+      // Dynamically import the installed v3 transformers.js package (preferred)
+      // Fallback: if import fails (should not in normal build), raise clear error.
       let transformers;
       try {
-        // Try to load from CDN
-        transformers = await import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/dist/transformers.min.js');
-      } catch {
-        // Fallback error handling
-        throw new Error('Failed to load Transformers.js library');
+        transformers = await import('@huggingface/transformers');
+      } catch (e) {
+        throw new Error('Failed to load @huggingface/transformers package – ensure dependency is installed.');
       }
 
-      const { pipeline, env } = transformers;
-      
-      // Configure environment
-      env.useBrowserCache = true;
-      env.allowRemoteModels = true;
-      env.allowLocalModels = true;
-      env.backends.onnx.wasm.numThreads = navigator.hardwareConcurrency || 4;
+      const { pipeline, env } = transformers; // v3 API
+      this._configureEnv(env);
 
       // Detect device
       this.device = await this.detectDevice();
@@ -80,12 +86,16 @@ export class LLMModule {
       
       this.pipeline = await pipeline('text-generation', LLM_MODEL_ID, {
         device: this.device,
+        // Let transformers.js choose correct model.onnx / model_quantized.onnx automatically.
         progress_callback: (progress) => {
-          const percentage = Math.round((progress.loaded / progress.total) * 100);
-          onProgress?.({ 
-            percentage, 
-            text: `Loading ${progress.file || 'model'}: ${percentage}%` 
-          });
+          // Some progress events may lack total; guard to avoid NaN.
+            const total = progress.total || progress.loaded || 1;
+            const loaded = progress.loaded || 0;
+            const percentage = Math.min(100, Math.max(0, Math.round((loaded / total) * 100)));
+            onProgress?.({
+              percentage,
+              text: `Loading ${progress.file || 'model'}: ${percentage}%`
+            });
         }
       });
 

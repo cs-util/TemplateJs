@@ -1,5 +1,6 @@
 module.exports = {
   rootDir: '../',
+  testPathIgnorePatterns: ['/node_modules/', '/.stryker-tmp/'],
   collectCoverage: true,
   coverageReporters: ["json", "lcov", "text", "clover"],
   coverageThreshold: {
