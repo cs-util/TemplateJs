@@ -3,20 +3,27 @@
 /**
  * Comprehensive Mutation Testing Report Generator
  * 
- * This script transforms Stryker's JSON mutation testing report into a comprehensive,
- * standalone markdown report that provides actionable insights for developers.
+ * This script transforms Stryker's raw JSON mutation testing reports into comprehensive,
+ * actionable markdown reports that developers can easily understand and act upon.
  * 
- * Key Improvements over the original:
- * - Executive summary with risk assessment
- * - Priority-based action items
- * - Detailed analysis with mutation operator insights
- * - Practical recommendations for fixing issues
- * - Educational content about mutation testing
- * - Professional formatting with emojis and tables
- * - Contextual explanations for all metrics
+ * Key Features:
+ * - Executive summary with risk assessment and clear recommendations
+ * - Priority-based action items (High/Medium/Low) for systematic improvement
+ * - Detailed analysis by mutator type with educational explanations
+ * - File-by-file breakdown highlighting specific areas needing attention
+ * - Educational appendix explaining mutation testing concepts and best practices
+ * - Comprehensive statistical analysis and trend identification
+ * - Pretty-printed JSON generation for detailed debugging and analysis
+ * 
+ * The script creates two outputs:
+ * 1. mutation-report.md - A comprehensive, standalone report for developers
+ * 2. mutation-report-pretty.json - Human-readable version of the raw JSON data
  * 
  * Usage: node mutation-report-to-md.js
- * Output: /mutation-testing/reports/mutation-report.md
+ * 
+ * Dependencies: Node.js built-in modules (fs, path)
+ * Input: mutation-testing/reports/mutation-report.json (from Stryker)
+ * Output: mutation-testing/reports/mutation-report.md & mutation-report-pretty.json
  */
 const fs = require('fs');
 const path = require('path');
@@ -29,7 +36,15 @@ function generateMarkdownReport() {
     return;
   }
 
-  const report = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+      // Read the JSON file
+    const jsonData = fs.readFileSync(jsonPath, 'utf8');
+    const report = JSON.parse(jsonData);
+    
+    // Create a pretty-printed version of the JSON for better human readability
+    const prettyJsonPath = jsonPath.replace('.json', '-pretty.json');
+    const prettyJsonData = JSON.stringify(report, null, 2);
+    fs.writeFileSync(prettyJsonPath, prettyJsonData);
+    console.log(`Pretty-printed JSON created at: ${prettyJsonPath}`);
   
   // Calculate overall metrics
   const overallStats = calculateOverallStats(report);
@@ -130,6 +145,8 @@ function generateHeader(report, stats) {
 > **Mutation Score:** ${scoreColor} **${stats.mutationScore.toFixed(1)}%**  
 > **Coverage Score:** ${stats.coverageScore.toFixed(1)}%  
 > **Total Files Analyzed:** ${Object.keys(report.files).length}
+
+> 💡 **Note:** A human-readable, pretty-printed version of the raw JSON data (that was used to produce this md file here) is available at \`mutation-report-pretty.json\` for detailed analysis and debugging.
 
 ---
 

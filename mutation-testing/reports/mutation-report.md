@@ -1,9 +1,11 @@
 # 🧬 Mutation Testing Report
 
-> **Generated:** 2025-08-17T07:57:06.816Z  
+> **Generated:** 2025-08-17T08:03:21.955Z  
 > **Mutation Score:** 🟢 **84.2%**  
 > **Coverage Score:** 17.5%  
 > **Total Files Analyzed:** 8
+
+> 💡 **Note:** A human-readable, pretty-printed version of the raw JSON data (that was used to produce this md file here) is available at `mutation-report-pretty.json` for detailed analysis and debugging.
 
 ---
 
