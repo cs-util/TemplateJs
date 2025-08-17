@@ -1,31 +1,157 @@
-# Mutation Testing Report
+# 🧬 Mutation Testing Report
 
-**Generated:** 2025-08-16T18:52:45.932Z
-**Mutation Score:** 90.00%
+> **Generated:** 2025-08-17T08:09:11.149Z  
+> **Mutation Score:** 🟢 **100.0%**  
+> **Coverage Score:** 97.8%  
+> **Total Files Analyzed:** 3
 
-## Summary
+> 💡 **Note:** A human-readable, pretty-printed version of the raw JSON data (that was used to produce this md file here) is available at `mutation-report-pretty.json` for detailed analysis and debugging.
 
-### src/index.js
+---
 
-- **Total Mutants:** 1
-- **Killed:** 0
-- **Survived:** 0
-- **No Coverage:** 1
+## 📊 Executive Summary
 
-**No Coverage Mutants:**
-- Line 1: StringLiteral - `""`
+✅ **Risk Level: LOW**
 
-### src/components/person.js
+| Metric | Count | Percentage |
+|--------|-------|------------|
+| **Total Mutants** | 45 | 100% |
+| **✅ Killed (Good)** | 44 | 97.8% |
+| **❌ Survived (Bad)** | 0 | 0.0% |
+| **🚫 No Coverage** | 1 | 2.2% |
+| **⏱️ Timeout** | 0 | 0.0% |
+| **💥 Error** | 0 | 0.0% |
 
-- **Total Mutants:** 39
-- **Killed:** 39
-- **Survived:** 0
-- **No Coverage:** 0
+### Quality Assessment
+- **Mutation Score:** 100.0% (Excellent)
+- **Test Coverage:** 97.8% (Excellent)
 
-### src/utils/utils.js
+---
 
-- **Total Mutants:** 5
-- **Killed:** 5
-- **Survived:** 0
-- **No Coverage:** 0
+## 🎯 Priority Actions
 
+### Immediate Actions Required:
+
+#### 🔴 HIGH PRIORITY (Immediate attention needed)
+
+**src/index.js**
+- Issues: ❌ Very low test coverage (0.0%), ❌ Poor mutation score (0.0%)
+- Recommended actions: Add comprehensive unit tests, Improve code coverage
+- Stats: 1/1 no coverage, 0 survived
+
+#### 🟢 LOW PRIORITY (Improve when possible)
+
+- 2 files have good test coverage and mutation scores
+
+---
+
+## 🔍 Detailed Analysis
+
+### Mutation Testing Metrics Explained
+
+**Mutation Score**: Percentage of mutants killed by tests (excluding no-coverage mutants)
+- 🟢 ≥80%: Excellent test quality
+- 🟡 60-79%: Good test quality  
+- 🔴 <60%: Tests need improvement
+
+**Coverage Score**: Percentage of code covered by tests
+- 🟢 ≥90%: Excellent coverage
+- 🟡 70-89%: Good coverage
+- 🔴 <70%: Poor coverage
+
+### Top Mutation Operators Analysis
+
+| Mutator | Total | Killed | Survived | No Coverage | Kill Rate |
+|---------|-------|--------|----------|-------------|-----------|
+| StringLiteral | 9 | 8 | 0 | 1 | 🟢 88.9% |
+| ConditionalExpression | 10 | 10 | 0 | 0 | 🟢 100.0% |
+| LogicalOperator | 2 | 2 | 0 | 0 | 🟢 100.0% |
+| BlockStatement | 11 | 11 | 0 | 0 | 🟢 100.0% |
+| EqualityOperator | 7 | 7 | 0 | 0 | 🟢 100.0% |
+| MethodExpression | 2 | 2 | 0 | 0 | 🟢 100.0% |
+| ArithmeticOperator | 3 | 3 | 0 | 0 | 🟢 100.0% |
+| ObjectLiteral | 1 | 1 | 0 | 0 | 🟢 100.0% |
+
+---
+
+## 📁 File-by-File Breakdown
+
+### 🔴 src/index.js
+
+**Overall Health**: 🔴 Needs Improvement | **Mutation Score**: 0.0% | **Coverage**: 0.0%
+
+| Status | Count | Percentage |
+|--------|-------|------------|
+| ✅ Killed | 0 | 0.0% |
+| ❌ Survived | 0 | 0.0% |
+| 🚫 No Coverage | 1 | 100.0% |
+| **Total** | **1** | **100%** |
+
+#### 🚫 Coverage Gaps Summary
+
+- **1 uncovered mutants** across 1 lines
+- **Most affected lines**: 1
+- **Common uncovered operations**: StringLiteral
+
+---
+
+### 🟢 src/components/person.js
+
+**Overall Health**: 🟢 Excellent | **Mutation Score**: 100.0% | **Coverage**: 100.0%
+
+| Status | Count | Percentage |
+|--------|-------|------------|
+| ✅ Killed | 39 | 100.0% |
+| ❌ Survived | 0 | 0.0% |
+| 🚫 No Coverage | 0 | 0.0% |
+| **Total** | **39** | **100%** |
+
+---
+
+### 🟢 src/utils/utils.js
+
+**Overall Health**: 🟢 Excellent | **Mutation Score**: 100.0% | **Coverage**: 100.0%
+
+| Status | Count | Percentage |
+|--------|-------|------------|
+| ✅ Killed | 5 | 100.0% |
+| ❌ Survived | 0 | 0.0% |
+| 🚫 No Coverage | 0 | 0.0% |
+| **Total** | **5** | **100%** |
+
+---
+
+## 📚 Appendix
+
+### Understanding Mutation Testing
+
+Mutation testing validates test quality by introducing small bugs (mutations) into your code:
+
+1. **🟢 Killed Mutants**: Tests detected the bug ✅ Good!
+2. **❌ Survived Mutants**: Tests missed the bug ❌ Need better tests  
+3. **🚫 No Coverage**: Code isn't tested ❌ Need more tests
+
+### Recommended Next Steps
+
+1. **Address High Priority Files**: Focus on files with low coverage or poor mutation scores
+2. **Improve Test Assertions**: Strengthen tests to catch survived mutants
+3. **Increase Coverage**: Add tests for uncovered code paths
+4. **Regular Monitoring**: Run mutation testing in CI/CD pipeline
+
+### Mutation Testing Best Practices
+
+- Target 80%+ mutation score for critical code
+- Focus on business logic and edge cases
+- Use mutation testing to guide test improvements
+- Don't aim for 100% - some mutants are equivalent
+
+### Additional Resources
+
+- [Mutation Testing Guide](https://stryker-mutator.io/docs/)
+- [Best Practices](https://blog.stryker-mutator.io/blog/)
+- [Interpreting Results](https://github.com/stryker-mutator/stryker/blob/master/docs/mutation-testing-elements/supported-mutators.md)
+
+---
+
+*Report generated by Stryker Mutation Testing Framework*  
+*For questions or issues, consult your development team or the Stryker documentation.*
