@@ -475,7 +475,9 @@ export class TTSModule {
     
     // Clear highlights
     document.querySelectorAll('.sentence.spoken').forEach(el => {
-      el.classList.remove('spoken');
+      if (el && el.classList) {
+        el.classList.remove('spoken');
+      }
     });
     
     this.currentSentenceIndex = 0;
