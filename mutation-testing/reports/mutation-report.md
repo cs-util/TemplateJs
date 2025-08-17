@@ -1,31 +1,962 @@
 # Mutation Testing Report
 
-**Generated:** 2025-08-16T18:52:45.932Z
+**Generated:** 2025-08-17T07:33:40.933Z
 **Mutation Score:** 90.00%
 
 ## Summary
 
-### src/index.js
+### src/app.js
 
-- **Total Mutants:** 1
+- **Total Mutants:** 258
 - **Killed:** 0
 - **Survived:** 0
-- **No Coverage:** 1
+- **No Coverage:** 258
 
 **No Coverage Mutants:**
-- Line 1: StringLiteral - `""`
+- Line 6: BlockStatement - `{}`
+- Line 11: StringLiteral - `""`
+- Line 12: BooleanLiteral - `true`
+- Line 13: BooleanLiteral - `true`
+- Line 20: BlockStatement - `{}`
+- Line 21: StringLiteral - `""`
+- Line 22: ConditionalExpression - `true`
+- Line 22: ConditionalExpression - `false`
+- Line 22: EqualityOperator - `navigator.gpu === undefined`
+- Line 24: ConditionalExpression - `true`
+- Line 24: ConditionalExpression - `false`
+- Line 24: BlockStatement - `{}`
+- Line 25: BlockStatement - `{}`
+- Line 27: ConditionalExpression - `true`
+- Line 27: ConditionalExpression - `false`
+- Line 27: BlockStatement - `{}`
+- Line 28: StringLiteral - `""`
+- Line 29: StringLiteral - `""`
+- Line 30: BlockStatement - `{}`
+- Line 31: StringLiteral - `""`
+- Line 32: StringLiteral - `""`
+- Line 34: BlockStatement - `{}`
+- Line 35: StringLiteral - `""`
+- Line 36: StringLiteral - `""`
+- Line 38: BlockStatement - `{}`
+- Line 39: StringLiteral - `""`
+- Line 40: StringLiteral - `""`
+- Line 44: BlockStatement - `{}`
+- Line 46: StringLiteral - `""`
+- Line 52: StringLiteral - `""`
+- Line 52: StringLiteral - `""`
+- Line 55: BlockStatement - `{}`
+- Line 57: StringLiteral - `""`
+- Line 57: BlockStatement - `{}`
+- Line 58: StringLiteral - `""`
+- Line 58: BlockStatement - `{}`
+- Line 64: StringLiteral - `""`
+- Line 64: StringLiteral - `""`
+- Line 64: BlockStatement - `{}`
+- Line 69: StringLiteral - `""`
+- Line 69: StringLiteral - `""`
+- Line 69: BlockStatement - `{}`
+- Line 72: StringLiteral - `""`
+- Line 72: StringLiteral - `""`
+- Line 72: BlockStatement - `{}`
+- Line 75: StringLiteral - `""`
+- Line 75: StringLiteral - `""`
+- Line 75: BlockStatement - `{}`
+- Line 78: StringLiteral - `""`
+- Line 78: StringLiteral - `""`
+- Line 78: BlockStatement - `{}`
+- Line 83: StringLiteral - `""`
+- Line 83: StringLiteral - `""`
+- Line 83: BlockStatement - `{}`
+- Line 84: StringLiteral - `""`
+- Line 87: StringLiteral - `""`
+- Line 87: StringLiteral - `""`
+- Line 87: BlockStatement - `{}`
+- Line 88: StringLiteral - `""`
+- Line 91: StringLiteral - `""`
+- Line 91: StringLiteral - `""`
+- Line 91: BlockStatement - `{}`
+- Line 96: StringLiteral - `""`
+- Line 96: StringLiteral - `""`
+- Line 96: BlockStatement - `{}`
+- Line 99: StringLiteral - `""`
+- Line 99: StringLiteral - `""`
+- Line 99: BlockStatement - `{}`
+- Line 102: StringLiteral - `""`
+- Line 102: StringLiteral - `""`
+- Line 102: BlockStatement - `{}`
+- Line 107: StringLiteral - `""`
+- Line 107: BlockStatement - `{}`
+- Line 110: StringLiteral - `""`
+- Line 110: BlockStatement - `{}`
+- Line 111: BooleanLiteral - `true`
+- Line 116: BlockStatement - `{}`
+- Line 118: StringLiteral - `""`
+- Line 118: BlockStatement - `{}`
+- Line 119: StringLiteral - `""`
+- Line 119: StringLiteral - `""`
+- Line 119: StringLiteral - `""`
+- Line 120: StringLiteral - `""`
+- Line 120: StringLiteral - `""`
+- Line 122: StringLiteral - ````
+- Line 122: StringLiteral - `""`
+- Line 122: StringLiteral - `""`
+- Line 122: StringLiteral - `""`
+- Line 123: StringLiteral - ````
+- Line 123: StringLiteral - `""`
+- Line 123: StringLiteral - `""`
+- Line 126: StringLiteral - `""`
+- Line 126: BlockStatement - `{}`
+- Line 127: StringLiteral - `""`
+- Line 129: StringLiteral - `""`
+- Line 134: StringLiteral - `""`
+- Line 134: BlockStatement - `{}`
+- Line 135: StringLiteral - `""`
+- Line 136: StringLiteral - `""`
+- Line 138: ConditionalExpression - `true`
+- Line 138: ConditionalExpression - `false`
+- Line 138: BlockStatement - `{}`
+- Line 139: StringLiteral - `""`
+- Line 141: BlockStatement - `{}`
+- Line 142: StringLiteral - `""`
+- Line 146: BlockStatement - `{}`
+- Line 147: StringLiteral - `""`
+- Line 148: StringLiteral - `""`
+- Line 150: StringLiteral - ````
+- Line 151: ConditionalExpression - `true`
+- Line 151: ConditionalExpression - `false`
+- Line 154: BlockStatement - `{}`
+- Line 155: ConditionalExpression - `true`
+- Line 155: ConditionalExpression - `false`
+- Line 157: MethodExpression - `document.getElementById('llm-prompt').value`
+- Line 157: StringLiteral - `""`
+- Line 158: BooleanLiteral - `prompt`
+- Line 158: ConditionalExpression - `true`
+- Line 158: ConditionalExpression - `false`
+- Line 158: BlockStatement - `{}`
+- Line 159: StringLiteral - `""`
+- Line 163: BooleanLiteral - `false`
+- Line 164: StringLiteral - `""`
+- Line 165: StringLiteral - `""`
+- Line 166: ObjectLiteral - `{}`
+- Line 167: StringLiteral - `""`
+- Line 168: StringLiteral - `""`
+- Line 171: StringLiteral - `""`
+- Line 172: BooleanLiteral - `false`
+- Line 173: StringLiteral - `"Stryker was here!"`
+- Line 175: BlockStatement - `{}`
+- Line 176: BooleanLiteral - `false`
+- Line 176: StringLiteral - `""`
+- Line 182: ObjectLiteral - `{}`
+- Line 183: BlockStatement - `{}`
+- Line 184: BooleanLiteral - `firstTokenTime`
+- Line 184: ConditionalExpression - `true`
+- Line 184: ConditionalExpression - `false`
+- Line 184: BlockStatement - `{}`
+- Line 186: ArithmeticOperator - `firstTokenTime + startTime`
+- Line 187: StringLiteral - ````
+- Line 190: UpdateOperator - `tokenCount--`
+- Line 191: AssignmentOperator - `output.textContent -= token`
+- Line 195: ConditionalExpression - `true`
+- Line 195: ConditionalExpression - `false`
+- Line 195: BlockStatement - `{}`
+- Line 196: ArithmeticOperator - `(Date.now() - firstTokenTime) * 1000`
+- Line 196: ArithmeticOperator - `Date.now() + firstTokenTime`
+- Line 197: ConditionalExpression - `true`
+- Line 197: ConditionalExpression - `false`
+- Line 197: EqualityOperator - `elapsed >= 0`
+- Line 197: EqualityOperator - `elapsed <= 0`
+- Line 197: ArithmeticOperator - `tokenCount * elapsed`
+- Line 197: StringLiteral - `""`
+- Line 198: StringLiteral - ````
+- Line 201: BlockStatement - `{}`
+- Line 206: StringLiteral - `""`
+- Line 206: StringLiteral - `""`
+- Line 207: StringLiteral - `""`
+- Line 207: StringLiteral - `""`
+- Line 209: BlockStatement - `{}`
+- Line 210: StringLiteral - ````
+- Line 211: StringLiteral - `""`
+- Line 212: BlockStatement - `{}`
+- Line 213: BooleanLiteral - `true`
+- Line 214: StringLiteral - `""`
+- Line 215: BooleanLiteral - `true`
+- Line 216: BooleanLiteral - `true`
+- Line 220: BlockStatement - `{}`
+- Line 221: MethodExpression - `document.getElementById('tts-text').value`
+- Line 221: StringLiteral - `""`
+- Line 222: BooleanLiteral - `text`
+- Line 222: ConditionalExpression - `true`
+- Line 222: ConditionalExpression - `false`
+- Line 222: BlockStatement - `{}`
+- Line 223: StringLiteral - `""`
+- Line 227: ConditionalExpression - `true`
+- Line 227: ConditionalExpression - `false`
+- Line 227: BlockStatement - `{}`
+- Line 231: BlockStatement - `{}`
+- Line 232: BooleanLiteral - `false`
+- Line 232: StringLiteral - `""`
+- Line 233: BooleanLiteral - `false`
+- Line 236: StringLiteral - `""`
+- Line 237: StringLiteral - `"Stryker was here!"`
+- Line 239: ObjectLiteral - `{}`
+- Line 242: BlockStatement - `{}`
+- Line 247: StringLiteral - `""`
+- Line 247: StringLiteral - `""`
+- Line 248: StringLiteral - `""`
+- Line 248: StringLiteral - `""`
+- Line 250: BlockStatement - `{}`
+- Line 251: StringLiteral - ````
+- Line 252: StringLiteral - `""`
+- Line 253: BooleanLiteral - `true`
+- Line 255: BlockStatement - `{}`
+- Line 256: BooleanLiteral - `true`
+- Line 260: BlockStatement - `{}`
+- Line 265: BlockStatement - `{}`
+- Line 270: BlockStatement - `{}`
+- Line 273: BooleanLiteral - `true`
+- Line 277: BlockStatement - `{}`
+- Line 278: MethodExpression - `document.getElementById('combined-prompt').value`
+- Line 278: StringLiteral - `""`
+- Line 279: BooleanLiteral - `prompt`
+- Line 279: ConditionalExpression - `true`
+- Line 279: ConditionalExpression - `false`
+- Line 279: BlockStatement - `{}`
+- Line 280: StringLiteral - `""`
+- Line 284: ConditionalExpression - `true`
+- Line 284: ConditionalExpression - `false`
+- Line 284: LogicalOperator - `this.isGenerating && this.isSpeaking`
+- Line 286: BooleanLiteral - `false`
+- Line 287: StringLiteral - `""`
+- Line 288: StringLiteral - `""`
+- Line 290: StringLiteral - `""`
+- Line 291: BooleanLiteral - `false`
+- Line 292: StringLiteral - `"Stryker was here!"`
+- Line 294: BlockStatement - `{}`
+- Line 295: BooleanLiteral - `false`
+- Line 295: StringLiteral - `""`
+- Line 298: StringLiteral - `"Stryker was here!"`
+- Line 299: ObjectLiteral - `{}`
+- Line 300: BlockStatement - `{}`
+- Line 301: AssignmentOperator - `generatedText -= token`
+- Line 305: BlockStatement - `{}`
+- Line 306: ArithmeticOperator - `progress.percentage / 0.7`
+- Line 306: StringLiteral - ````
+- Line 311: BooleanLiteral - `true`
+- Line 312: BooleanLiteral - `false`
+- Line 313: StringLiteral - `""`
+- Line 315: StringLiteral - `"Stryker was here!"`
+- Line 316: ObjectLiteral - `{}`
+- Line 319: BlockStatement - `{}`
+- Line 320: ArithmeticOperator - `70 - progress.percentage * 0.3`
+- Line 320: ArithmeticOperator - `progress.percentage / 0.3`
+- Line 320: StringLiteral - ````
+- Line 324: StringLiteral - `""`
+- Line 324: StringLiteral - `""`
+- Line 325: StringLiteral - `""`
+- Line 325: StringLiteral - `""`
+- Line 327: BlockStatement - `{}`
+- Line 328: StringLiteral - ````
+- Line 329: StringLiteral - `""`
+- Line 330: BlockStatement - `{}`
+- Line 331: BooleanLiteral - `true`
+- Line 332: BooleanLiteral - `true`
+- Line 333: StringLiteral - `""`
+- Line 334: BooleanLiteral - `true`
+- Line 335: BooleanLiteral - `true`
+- Line 344: BlockStatement - `{}`
+- Line 345: StringLiteral - `""`
+- Line 346: StringLiteral - `""`
+- Line 349: StringLiteral - `""`
+- Line 351: BlockStatement - `{}`
+- Line 352: StringLiteral - `""`
+- Line 358: StringLiteral - `""`
+- Line 358: BlockStatement - `{}`
 
-### src/components/person.js
+### src/audio.js
 
-- **Total Mutants:** 39
-- **Killed:** 39
+- **Total Mutants:** 89
+- **Killed:** 0
 - **Survived:** 0
+- **No Coverage:** 89
+
+**No Coverage Mutants:**
+- Line 2: BlockStatement - `{}`
+- Line 6: BooleanLiteral - `true`
+- Line 7: BooleanLiteral - `true`
+- Line 8: ArrayDeclaration - `["Stryker was here"]`
+- Line 11: BlockStatement - `{}`
+- Line 12: ConditionalExpression - `true`
+- Line 12: ConditionalExpression - `false`
+- Line 14: BlockStatement - `{}`
+- Line 16: ConditionalExpression - `true`
+- Line 16: ConditionalExpression - `false`
+- Line 16: LogicalOperator - `window.AudioContext && window.webkitAudioContext`
+- Line 16: ObjectLiteral - `{}`
+- Line 21: StringLiteral - `""`
+- Line 24: StringLiteral - `""`
+- Line 30: BlockStatement - `{}`
+- Line 34: ConditionalExpression - `case 'chunk-complete':`
+- Line 34: StringLiteral - `""`
+- Line 35: StringLiteral - `""`
+- Line 35: ObjectLiteral - `{}`
+- Line 37: ConditionalExpression - `case 'playback-ended':`
+- Line 37: StringLiteral - `""`
+- Line 38: StringLiteral - `""`
+- Line 40: ConditionalExpression - `case 'buffer-underrun':`
+- Line 40: StringLiteral - `""`
+- Line 41: StringLiteral - `""`
+- Line 46: BooleanLiteral - `false`
+- Line 48: BlockStatement - `{}`
+- Line 49: StringLiteral - `""`
+- Line 50: StringLiteral - ````
+- Line 54: BlockStatement - `{}`
+- Line 55: ConditionalExpression - `true`
+- Line 55: ConditionalExpression - `false`
+- Line 55: LogicalOperator - `this.audioContext || this.audioContext.state === 'suspended'`
+- Line 55: ConditionalExpression - `true`
+- Line 55: EqualityOperator - `this.audioContext.state !== 'suspended'`
+- Line 55: StringLiteral - `""`
+- Line 55: BlockStatement - `{}`
+- Line 60: BlockStatement - `{}`
+- Line 64: ConditionalExpression - `true`
+- Line 64: ConditionalExpression - `false`
+- Line 64: BlockStatement - `{}`
+- Line 66: ObjectLiteral - `{}`
+- Line 70: ObjectLiteral - `{}`
+- Line 71: StringLiteral - `""`
+- Line 77: BlockStatement - `{}`
+- Line 78: BooleanLiteral - `false`
+- Line 80: ConditionalExpression - `true`
+- Line 80: ConditionalExpression - `false`
+- Line 80: BlockStatement - `{}`
+- Line 81: ObjectLiteral - `{}`
+- Line 82: StringLiteral - `""`
+- Line 87: BlockStatement - `{}`
+- Line 88: BooleanLiteral - `this.isPaused`
+- Line 88: ConditionalExpression - `true`
+- Line 88: ConditionalExpression - `false`
+- Line 90: BooleanLiteral - `true`
+- Line 94: ConditionalExpression - `false`
+- Line 94: EqualityOperator - `this.queue.length >= 0`
+- Line 94: EqualityOperator - `this.queue.length <= 0`
+- Line 94: BlockStatement - `{}`
+- Line 96: ObjectLiteral - `{}`
+- Line 97: StringLiteral - `""`
+- Line 103: ConditionalExpression - `true`
+- Line 103: ConditionalExpression - `false`
+- Line 103: BlockStatement - `{}`
+- Line 104: ObjectLiteral - `{}`
+- Line 105: StringLiteral - `""`
+- Line 110: BlockStatement - `{}`
+- Line 111: BooleanLiteral - `true`
+- Line 112: ArrayDeclaration - `["Stryker was here"]`
+- Line 114: ConditionalExpression - `true`
+- Line 114: ConditionalExpression - `false`
+- Line 114: BlockStatement - `{}`
+- Line 115: ObjectLiteral - `{}`
+- Line 116: StringLiteral - `""`
+- Line 121: BlockStatement - `{}`
+- Line 122: BooleanLiteral - `this.workletNode`
+- Line 122: ConditionalExpression - `true`
+- Line 122: ConditionalExpression - `false`
+- Line 122: ObjectLiteral - `{}`
+- Line 126: ObjectLiteral - `{}`
+- Line 129: BlockStatement - `{}`
+- Line 132: ConditionalExpression - `true`
+- Line 132: ConditionalExpression - `false`
+- Line 132: BlockStatement - `{}`
+- Line 137: ConditionalExpression - `true`
+- Line 137: ConditionalExpression - `false`
+- Line 137: BlockStatement - `{}`
+- Line 142: BooleanLiteral - `true`
+
+### src/index.js
+
+- **Total Mutants:** 9
+- **Killed:** 4
+- **Survived:** 4
+- **No Coverage:** 1
+
+**Survived Mutants (needs attention):**
+- Line 16: StringLiteral - `""`
+- Line 4: StringLiteral - `""`
+- Line 3: StringLiteral - `""`
+- Line 23: StringLiteral - `""`
+
+**No Coverage Mutants:**
+- Line 20: StringLiteral - `""`
+
+### src/llm.js
+
+- **Total Mutants:** 147
+- **Killed:** 0
+- **Survived:** 0
+- **No Coverage:** 147
+
+**No Coverage Mutants:**
+- Line 2: StringLiteral - `""`
+- Line 5: BlockStatement - `{}`
+- Line 8: BooleanLiteral - `true`
+- Line 12: BlockStatement - `{}`
+- Line 14: ConditionalExpression - `true`
+- Line 14: ConditionalExpression - `false`
+- Line 14: LogicalOperator - `typeof window !== 'undefined' || window.transformers`
+- Line 14: ConditionalExpression - `true`
+- Line 14: EqualityOperator - `typeof window === 'undefined'`
+- Line 14: StringLiteral - `""`
+- Line 14: BlockStatement - `{}`
+- Line 18: BooleanLiteral - `false`
+- Line 21: BooleanLiteral - `false`
+- Line 22: BooleanLiteral - `false`
+- Line 25: ConditionalExpression - `true`
+- Line 25: ConditionalExpression - `false`
+- Line 25: LogicalOperator - `navigator.hardwareConcurrency && 4`
+- Line 29: BlockStatement - `{}`
+- Line 31: ConditionalExpression - `true`
+- Line 31: ConditionalExpression - `false`
+- Line 31: BlockStatement - `{}`
+- Line 32: BlockStatement - `{}`
+- Line 34: ConditionalExpression - `true`
+- Line 34: ConditionalExpression - `false`
+- Line 34: BlockStatement - `{}`
+- Line 35: StringLiteral - `""`
+- Line 37: BlockStatement - `{}`
+- Line 38: StringLiteral - `""`
+- Line 41: StringLiteral - `""`
+- Line 44: BlockStatement - `{}`
+- Line 45: ConditionalExpression - `true`
+- Line 45: ConditionalExpression - `false`
+- Line 46: ConditionalExpression - `true`
+- Line 46: ConditionalExpression - `false`
+- Line 46: BlockStatement - `{}`
+- Line 48: ConditionalExpression - `false`
+- Line 48: BlockStatement - `{}`
+- Line 49: ArrowFunction - `() => undefined`
+- Line 54: BooleanLiteral - `false`
+- Line 56: BlockStatement - `{}`
+- Line 59: BlockStatement - `{}`
+- Line 61: StringLiteral - `""`
+- Line 62: BlockStatement - `{}`
+- Line 64: StringLiteral - `""`
+- Line 70: BooleanLiteral - `false`
+- Line 71: BooleanLiteral - `false`
+- Line 72: BooleanLiteral - `false`
+- Line 73: ConditionalExpression - `true`
+- Line 73: ConditionalExpression - `false`
+- Line 73: LogicalOperator - `navigator.hardwareConcurrency && 4`
+- Line 79: OptionalChaining - `onProgress({
+  percentage: 0,
+  text: 'Initializing pipeline...'
+})`
+- Line 79: ObjectLiteral - `{}`
+- Line 79: StringLiteral - `""`
+- Line 81: StringLiteral - `""`
+- Line 81: ObjectLiteral - `{}`
+- Line 83: BlockStatement - `{}`
+- Line 84: ArithmeticOperator - `progress.loaded / progress.total / 100`
+- Line 84: ArithmeticOperator - `progress.loaded * progress.total`
+- Line 85: OptionalChaining - `onProgress({
+  percentage,
+  text: `Loading ${progress.file || 'model'}: ${percentage}%`
+})`
+- Line 85: ObjectLiteral - `{}`
+- Line 87: StringLiteral - ````
+- Line 87: ConditionalExpression - `true`
+- Line 87: ConditionalExpression - `false`
+- Line 87: LogicalOperator - `progress.file && 'model'`
+- Line 87: StringLiteral - `""`
+- Line 92: OptionalChaining - `onProgress({
+  percentage: 100,
+  text: 'Model loaded successfully'
+})`
+- Line 92: ObjectLiteral - `{}`
+- Line 92: StringLiteral - `""`
+- Line 95: BlockStatement - `{}`
+- Line 96: StringLiteral - `""`
+- Line 97: StringLiteral - ````
+- Line 98: BlockStatement - `{}`
+- Line 99: BooleanLiteral - `true`
+- Line 103: BlockStatement - `{}`
+- Line 110: BooleanLiteral - `false`
+- Line 113: BlockStatement - `{}`
+- Line 121: ObjectLiteral - `{}`
+- Line 126: BooleanLiteral - `true`
+- Line 131: ConditionalExpression - `true`
+- Line 131: ConditionalExpression - `false`
+- Line 131: LogicalOperator - `generator || typeof generator[Symbol.asyncIterator] === 'function'`
+- Line 131: ConditionalExpression - `true`
+- Line 131: EqualityOperator - `typeof generator[Symbol.asyncIterator] !== 'function'`
+- Line 131: StringLiteral - `""`
+- Line 131: BlockStatement - `{}`
+- Line 137: BlockStatement - `{}`
+- Line 138: StringLiteral - `""`
+- Line 139: StringLiteral - ````
+- Line 143: BlockStatement - `{}`
+- Line 144: StringLiteral - `"Stryker was here!"`
+- Line 145: BlockStatement - `{}`
+- Line 147: ConditionalExpression - `true`
+- Line 147: ConditionalExpression - `false`
+- Line 147: BlockStatement - `{}`
+- Line 148: AssignmentOperator - `fullText -= token`
+- Line 149: OptionalChaining - `onToken(token)`
+- Line 155: BlockStatement - `{}`
+- Line 157: ConditionalExpression - `true`
+- Line 157: ConditionalExpression - `false`
+- Line 157: LogicalOperator - `(result?.generated_text || result?.text) && ''`
+- Line 157: ConditionalExpression - `false`
+- Line 157: LogicalOperator - `result?.generated_text && result?.text`
+- Line 157: OptionalChaining - `result.generated_text`
+- Line 157: OptionalChaining - `result.text`
+- Line 157: StringLiteral - `"Stryker was here!"`
+- Line 160: ConditionalExpression - `true`
+- Line 160: ConditionalExpression - `false`
+- Line 160: LogicalOperator - `onToken || text`
+- Line 160: BlockStatement - `{}`
+- Line 162: BlockStatement - `{}`
+- Line 164: ArrowFunction - `() => undefined`
+- Line 171: BlockStatement - `{}`
+- Line 173: StringLiteral - ````
+- Line 181: BlockStatement - `{}`
+- Line 183: ConditionalExpression - `true`
+- Line 183: ConditionalExpression - `false`
+- Line 183: EqualityOperator - `typeof chunk !== 'string'`
+- Line 183: StringLiteral - `""`
+- Line 183: BlockStatement - `{}`
+- Line 186: ConditionalExpression - `true`
+- Line 186: ConditionalExpression - `false`
+- Line 186: LogicalOperator - `chunk || chunk.token`
+- Line 186: BlockStatement - `{}`
+- Line 187: ConditionalExpression - `true`
+- Line 187: ConditionalExpression - `false`
+- Line 187: LogicalOperator - `chunk.token.text && chunk.token`
+- Line 189: ConditionalExpression - `true`
+- Line 189: ConditionalExpression - `false`
+- Line 189: LogicalOperator - `chunk || chunk.generated_text`
+- Line 189: BlockStatement - `{}`
+- Line 192: StringLiteral - `"Stryker was here!"`
+- Line 195: BlockStatement - `{}`
+- Line 198: Regex - `/(\s)/`
+- Line 198: Regex - `/(\S+)/`
+- Line 199: ArrayDeclaration - `["Stryker was here"]`
+- Line 201: BlockStatement - `{}`
+- Line 202: ConditionalExpression - `true`
+- Line 202: ConditionalExpression - `false`
+- Line 202: EqualityOperator - `word.length >= 0`
+- Line 202: EqualityOperator - `word.length <= 0`
+- Line 202: BlockStatement - `{}`
+- Line 210: BlockStatement - `{}`
+- Line 214: BlockStatement - `{}`
+- Line 218: BlockStatement - `{}`
+- Line 219: ConditionalExpression - `true`
+- Line 219: ConditionalExpression - `false`
+- Line 219: EqualityOperator - `this.pipeline === null`
+
+### src/tts.js
+
+- **Total Mutants:** 189
+- **Killed:** 0
+- **Survived:** 0
+- **No Coverage:** 189
+
+**No Coverage Mutants:**
+- Line 2: BooleanLiteral - `false`
+- Line 5: BlockStatement - `{}`
+- Line 7: BooleanLiteral - `true`
+- Line 8: BooleanLiteral - `true`
+- Line 10: ArrayDeclaration - `["Stryker was here"]`
+- Line 12: BooleanLiteral - `true`
+- Line 13: BooleanLiteral - `true`
+- Line 23: BlockStatement - `{}`
+- Line 24: ConditionalExpression - `true`
+- Line 24: ConditionalExpression - `false`
+- Line 24: StringLiteral - `""`
+- Line 24: BlockStatement - `{}`
+- Line 29: StringLiteral - `""`
+- Line 29: BlockStatement - `{}`
+- Line 35: BlockStatement - `{}`
+- Line 37: StringLiteral - `""`
+- Line 39: ConditionalExpression - `true`
+- Line 39: ConditionalExpression - `false`
+- Line 39: LogicalOperator - `voiceSelect || voices.length > 0`
+- Line 39: ConditionalExpression - `true`
+- Line 39: EqualityOperator - `voices.length >= 0`
+- Line 39: EqualityOperator - `voices.length <= 0`
+- Line 39: BlockStatement - `{}`
+- Line 40: StringLiteral - `"Stryker was here!"`
+- Line 42: BlockStatement - `{}`
+- Line 43: StringLiteral - `""`
+- Line 45: StringLiteral - ````
+- Line 46: ConditionalExpression - `true`
+- Line 46: ConditionalExpression - `false`
+- Line 46: BlockStatement - `{}`
+- Line 47: BooleanLiteral - `false`
+- Line 53: ConditionalExpression - `true`
+- Line 53: ConditionalExpression - `false`
+- Line 53: LogicalOperator - `!this.selectedVoice || voices.length > 0`
+- Line 53: BooleanLiteral - `this.selectedVoice`
+- Line 53: ConditionalExpression - `true`
+- Line 53: EqualityOperator - `voices.length >= 0`
+- Line 53: EqualityOperator - `voices.length <= 0`
+- Line 53: BlockStatement - `{}`
+- Line 59: BlockStatement - `{}`
+- Line 60: ConditionalExpression - `true`
+- Line 60: ConditionalExpression - `false`
+- Line 61: ConditionalExpression - `true`
+- Line 61: ConditionalExpression - `false`
+- Line 61: BlockStatement - `{}`
+- Line 62: ConditionalExpression - `false`
+- Line 62: BlockStatement - `{}`
+- Line 63: ArrowFunction - `() => undefined`
+- Line 68: BooleanLiteral - `false`
+- Line 70: BlockStatement - `{}`
+- Line 71: OptionalChaining - `onProgress({
+  percentage: 0,
+  text: 'Loading Kokoro TTS model...'
+})`
+- Line 71: ObjectLiteral - `{}`
+- Line 71: StringLiteral - `""`
+- Line 77: StringLiteral - `""`
+- Line 78: BlockStatement - `{}`
+- Line 79: StringLiteral - `""`
+- Line 81: ConditionalExpression - `true`
+- Line 81: ConditionalExpression - `false`
+- Line 81: LogicalOperator - `FALLBACK_TO_WEB_SPEECH || 'speechSynthesis' in window`
+- Line 81: StringLiteral - `""`
+- Line 81: BlockStatement - `{}`
+- Line 82: BooleanLiteral - `false`
+- Line 83: OptionalChaining - `onProgress({
+  percentage: 100,
+  text: 'Using Web Speech API'
+})`
+- Line 83: ObjectLiteral - `{}`
+- Line 83: StringLiteral - `""`
+- Line 84: StringLiteral - `""`
+- Line 85: BlockStatement - `{}`
+- Line 86: StringLiteral - `""`
+- Line 88: BlockStatement - `{}`
+- Line 89: BooleanLiteral - `true`
+- Line 93: BlockStatement - `{}`
+- Line 94: ConditionalExpression - `false`
+- Line 94: EqualityOperator - `i < 100`
+- Line 94: EqualityOperator - `i > 100`
+- Line 94: AssignmentOperator - `i -= 10`
+- Line 94: BlockStatement - `{}`
+- Line 95: OptionalChaining - `onProgress({
+  percentage: i,
+  text: `Loading Kokoro model: ${i}%`
+})`
+- Line 95: ObjectLiteral - `{}`
+- Line 95: StringLiteral - ````
+- Line 96: ArrowFunction - `() => undefined`
+- Line 100: BlockStatement - `{}`
+- Line 102: MethodExpression - `text.split(/[.!?]+/).map(s => s.trim())`
+- Line 103: Regex - `/[.!?]/`
+- Line 103: Regex - `/[^.!?]+/`
+- Line 104: ArrowFunction - `() => undefined`
+- Line 104: MethodExpression - `s`
+- Line 105: ArrowFunction - `() => undefined`
+- Line 105: ConditionalExpression - `true`
+- Line 105: ConditionalExpression - `false`
+- Line 105: EqualityOperator - `s.length >= 0`
+- Line 105: EqualityOperator - `s.length <= 0`
+- Line 106: ArrowFunction - `() => undefined`
+- Line 106: StringLiteral - `""`
+- Line 109: BlockStatement - `{}`
+- Line 112: BlockStatement - `{}`
+- Line 119: BooleanLiteral - `true`
+- Line 120: BooleanLiteral - `true`
+- Line 123: ConditionalExpression - `true`
+- Line 123: ConditionalExpression - `false`
+- Line 123: BlockStatement - `{}`
+- Line 127: ConditionalExpression - `true`
+- Line 127: ConditionalExpression - `false`
+- Line 127: BlockStatement - `{}`
+- Line 129: BlockStatement - `{}`
+- Line 133: BlockStatement - `{}`
+- Line 134: StringLiteral - `""`
+- Line 139: BlockStatement - `{}`
+- Line 140: StringLiteral - `"Stryker was here!"`
+- Line 142: BlockStatement - `{}`
+- Line 143: StringLiteral - `""`
+- Line 144: StringLiteral - `""`
+- Line 145: StringLiteral - ````
+- Line 146: StringLiteral - `""`
+- Line 151: BlockStatement - `{}`
+- Line 152: BlockStatement - `{}`
+- Line 155: BlockStatement - `{}`
+- Line 156: ConditionalExpression - `true`
+- Line 156: ConditionalExpression - `false`
+- Line 156: LogicalOperator - `currentIndex >= this.sentences.length && this.isStopped`
+- Line 156: ConditionalExpression - `false`
+- Line 156: EqualityOperator - `currentIndex > this.sentences.length`
+- Line 156: EqualityOperator - `currentIndex < this.sentences.length`
+- Line 156: BlockStatement - `{}`
+- Line 161: ConditionalExpression - `true`
+- Line 161: ConditionalExpression - `false`
+- Line 161: BlockStatement - `{}`
+- Line 172: ConditionalExpression - `true`
+- Line 172: ConditionalExpression - `false`
+- Line 172: BlockStatement - `{}`
+- Line 178: BlockStatement - `{}`
+- Line 179: ConditionalExpression - `true`
+- Line 179: ConditionalExpression - `false`
+- Line 179: BlockStatement - `{}`
+- Line 184: BlockStatement - `{}`
+- Line 185: UpdateOperator - `currentIndex--`
+- Line 189: BlockStatement - `{}`
+- Line 190: StringLiteral - `""`
+- Line 191: StringLiteral - `""`
+- Line 201: BlockStatement - `{}`
+- Line 209: StringLiteral - `""`
+- Line 212: BlockStatement - `{}`
+- Line 213: StringLiteral - ````
+- Line 214: ConditionalExpression - `true`
+- Line 214: ConditionalExpression - `false`
+- Line 214: BlockStatement - `{}`
+- Line 216: StringLiteral - `""`
+- Line 216: BlockStatement - `{}`
+- Line 217: StringLiteral - `""`
+- Line 221: StringLiteral - `""`
+- Line 227: BlockStatement - `{}`
+- Line 228: ConditionalExpression - `true`
+- Line 228: ConditionalExpression - `false`
+- Line 228: BlockStatement - `{}`
+- Line 231: BooleanLiteral - `false`
+- Line 234: BlockStatement - `{}`
+- Line 235: ConditionalExpression - `true`
+- Line 235: ConditionalExpression - `false`
+- Line 235: BlockStatement - `{}`
+- Line 238: BooleanLiteral - `true`
+- Line 241: BlockStatement - `{}`
+- Line 242: BooleanLiteral - `false`
+- Line 243: BooleanLiteral - `true`
+- Line 245: ConditionalExpression - `true`
+- Line 245: ConditionalExpression - `false`
+- Line 245: BlockStatement - `{}`
+- Line 250: StringLiteral - `""`
+- Line 250: BlockStatement - `{}`
+- Line 251: StringLiteral - `""`
+- Line 257: BlockStatement - `{}`
+- Line 261: BlockStatement - `{}`
+- Line 265: BlockStatement - `{}`
+- Line 267: ConditionalExpression - `true`
+- Line 267: ConditionalExpression - `false`
+- Line 267: BlockStatement - `{}`
+- Line 272: BlockStatement - `{}`
+- Line 276: BlockStatement - `{}`
+- Line 277: StringLiteral - `""`
+- Line 280: BlockStatement - `{}`
+- Line 281: ConditionalExpression - `true`
+- Line 281: ConditionalExpression - `false`
+- Line 281: EqualityOperator - `this.kokoroModel === null`
+- Line 284: BlockStatement - `{}`
+- Line 285: ConditionalExpression - `true`
+- Line 285: ConditionalExpression - `false`
+- Line 285: StringLiteral - `""`
+- Line 286: ConditionalExpression - `true`
+- Line 286: ConditionalExpression - `false`
+- Line 286: StringLiteral - `""`
+- Line 287: StringLiteral - `""`
+
+### src/worklet.js
+
+- **Total Mutants:** 152
+- **Killed:** 0
+- **Survived:** 0
+- **No Coverage:** 152
+
+**No Coverage Mutants:**
+- Line 3: BlockStatement - `{}`
+- Line 7: ArrayDeclaration - `["Stryker was here"]`
+- Line 11: BooleanLiteral - `true`
+- Line 12: BooleanLiteral - `true`
+- Line 15: ArithmeticOperator - `sampleRate / 2`
+- Line 21: BlockStatement - `{}`
+- Line 26: BlockStatement - `{}`
+- Line 30: ConditionalExpression - `case 'queue-audio':`
+- Line 30: StringLiteral - `""`
+- Line 33: ConditionalExpression - `case 'pause':`
+- Line 33: StringLiteral - `""`
+- Line 34: BooleanLiteral - `false`
+- Line 36: ConditionalExpression - `case 'resume':`
+- Line 36: StringLiteral - `""`
+- Line 37: BooleanLiteral - `true`
+- Line 39: ConditionalExpression - `case 'stop':`
+- Line 39: StringLiteral - `""`
+- Line 45: BlockStatement - `{}`
+- Line 48: ConditionalExpression - `true`
+- Line 48: ConditionalExpression - `false`
+- Line 48: BlockStatement - `{}`
+- Line 50: ConditionalExpression - `true`
+- Line 50: ConditionalExpression - `false`
+- Line 50: BlockStatement - `{}`
+- Line 52: BlockStatement - `{}`
+- Line 53: StringLiteral - `""`
+- Line 57: ObjectLiteral - `{}`
+- Line 59: ObjectLiteral - `{}`
+- Line 61: UpdateOperator - `this.chunkIndex--`
+- Line 69: BlockStatement - `{}`
+- Line 70: ConditionalExpression - `false`
+- Line 70: LogicalOperator - `this.audioQueue.length > 0 || this.availableSamples < this.ringBuffer.length * 0.8`
+- Line 70: ConditionalExpression - `true`
+- Line 70: EqualityOperator - `this.audioQueue.length >= 0`
+- Line 70: EqualityOperator - `this.audioQueue.length <= 0`
+- Line 70: ConditionalExpression - `true`
+- Line 70: EqualityOperator - `this.availableSamples <= this.ringBuffer.length * 0.8`
+- Line 70: EqualityOperator - `this.availableSamples >= this.ringBuffer.length * 0.8`
+- Line 70: ArithmeticOperator - `this.ringBuffer.length / 0.8`
+- Line 70: BlockStatement - `{}`
+- Line 74: ConditionalExpression - `false`
+- Line 74: EqualityOperator - `i <= data.length`
+- Line 74: EqualityOperator - `i >= data.length`
+- Line 74: UpdateOperator - `i--`
+- Line 74: BlockStatement - `{}`
+- Line 76: ArithmeticOperator - `(this.writePosition + 1) * this.ringBuffer.length`
+- Line 76: ArithmeticOperator - `this.writePosition - 1`
+- Line 77: UpdateOperator - `this.availableSamples--`
+- Line 80: ConditionalExpression - `true`
+- Line 80: ConditionalExpression - `false`
+- Line 80: EqualityOperator - `this.availableSamples > this.ringBuffer.length`
+- Line 80: EqualityOperator - `this.availableSamples < this.ringBuffer.length`
+- Line 80: BlockStatement - `{}`
+- Line 86: ObjectLiteral - `{}`
+- Line 87: StringLiteral - `""`
+- Line 93: BlockStatement - `{}`
+- Line 94: ArrayDeclaration - `["Stryker was here"]`
+- Line 97: BooleanLiteral - `true`
+- Line 98: BooleanLiteral - `true`
+- Line 105: BlockStatement - `{}`
+- Line 108: BooleanLiteral - `this._validOutput(output)`
+- Line 108: ConditionalExpression - `true`
+- Line 108: ConditionalExpression - `false`
+- Line 108: BooleanLiteral - `false`
+- Line 113: ConditionalExpression - `true`
+- Line 113: ConditionalExpression - `false`
+- Line 113: LogicalOperator - `this.isPaused && this.availableSamples === 0`
+- Line 113: ConditionalExpression - `false`
+- Line 113: EqualityOperator - `this.availableSamples !== 0`
+- Line 113: BlockStatement - `{}`
+- Line 115: BooleanLiteral - `false`
+- Line 125: BooleanLiteral - `false`
+- Line 128: BlockStatement - `{}`
+- Line 129: ConditionalExpression - `true`
+- Line 129: ConditionalExpression - `false`
+- Line 129: LogicalOperator - `output || output.length > 0`
+- Line 129: ConditionalExpression - `true`
+- Line 129: EqualityOperator - `output.length >= 0`
+- Line 129: EqualityOperator - `output.length <= 0`
+- Line 132: BlockStatement - `{}`
+- Line 135: BooleanLiteral - `false`
+- Line 137: ConditionalExpression - `false`
+- Line 137: EqualityOperator - `i <= frames`
+- Line 137: EqualityOperator - `i >= frames`
+- Line 137: UpdateOperator - `i--`
+- Line 137: BlockStatement - `{}`
+- Line 138: ConditionalExpression - `true`
+- Line 138: ConditionalExpression - `false`
+- Line 138: EqualityOperator - `this.availableSamples >= 0`
+- Line 138: EqualityOperator - `this.availableSamples <= 0`
+- Line 138: BlockStatement - `{}`
+- Line 140: ArithmeticOperator - `(this.readPosition + 1) * this.ringBuffer.length`
+- Line 140: ArithmeticOperator - `this.readPosition - 1`
+- Line 141: UpdateOperator - `this.availableSamples++`
+- Line 142: UpdateOperator - `samplesWritten--`
+- Line 143: BlockStatement - `{}`
+- Line 148: ObjectLiteral - `{}`
+- Line 151: BlockStatement - `{}`
+- Line 152: ConditionalExpression - `true`
+- Line 152: ConditionalExpression - `false`
+- Line 152: EqualityOperator - `this.availableSamples <= this.ringBuffer.length * 0.3`
+- Line 152: EqualityOperator - `this.availableSamples >= this.ringBuffer.length * 0.3`
+- Line 152: ArithmeticOperator - `this.ringBuffer.length / 0.3`
+- Line 152: BlockStatement - `{}`
+- Line 157: BlockStatement - `{}`
+- Line 158: ConditionalExpression - `true`
+- Line 158: ConditionalExpression - `false`
+- Line 158: EqualityOperator - `samplesWritten < 0`
+- Line 158: EqualityOperator - `samplesWritten > 0`
+- Line 160: ArithmeticOperator - `sampleRate / 0.1`
+- Line 161: ConditionalExpression - `true`
+- Line 161: ConditionalExpression - `false`
+- Line 161: LogicalOperator - `this.bufferPosition > 0 || this.bufferPosition % samplesPerChunk < samplesWritten`
+- Line 161: ConditionalExpression - `true`
+- Line 161: EqualityOperator - `this.bufferPosition >= 0`
+- Line 161: EqualityOperator - `this.bufferPosition <= 0`
+- Line 161: ConditionalExpression - `true`
+- Line 161: EqualityOperator - `this.bufferPosition % samplesPerChunk <= samplesWritten`
+- Line 161: EqualityOperator - `this.bufferPosition % samplesPerChunk >= samplesWritten`
+- Line 161: ArithmeticOperator - `this.bufferPosition * samplesPerChunk`
+- Line 161: BlockStatement - `{}`
+- Line 162: ObjectLiteral - `{}`
+- Line 163: StringLiteral - `""`
+- Line 164: ObjectLiteral - `{}`
+- Line 165: ArithmeticOperator - `this.bufferPosition * samplesPerChunk`
+- Line 171: AssignmentOperator - `this.bufferPosition -= samplesWritten`
+- Line 174: BlockStatement - `{}`
+- Line 175: ConditionalExpression - `true`
+- Line 175: ConditionalExpression - `false`
+- Line 175: LogicalOperator - `wasPlaying && this.availableSamples === 0 || this.audioQueue.length === 0`
+- Line 175: ConditionalExpression - `true`
+- Line 175: LogicalOperator - `wasPlaying || this.availableSamples === 0`
+- Line 175: ConditionalExpression - `true`
+- Line 175: EqualityOperator - `this.availableSamples !== 0`
+- Line 175: ConditionalExpression - `true`
+- Line 175: EqualityOperator - `this.audioQueue.length !== 0`
+- Line 175: BlockStatement - `{}`
+- Line 176: BooleanLiteral - `true`
+- Line 177: ObjectLiteral - `{}`
+- Line 177: StringLiteral - `""`
+- Line 181: BlockStatement - `{}`
+- Line 182: ConditionalExpression - `true`
+- Line 182: ConditionalExpression - `false`
+- Line 182: LogicalOperator - `samplesWritten < framesToProcess || this.isPlaying`
+- Line 182: ConditionalExpression - `true`
+- Line 182: EqualityOperator - `samplesWritten <= framesToProcess`
+- Line 182: EqualityOperator - `samplesWritten >= framesToProcess`
+- Line 182: BlockStatement - `{}`
+- Line 183: ObjectLiteral - `{}`
+- Line 184: StringLiteral - `""`
+- Line 185: ObjectLiteral - `{}`
+- Line 192: StringLiteral - `""`
+
+### src/components/audio-processor.js
+
+- **Total Mutants:** 40
+- **Killed:** 36
+- **Survived:** 3
 - **No Coverage:** 0
 
-### src/utils/utils.js
+**Survived Mutants (needs attention):**
+- Line 40: ConditionalExpression - `false`
+- Line 40: BlockStatement - `{}`
+- Line 48: EqualityOperator - `i <= newLength`
 
-- **Total Mutants:** 5
-- **Killed:** 5
-- **Survived:** 0
+### src/utils/text-processing.js
+
+- **Total Mutants:** 129
+- **Killed:** 109
+- **Survived:** 20
 - **No Coverage:** 0
+
+**Survived Mutants (needs attention):**
+- Line 3: ConditionalExpression - `false`
+- Line 7: MethodExpression - `text`
+- Line 7: Regex - `/\s/`
+- Line 12: ConditionalExpression - `false`
+- Line 12: EqualityOperator - `currentChunk.join(' ').length + word.length + 1 < chunkSize`
+- Line 12: EqualityOperator - `currentChunk.join(' ').length + word.length + 1 > chunkSize`
+- Line 15: ConditionalExpression - `false`
+- Line 16: StringLiteral - `""`
+- Line 17: ArrayDeclaration - `[]`
+- Line 34: Regex - `/[.!?]/`
+- Line 50: LogicalOperator - `!text && typeof text !== 'string'`
+- Line 50: ConditionalExpression - `false`
+- Line 57: Regex - `/([.!?])\S*([A-Z])/g`
+- Line 61: LogicalOperator - `!text && typeof text !== 'string'`
+- Line 61: ConditionalExpression - `false`
+- Line 66: ArithmeticOperator - `text.length * 4`
+- Line 71: Regex - `/(\s)/`
+- Line 71: Regex - `/(\S+)/`
+- Line 76: EqualityOperator - `seconds <= 0`
+- Line 98: ConditionalExpression - `false`
 

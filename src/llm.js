@@ -117,7 +117,7 @@ export class LLMModule {
       // Format prompt for instruction-tuned model
       const formattedPrompt = this.formatPrompt(prompt);
 
-      // Generate with streaming
+      // Generate with streaming-enabled pipeline
       const generator = await pipeline(formattedPrompt, {
         max_new_tokens: maxNewTokens,
         temperature: temperature,
@@ -127,39 +127,45 @@ export class LLMModule {
         streamer_callback: onToken
       });
 
-      // Handle both streaming and non-streaming responses
+      // Delegate handling to helpers for clarity (streaming vs non-streaming)
       if (generator && typeof generator[Symbol.asyncIterator] === 'function') {
-        // Streaming response
-        let fullText = '';
-        for await (const chunk of generator) {
-          const token = this.extractToken(chunk);
-          if (token) {
-            fullText += token;
-            onToken?.(token);
-          }
-        }
-        return fullText;
-      } else {
-        // Non-streaming response
-        const result = Array.isArray(generator) ? generator[0] : generator;
-        const text = result.generated_text || result.text || '';
-        
-        // Simulate streaming for consistency
-        if (onToken && text) {
-          const tokens = this.tokenizeForDisplay(text);
-          for (const token of tokens) {
-            onToken(token);
-            await new Promise(resolve => setTimeout(resolve, 50)); // Small delay for streaming effect
-          }
-        }
-        
-        return text;
+        return await this._handleStreamingGenerator(generator, onToken);
       }
+
+      return await this._handleNonStreamingResult(generator, onToken);
 
     } catch (error) {
       console.error('Generation failed:', error);
       throw new Error(`Text generation failed: ${error.message}`);
     }
+  }
+
+  async _handleStreamingGenerator(generator, onToken) {
+    let fullText = '';
+    for await (const chunk of generator) {
+      const token = this.extractToken(chunk);
+      if (token) {
+        fullText += token;
+        onToken?.(token);
+      }
+    }
+    return fullText;
+  }
+
+  async _handleNonStreamingResult(generator, onToken) {
+    const result = Array.isArray(generator) ? generator[0] : generator;
+    const text = result?.generated_text || result?.text || '';
+
+    // Simulate streaming for consistency
+    if (onToken && text) {
+      const tokens = this.tokenizeForDisplay(text);
+      for (const token of tokens) {
+        onToken(token);
+        await new Promise(resolve => setTimeout(resolve, 50));
+      }
+    }
+
+    return text;
   }
 
   formatPrompt(prompt) {

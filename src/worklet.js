@@ -104,77 +104,87 @@ class PCMQueueProcessor extends AudioWorkletProcessor {
 
   process(inputs, outputs) {
     const output = outputs[0];
-    
-    if (!output || output.length === 0) {
-      return true;
-    }
+
+    if (!this._validOutput(output)) return true;
 
     const outputChannel = output[0];
     const framesToProcess = outputChannel.length;
-    
+
     if (this.isPaused || this.availableSamples === 0) {
-      // Output silence
       outputChannel.fill(0);
       return true;
     }
 
+    const { samplesWritten, wasPlaying } = this._writeOutput(outputChannel, framesToProcess);
+
+    this._maybeRefillBuffer();
+    this._maybeReportChunkCompletion(samplesWritten);
+    this._maybeReportPlaybackEnded(wasPlaying);
+    this._maybeReportUnderrun(samplesWritten, framesToProcess);
+
+    return true;
+  }
+
+  _validOutput(output) {
+    return output && output.length > 0;
+  }
+
+  _writeOutput(outputChannel, frames) {
     let samplesWritten = 0;
-    let wasPlaying = this.isPlaying;
+    const wasPlaying = this.isPlaying;
     this.isPlaying = true;
 
-    // Fill output buffer from ring buffer
-    for (let i = 0; i < framesToProcess; i++) {
+    for (let i = 0; i < frames; i++) {
       if (this.availableSamples > 0) {
         outputChannel[i] = this.ringBuffer[this.readPosition];
         this.readPosition = (this.readPosition + 1) % this.ringBuffer.length;
         this.availableSamples--;
         samplesWritten++;
       } else {
-        // No more audio data, fill with silence
         outputChannel[i] = 0;
       }
     }
 
-    // Check if we need to refill the buffer
+    return { samplesWritten, wasPlaying };
+  }
+
+  _maybeRefillBuffer() {
     if (this.availableSamples < this.ringBuffer.length * 0.3) {
       this.fillRingBuffer();
     }
+  }
 
-    // Report chunk completion based on samples consumed
-    if (samplesWritten > 0) {
-      const samplesPerChunk = sampleRate * 0.1; // Assuming 100ms chunks
-      if (this.bufferPosition > 0 && this.bufferPosition % samplesPerChunk < samplesWritten) {
-        this.port.postMessage({
-          type: 'chunk-complete',
-          data: {
-            chunkIndex: Math.floor(this.bufferPosition / samplesPerChunk),
-            timestamp: currentTime
-          }
-        });
-      }
-      this.bufferPosition += samplesWritten;
-    }
+  _maybeReportChunkCompletion(samplesWritten) {
+    if (samplesWritten <= 0) return;
 
-    // Check if playback has ended
-    if (wasPlaying && this.availableSamples === 0 && this.audioQueue.length === 0) {
-      this.isPlaying = false;
+    const samplesPerChunk = sampleRate * 0.1; // Assuming 100ms chunks
+    if (this.bufferPosition > 0 && this.bufferPosition % samplesPerChunk < samplesWritten) {
       this.port.postMessage({
-        type: 'playback-ended'
-      });
-    }
-
-    // Report buffer underrun if we couldn't fill the entire output buffer
-    if (samplesWritten < framesToProcess && this.isPlaying) {
-      this.port.postMessage({
-        type: 'buffer-underrun',
+        type: 'chunk-complete',
         data: {
-          requested: framesToProcess,
-          available: samplesWritten
+          chunkIndex: Math.floor(this.bufferPosition / samplesPerChunk),
+          timestamp: currentTime
         }
       });
     }
 
-    return true;
+    this.bufferPosition += samplesWritten;
+  }
+
+  _maybeReportPlaybackEnded(wasPlaying) {
+    if (wasPlaying && this.availableSamples === 0 && this.audioQueue.length === 0) {
+      this.isPlaying = false;
+      this.port.postMessage({ type: 'playback-ended' });
+    }
+  }
+
+  _maybeReportUnderrun(samplesWritten, framesToProcess) {
+    if (samplesWritten < framesToProcess && this.isPlaying) {
+      this.port.postMessage({
+        type: 'buffer-underrun',
+        data: { requested: framesToProcess, available: samplesWritten }
+      });
+    }
   }
 }
 

@@ -70,21 +70,14 @@ export class TTSModule {
     try {
       onProgress?.({ percentage: 0, text: 'Loading Kokoro TTS model...' });
       
-      // Try to load Kokoro (this is a placeholder since Kokoro JS wrapper may not be available)
-      // In a real implementation, you would load the actual Kokoro model
-      
       // Simulate model loading for demonstration
-      for (let i = 0; i <= 100; i += 10) {
-        onProgress?.({ percentage: i, text: `Loading Kokoro model: ${i}%` });
-        await new Promise(resolve => setTimeout(resolve, 100));
-      }
-      
+      await this._simulateModelLoad(onProgress);
+
       // For now, we'll fall back to Web Speech API
       throw new Error('Kokoro model not available in this demo');
-      
     } catch (error) {
       console.warn('Kokoro TTS not available, falling back to Web Speech API:', error);
-      
+
       if (FALLBACK_TO_WEB_SPEECH && 'speechSynthesis' in window) {
         this.useWebSpeech = true;
         onProgress?.({ percentage: 100, text: 'Using Web Speech API' });
@@ -94,6 +87,13 @@ export class TTSModule {
       }
     } finally {
       this.isLoading = false;
+    }
+  }
+
+  async _simulateModelLoad(onProgress) {
+    for (let i = 0; i <= 100; i += 10) {
+      onProgress?.({ percentage: i, text: `Loading Kokoro model: ${i}%` });
+      await new Promise(resolve => setTimeout(resolve, 100));
     }
   }
 
