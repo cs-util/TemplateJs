@@ -1,7 +1,7 @@
 // Configuration
 // Primary model (ONNX format) – file set contains onnx/model*.onnx
-// Using the v3 transformers.js package already declared in package.json.
-const LLM_MODEL_ID = 'onnx-community/Qwen2.5-0.5B-Instruct-ONNX';
+// Using the v3 transformers.js package loaded via CDN
+const LLM_MODEL_ID = 'onnx-community/Qwen2.5-0.5B-Instruct';
 
 // Local model base is read dynamically during environment configuration so tests
 // (or host pages) can set window.LOCAL_LLM_MODELS_BASE before first generate().
@@ -66,12 +66,11 @@ export class LLMModule {
     this.isLoading = true;
 
     try {
-      // Dynamically import the installed v3 transformers.js package (preferred)
-      // Fallback: if import fails (should not in normal build), raise clear error.
+      // Use globally available transformers (loaded via CDN in index.html)
       let transformers;
-      try {
-        transformers = await import('@huggingface/transformers');
-      } catch {
+      if (typeof window !== 'undefined' && window.transformers) {
+        transformers = window.transformers;
+      } else {
         throw new Error('Failed to load @huggingface/transformers package – ensure dependency is installed.');
       }
 
