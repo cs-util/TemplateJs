@@ -1,7 +1,7 @@
 # 🧬 Mutation Testing Report
 
-> **Generated:** 2025-08-17T10:00:41.973Z  
-> **Mutation Score:** 🟡 **64.4%**  
+> **Generated:** 2025-08-17T10:05:38.025Z  
+> **Mutation Score:** 🟡 **64.2%**  
 > **Coverage Score:** 42.5%  
 > **Total Files Analyzed:** 8
 
@@ -16,14 +16,14 @@
 | Metric | Count | Percentage |
 |--------|-------|------------|
 | **Total Mutants** | 1297 | 100% |
-| **✅ Killed (Good)** | 355 | 27.4% |
-| **❌ Survived (Bad)** | 180 | 13.9% |
+| **✅ Killed (Good)** | 354 | 27.3% |
+| **❌ Survived (Bad)** | 181 | 14.0% |
 | **🚫 No Coverage** | 746 | 57.5% |
 | **⏱️ Timeout** | 13 | 1.0% |
 | **💥 Error** | 0 | 0.0% |
 
 ### Quality Assessment
-- **Mutation Score:** 64.4% (Good)
+- **Mutation Score:** 64.2% (Good)
 - **Test Coverage:** 42.5% (Poor)
 
 ---
@@ -91,7 +91,7 @@
 | Mutator | Total | Killed | Survived | No Coverage | Kill Rate |
 |---------|-------|--------|----------|-------------|-----------|
 | StringLiteral | 273 | 45 | 40 | 188 | 🔴 16.5% |
-| ConditionalExpression | 317 | 91 | 63 | 159 | 🔴 28.7% |
+| ConditionalExpression | 317 | 90 | 64 | 159 | 🔴 28.4% |
 | BlockStatement | 294 | 94 | 23 | 171 | 🔴 32.0% |
 | BooleanLiteral | 94 | 22 | 7 | 63 | 🔴 23.4% |
 | EqualityOperator | 102 | 33 | 17 | 50 | 🔴 32.4% |
@@ -111,8 +111,8 @@
 
 #### ConditionalExpression
 - **Total Mutations**: 317
-- **Success Rate**: 28.7%
-- **Impact**: High (63 survived, 159 uncovered)
+- **Success Rate**: 28.4%
+- **Impact**: High (64 survived, 159 uncovered)
 - **Recommendation**: Primary issue is test coverage. Add tests to cover the 159 uncovered mutations.
 
 #### BlockStatement
@@ -143,8 +143,8 @@
 - **Least Tested Areas**: AssignmentOperator, ObjectLiteral, UpdateOperator
 
 #### Test Quality Metrics
-- **Mutation Detection Rate**: 27.4%
-- **Test Efficiency**: 65.0% (killed/covered ratio)
+- **Mutation Detection Rate**: 27.3%
+- **Test Efficiency**: 64.8% (killed/covered ratio)
 - **Coverage Gaps**: 153 lines not covered by any tests
 
 #### Top Performing Tests
@@ -2165,8 +2165,8 @@
    ✅ #574: ConditionalExpression → "true" [45 tests]
    ✅ #575: EqualityOperator → "typeof document === 'undefined'" [45 tests]
    ✅ #576: StringLiteral → """" [45 tests]
-   ❌ #577: ConditionalExpression → "true" [44 tests]
    ✅ #578: EqualityOperator → "typeof document.getElementById !== 'function'" [44 tests]
+   ❌ #577: ConditionalExpression → "true" [44 tests]
    ✅ #579: StringLiteral → """" [44 tests]
  41|       ? document.getElementById('tts-voice')
    ❌ #580: StringLiteral → """" [44 tests]
@@ -2271,8 +2271,8 @@
    ✅ #639: ConditionalExpression → "true" [8 tests]
    ❌ #640: ConditionalExpression → "false" [8 tests]
  82|     if (this.isLoading) {
-   ✅ #642: ConditionalExpression → "false" [8 tests]
    ✅ #641: ConditionalExpression → "true" [8 tests]
+   ✅ #642: ConditionalExpression → "false" [8 tests]
    ✅ #643: BlockStatement → "{}" [1 tests]
  83|       return await this._waitForLoading();
  84|     }
@@ -2471,8 +2471,8 @@
 175|       }
 176| 
 177|       if (this.useWebSpeech) {
-   ❌ #731: ConditionalExpression → "true" [1 tests]
    ✅ #732: ConditionalExpression → "false" [1 tests]
+   ❌ #731: ConditionalExpression → "true" [1 tests]
    ✅ #733: BlockStatement → "{}" [1 tests]
 178|         await this.speakWithWebSpeech(outputElement);
 179|       } else {
@@ -2529,8 +2529,8 @@
 210| 
 211|         if (this.isPaused) {
    ⚠️ #754: ConditionalExpression → "true" [6 tests]
-   ✅ #756: BlockStatement → "{}" [1 tests]
    ✅ #755: ConditionalExpression → "false" [6 tests]
+   ✅ #756: BlockStatement → "{}" [1 tests]
 212|           // Wait for resume
 213|           setTimeout(speakNext, 100);
 214|           return;
@@ -2568,8 +2568,8 @@
    ✅ #764: BlockStatement → "{}" [6 tests]
 239|           if (safetyTimer) {
    ❌ #765: ConditionalExpression → "true" [6 tests]
-   ✅ #766: ConditionalExpression → "false" [6 tests]
    ✅ #767: BlockStatement → "{}" [5 tests]
+   ✅ #766: ConditionalExpression → "false" [6 tests]
 240|             clearTimeout(safetyTimer);
 241|             safetyTimer = null;
 242|           }
@@ -2668,8 +2668,8 @@
 301|     if (!this.kokoroModel) {
    ❌ #802: BooleanLiteral → "this.kokoroModel" [3 tests]
    ❌ #803: ConditionalExpression → "true" [3 tests]
-   ❌ #804: ConditionalExpression → "false" [3 tests]
    ❌ #805: BlockStatement → "{}" [1 tests]
+   ❌ #804: ConditionalExpression → "false" [3 tests]
 302|       this.kokoroModel = await KokoroTTS.from_pretrained("onnx-community/Kokoro-82M-v1.0-ONNX", {
    ❌ #806: StringLiteral → """" [1 tests]
    ❌ #807: ObjectLiteral → "{}" [1 tests]
@@ -2708,8 +2708,8 @@
    ✅ #824: LogicalOperator → "outputElement.textContent && """ [3 tests]
 318|     if (!text.trim()) {
    ✅ #826: BooleanLiteral → "text.trim()" [3 tests]
-   ✅ #827: ConditionalExpression → "true" [3 tests]
    ✅ #828: ConditionalExpression → "false" [3 tests]
+   ✅ #827: ConditionalExpression → "true" [3 tests]
    ✅ #830: BlockStatement → "{}" [1 tests]
    ✅ #829: MethodExpression → "text" [3 tests]
 319|       throw new Error("No text content to speak");
@@ -2882,8 +2882,8 @@
    ❌ #893: ConditionalExpression → "false" [2 tests]
    ⚠️ #894: LogicalOperator → "this.pendingTexts.length > 0 || this.currentSentenceIndex < this.sentences.length" [2 tests]
    ⚠️ #895: ConditionalExpression → "true" [2 tests]
-   ⚠️ #896: EqualityOperator → "this.pendingTexts.length >= 0" [2 tests]
    ❌ #897: EqualityOperator → "this.pendingTexts.length <= 0" [2 tests]
+   ⚠️ #896: EqualityOperator → "this.pendingTexts.length >= 0" [2 tests]
    ❌ #898: ConditionalExpression → "true" [2 tests]
    ❌ #899: EqualityOperator → "this.currentSentenceIndex <= this.sentences.length" [2 tests]
    ❌ #900: EqualityOperator → "this.currentSentenceIndex >= this.sentences.length" [2 tests]
@@ -2932,13 +2932,13 @@
    ✅ #927: ConditionalExpression → "true" [5 tests]
    ✅ #928: ConditionalExpression → "false" [5 tests]
    ✅ #929: LogicalOperator → "document.querySelectorAll('.sentence.spoken') && []" [5 tests]
-   ❌ #930: StringLiteral → """" [5 tests]
    ❌ #931: ArrayDeclaration → "["Stryker was here"]" [1 tests]
+   ❌ #930: StringLiteral → """" [5 tests]
 440|       prev.forEach(el => {
    ❌ #932: BlockStatement → "{}" [2 tests]
 441|         if (el && el.classList && typeof el.classList.remove === 'function') {
-   ✅ #933: ConditionalExpression → "true" [2 tests]
    ❌ #934: ConditionalExpression → "false" [2 tests]
+   ✅ #933: ConditionalExpression → "true" [2 tests]
    ✅ #935: LogicalOperator → "el && el.classList || typeof el.classList.remove === 'function'" [2 tests]
    ✅ #936: ConditionalExpression → "true" [2 tests]
    ❌ #938: ConditionalExpression → "true" [2 tests]
@@ -3075,8 +3075,8 @@
 520|   isKokoroAvailable() {
    ✅ #990: BlockStatement → "{}" [2 tests]
 521|     return this.kokoroModel !== null;
-   ✅ #991: ConditionalExpression → "true" [2 tests]
    ✅ #992: ConditionalExpression → "false" [2 tests]
+   ✅ #991: ConditionalExpression → "true" [2 tests]
    ✅ #993: EqualityOperator → "this.kokoroModel === null" [2 tests]
 522|   }
 523| 
@@ -3084,13 +3084,13 @@
    ✅ #994: BlockStatement → "{}" [1 tests]
 525|     if (this.kokoroModel && !this.useWebSpeech) return 'kokoro';
    ✅ #995: ConditionalExpression → "true" [1 tests]
-   ✅ #997: LogicalOperator → "this.kokoroModel || !this.useWebSpeech" [1 tests]
    ✅ #996: ConditionalExpression → "false" [1 tests]
-   ✅ #999: StringLiteral → """" [1 tests]
+   ✅ #997: LogicalOperator → "this.kokoroModel || !this.useWebSpeech" [1 tests]
    ✅ #998: BooleanLiteral → "this.useWebSpeech" [1 tests]
+   ✅ #999: StringLiteral → """" [1 tests]
 526|     if (this.useWebSpeech) return 'web-speech';
-   ✅ #1001: ConditionalExpression → "false" [1 tests]
    ✅ #1000: ConditionalExpression → "true" [1 tests]
+   ✅ #1001: ConditionalExpression → "false" [1 tests]
    ✅ #1002: StringLiteral → """" [1 tests]
 527|     return 'none';
    ✅ #1003: StringLiteral → """" [1 tests]
@@ -3841,11 +3841,11 @@
    ✅ #355: BlockStatement → "{}" [11 tests]
   9|     if (!audioData || audioData.length === 0) {
    ✅ #356: ConditionalExpression → "true" [11 tests]
+   ✅ #358: LogicalOperator → "!audioData && audioData.length === 0" [11 tests]
    ✅ #357: ConditionalExpression → "false" [11 tests]
    ✅ #359: BooleanLiteral → "audioData" [11 tests]
-   ✅ #358: LogicalOperator → "!audioData && audioData.length === 0" [11 tests]
-   ✅ #361: EqualityOperator → "audioData.length !== 0" [11 tests]
    ✅ #360: ConditionalExpression → "false" [11 tests]
+   ✅ #361: EqualityOperator → "audioData.length !== 0" [11 tests]
    ✅ #362: BlockStatement → "{}" [2 tests]
  10|       throw new Error('Invalid audio data');
    ✅ #363: StringLiteral → """" [2 tests]
@@ -3854,14 +3854,14 @@
  13|     // Convert to Float32Array if needed
  14|     let float32Data;
  15|     if (audioData instanceof Float32Array) {
-   ✅ #364: ConditionalExpression → "true" [10 tests]
    ✅ #365: ConditionalExpression → "false" [10 tests]
+   ✅ #364: ConditionalExpression → "true" [10 tests]
    ✅ #366: BlockStatement → "{}" [8 tests]
  16|       float32Data = audioData;
  17|     } else if (Array.isArray(audioData)) {
    ✅ #367: ConditionalExpression → "true" [2 tests]
-   ✅ #368: ConditionalExpression → "false" [2 tests]
    ✅ #369: BlockStatement → "{}" [1 tests]
+   ✅ #368: ConditionalExpression → "false" [2 tests]
  18|       float32Data = new Float32Array(audioData);
  19|     } else {
    ✅ #370: BlockStatement → "{}" [1 tests]
@@ -3893,8 +3893,8 @@
  39|   resample(targetSampleRate) {
    ✅ #377: BlockStatement → "{}" [1 tests]
  40|     if (targetSampleRate === this.sampleRate) {
-   ✅ #378: ConditionalExpression → "true" [1 tests]
    ❌ #379: ConditionalExpression → "false" [1 tests]
+   ✅ #378: ConditionalExpression → "true" [1 tests]
    ✅ #380: EqualityOperator → "targetSampleRate !== this.sampleRate" [1 tests]
    ❌ #381: BlockStatement → "{}" [1 tests]
  41|       return new Float32Array(this.buffer);
@@ -3957,12 +3957,12 @@
 
 ### 🟢 src/utils/text-processing.js
 
-**Overall Health**: 🟢 Excellent | **Mutation Score**: 85.3% | **Coverage**: 100.0%
+**Overall Health**: 🟢 Excellent | **Mutation Score**: 84.5% | **Coverage**: 100.0%
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| ✅ Killed | 110 | 85.3% |
-| ❌ Survived | 19 | 14.7% |
+| ✅ Killed | 109 | 84.5% |
+| ❌ Survived | 20 | 15.5% |
 | 🚫 No Coverage | 0 | 0.0% |
 | **Total** | **129** | **100%** |
 
@@ -3976,8 +3976,8 @@
    ✅ #1005: ConditionalExpression → "true" [4 tests]
    ✅ #1006: ConditionalExpression → "false" [4 tests]
    ✅ #1007: LogicalOperator → "!text && typeof text !== 'string'" [4 tests]
-   ❌ #1009: ConditionalExpression → "false" [3 tests]
    ✅ #1008: BooleanLiteral → "text" [4 tests]
+   ❌ #1009: ConditionalExpression → "false" [3 tests]
    ✅ #1010: EqualityOperator → "typeof text === 'string'" [3 tests]
    ✅ #1011: StringLiteral → """" [3 tests]
    ✅ #1012: BlockStatement → "{}" [1 tests]
@@ -4003,23 +4003,23 @@
    ❌ #1023: EqualityOperator → "currentChunk.join(' ').length + word.length + 1 > chunkSize" [3 tests]
    ✅ #1024: ArithmeticOperator → "currentChunk.join(' ').length + word.length - 1" [3 tests]
    ✅ #1025: ArithmeticOperator → "currentChunk.join(' ').length - word.length" [3 tests]
-   ✅ #1026: StringLiteral → """" [3 tests]
    ✅ #1027: BlockStatement → "{}" [2 tests]
+   ✅ #1026: StringLiteral → """" [3 tests]
  13|       currentChunk.push(word);
  14|     } else {
-   ✅ #1028: BlockStatement → "{}" [3 tests]
+   ✅ #1028: BlockStatement → "{}" [2 tests]
  15|       if (currentChunk.length > 0) {
-   ✅ #1029: ConditionalExpression → "true" [3 tests]
-   ✅ #1031: EqualityOperator → "currentChunk.length >= 0" [3 tests]
-   ✅ #1030: ConditionalExpression → "false" [3 tests]
-   ✅ #1032: EqualityOperator → "currentChunk.length <= 0" [3 tests]
+   ✅ #1029: ConditionalExpression → "true" [2 tests]
+   ❌ #1030: ConditionalExpression → "false" [2 tests]
+   ✅ #1031: EqualityOperator → "currentChunk.length >= 0" [2 tests]
+   ✅ #1032: EqualityOperator → "currentChunk.length <= 0" [2 tests]
    ✅ #1033: BlockStatement → "{}" [1 tests]
  16|         chunks.push(currentChunk.join(' '));
    ❌ #1034: StringLiteral → """" [1 tests]
  17|         currentChunk = [word];
    ❌ #1035: ArrayDeclaration → "[]" [1 tests]
  18|       } else {
-   ✅ #1036: BlockStatement → "{}" [2 tests]
+   ✅ #1036: BlockStatement → "{}" [1 tests]
  19|         // Word is longer than chunk size, add it anyway
  20|         chunks.push(word);
  21|       }
@@ -4029,8 +4029,8 @@
  25|   if (currentChunk.length > 0) {
    ✅ #1037: ConditionalExpression → "true" [3 tests]
    ✅ #1038: ConditionalExpression → "false" [3 tests]
-   ✅ #1039: EqualityOperator → "currentChunk.length >= 0" [3 tests]
    ✅ #1040: EqualityOperator → "currentChunk.length <= 0" [3 tests]
+   ✅ #1039: EqualityOperator → "currentChunk.length >= 0" [3 tests]
    ✅ #1041: BlockStatement → "{}" [2 tests]
  26|     chunks.push(currentChunk.join(' '));
    ✅ #1042: StringLiteral → """" [2 tests]
@@ -4090,8 +4090,8 @@
    ✅ #1068: MethodExpression → "text" [1 tests]
  55|     .trim()
  56|     .replace(/\s+/g, ' ')
-   ✅ #1069: Regex → "/\s/g" [1 tests]
    ✅ #1070: Regex → "/\S+/g" [1 tests]
+   ✅ #1069: Regex → "/\s/g" [1 tests]
    ✅ #1071: StringLiteral → """" [1 tests]
  57|     .replace(/([.!?])\s*([A-Z])/g, '$1 $2');
    ✅ #1072: Regex → "/([^.!?])\s*([A-Z])/g" [1 tests]
@@ -4105,8 +4105,8 @@
    ✅ #1077: BlockStatement → "{}" [3 tests]
  61|   if (!text || typeof text !== 'string') {
    ✅ #1078: ConditionalExpression → "true" [3 tests]
-   ✅ #1079: ConditionalExpression → "false" [3 tests]
    ❌ #1080: LogicalOperator → "!text && typeof text !== 'string'" [3 tests]
+   ✅ #1079: ConditionalExpression → "false" [3 tests]
    ✅ #1081: BooleanLiteral → "text" [3 tests]
    ❌ #1082: ConditionalExpression → "false" [2 tests]
    ✅ #1083: EqualityOperator → "typeof text === 'string'" [2 tests]
@@ -4130,8 +4130,8 @@
    ✅ #1090: MethodExpression → "words" [2 tests]
    ✅ #1091: ArrowFunction → "() => undefined" [2 tests]
    ✅ #1092: ConditionalExpression → "true" [2 tests]
-   ✅ #1093: ConditionalExpression → "false" [2 tests]
    ✅ #1094: EqualityOperator → "word.length >= 0" [2 tests]
+   ✅ #1093: ConditionalExpression → "false" [2 tests]
    ✅ #1095: EqualityOperator → "word.length <= 0" [2 tests]
  73| }
  74| 
@@ -4188,8 +4188,8 @@
    ✅ #1122: EqualityOperator → "typeof tokenCount === 'number'" [3 tests]
    ✅ #1123: StringLiteral → """" [3 tests]
    ❌ #1124: ConditionalExpression → "false" [3 tests]
-   ✅ #1126: StringLiteral → """" [3 tests]
    ✅ #1125: EqualityOperator → "typeof durationMs === 'number'" [3 tests]
+   ✅ #1126: StringLiteral → """" [3 tests]
    ✅ #1127: ConditionalExpression → "false" [3 tests]
    ✅ #1128: EqualityOperator → "durationMs < 0" [3 tests]
    ✅ #1129: EqualityOperator → "durationMs > 0" [3 tests]
@@ -4242,11 +4242,11 @@
    - **Fix**: Test boundary conditions and edge cases
    - **Tests that should have caught this**: 45, 47, 70
 
-7. **Mutant #1035** - Line 17:24-30
-   - **Mutator**: `ArrayDeclaration` → `[]`
+7. **Mutant #1030** - Line 15:11-34
+   - **Mutator**: `ConditionalExpression` → `false`
    - **Issue**: Unknown
-   - **Fix**: Add specific test cases to kill this mutant
-   - **Tests that should have caught this**: 45
+   - **Fix**: Add test cases for both true/false conditions
+   - **Tests that should have caught this**: 45, 47
 
 8. **Mutant #1034** - Line 16:39-42
    - **Mutator**: `StringLiteral` → `""`
@@ -4254,21 +4254,21 @@
    - **Fix**: Test with different string values including empty strings
    - **Tests that should have caught this**: 45
 
-9. **Mutant #1045** - Line 34:12-20
+9. **Mutant #1035** - Line 17:24-30
+   - **Mutator**: `ArrayDeclaration` → `[]`
+   - **Issue**: Unknown
+   - **Fix**: Add specific test cases to kill this mutant
+   - **Tests that should have caught this**: 45
+
+10. **Mutant #1045** - Line 34:12-20
    - **Mutator**: `Regex` → `/[.!?]/`
    - **Issue**: Unknown
    - **Fix**: Add specific test cases to kill this mutant
    - **Tests that should have caught this**: 50, 51, 52, 71, 83, 84
 
-10. **Mutant #1061** - Line 50:7-40
-   - **Mutator**: `LogicalOperator` → `!text && typeof text !== 'string'`
-   - **Issue**: Unknown
-   - **Fix**: Test all logical combinations (&&, ||)
-   - **Tests that should have caught this**: 48, 49
-
 #### ✅ Successfully Killed Mutants Summary
 
-- **110 mutants killed** by tests
+- **109 mutants killed** by tests
 - **Average tests per mutant**: 1.0
 - **Most effective test**: 48 (killed 13 mutants)
 - **Top mutator types killed**: ConditionalExpression, BlockStatement, EqualityOperator
@@ -4427,7 +4427,7 @@ npm run test:mutation:changed-files
 *For questions or issues, consult your development team or the Stryker documentation.*
 
 **Report Generation Details**
-- Generated: 2025-08-17T10:00:41.983Z
+- Generated: 2025-08-17T10:05:38.034Z
 - Stryker Version: Latest
 - Analysis Includes: Source code, test coverage, mutant details, recommendations
 - Interactive Version: Available at `html/index.html`
