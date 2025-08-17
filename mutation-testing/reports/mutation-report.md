@@ -1,6 +1,6 @@
 # 🧬 Mutation Testing Report
 
-> **Generated:** 2025-08-17T08:25:05.723Z  
+> **Generated:** 2025-08-17T08:31:11.207Z  
 > **Mutation Score:** 🟢 **100.0%**  
 > **Coverage Score:** 97.8%  
 > **Total Files Analyzed:** 3
@@ -227,8 +227,8 @@
  22|     canVote() {
    ✅ #29: BlockStatement → "{}" [3 tests]
  23|         return this.age >= 18;
-   ✅ #31: ConditionalExpression → "false" [3 tests]
    ✅ #30: ConditionalExpression → "true" [3 tests]
+   ✅ #31: ConditionalExpression → "false" [3 tests]
    ✅ #32: EqualityOperator → "this.age > 18" [3 tests]
    ✅ #33: EqualityOperator → "this.age < 18" [3 tests]
  24|     }
@@ -458,7 +458,7 @@ npm run test:mutation:changed-files
 *For questions or issues, consult your development team or the Stryker documentation.*
 
 **Report Generation Details**
-- Generated: 2025-08-17T08:25:05.726Z
+- Generated: 2025-08-17T08:31:11.210Z
 - Stryker Version: Latest
 - Analysis Includes: Source code, test coverage, mutant details, recommendations
 - Interactive Version: Available at `html/index.html`

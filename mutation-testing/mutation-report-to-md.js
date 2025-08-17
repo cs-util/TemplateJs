@@ -406,7 +406,7 @@ function generateFileBreakdown(report) {
 
     // Show source code with mutation annotations
     if (fileData.source) {
-      markdown += generateSourceCodeSection(fileData, filePath);
+      markdown += generateSourceCodeSection(fileData);
     }
 
     // Show critical survived mutants (limit to most important ones)
@@ -553,7 +553,7 @@ function analyzeCoverageGaps(noCoverageMutants) {
   };
 }
 
-function generateSourceCodeSection(fileData, filePath) {
+function generateSourceCodeSection(fileData) {
   const lines = fileData.source.split('\n');
   const mutantsByLine = {};
   
@@ -799,17 +799,7 @@ npm run test:mutation:changed-files
 `;
 }
 
-function getMutatorRecommendation(mutator) {
-  const { name, killRate, survived, noCoverage } = mutator;
-  
-  if (killRate >= 80) {
-    return 'Tests are effectively catching this mutation type. Continue current testing approach.';
-  }
-  
-  if (noCoverage > survived) {
-    return `Primary issue is test coverage. Add tests to cover the ${noCoverage} uncovered mutations.`;
-  }
-  
+function getSpecificMutatorRecommendation(name) {
   switch (name) {
     case 'ConditionalExpression':
       return 'Add test cases for both true/false conditions and edge cases in conditional logic.';
@@ -830,6 +820,20 @@ function getMutatorRecommendation(mutator) {
     default:
       return `Add comprehensive test cases targeting the ${name} mutation type.`;
   }
+}
+
+function getMutatorRecommendation(mutator) {
+  const { name, killRate, survived, noCoverage } = mutator;
+  
+  if (killRate >= 80) {
+    return 'Tests are effectively catching this mutation type. Continue current testing approach.';
+  }
+  
+  if (noCoverage > survived) {
+    return `Primary issue is test coverage. Add tests to cover the ${noCoverage} uncovered mutations.`;
+  }
+  
+  return getSpecificMutatorRecommendation(name);
 }
 
 function generateTestEffectivenessAnalysis(report) {
