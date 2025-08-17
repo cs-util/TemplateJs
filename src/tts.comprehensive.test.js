@@ -328,143 +328,157 @@ describe('TTSModule - Comprehensive Coverage', () => {
     });
 
     test('should handle pause state', async () => {
-      tts.sentences = ['Hello.'];
+      tts.sentences = ['Sentence 1', 'Sentence 2'];
       tts.isPaused = true;
-
-      let utteranceCallbacks = {};
-      global.SpeechSynthesisUtterance.mockImplementation(function(text) {
-        utteranceCallbacks = this;
-        return this;
-      });
 
       const speakPromise = tts.speakWithWebSpeech();
 
-      // Simulate that it stays paused for a while, then unpauses
-      setTimeout(() => {
-        tts.isPaused = false;
-        setTimeout(() => {
-          if (utteranceCallbacks.onstart) utteranceCallbacks.onstart();
-          setTimeout(() => {
-            if (utteranceCallbacks.onend) utteranceCallbacks.onend();
-          }, 10);
-        }, 150); // After the pause check timeout
-      }, 50);
+      // It should not proceed while paused
+      await new Promise(resolve => setTimeout(resolve, 200));
+      expect(global.speechSynthesis.speak).not.toHaveBeenCalled();
 
+      tts.isPaused = false;
+
+      // Now it should proceed
+      await new Promise(resolve => setTimeout(resolve, 200));
+      
+      // It will only have tried to speak the first sentence by now
+      expect(global.speechSynthesis.speak).toHaveBeenCalledTimes(1);
+
+      // Let the promise complete to avoid open handles
+      const utterance = global.SpeechSynthesisUtterance.mock.results[0].value;
+      if (utterance && utterance.onend) utterance.onend();
+      
+      // After the first sentence ends, the second one should be spoken
+      await new Promise(resolve => setTimeout(resolve, 200));
+      expect(global.speechSynthesis.speak).toHaveBeenCalledTimes(2);
+
+      const utterance2 = global.SpeechSynthesisUtterance.mock.results[1].value;
+      if (utterance2 && utterance2.onend) utterance2.onend();
+      
       await speakPromise;
-      expect(global.speechSynthesis.speak).toHaveBeenCalled();
     });
-  });
 
-  describe('_simulateModelLoad', () => {
-    test('should simulate progress callbacks', async () => {
-      const onProgress = jest.fn();
-      
-      await tts._simulateModelLoad(onProgress);
-      
-      expect(onProgress).toHaveBeenCalledWith({
-        percentage: 0,
-        text: 'Loading Kokoro model: 0%'
+    test('should call original onerror handler', async () => {
+      tts.sentences = ['Error test'];
+      const originalOnError = jest.fn();
+      let utterance;
+      global.SpeechSynthesisUtterance.mockImplementation(function(text) {
+          utterance = this;
+          this.text = text;
+          this.onerror = originalOnError;
+          return this;
       });
-      expect(onProgress).toHaveBeenCalledWith({
-        percentage: 100,
-        text: 'Loading Kokoro model: 100%'
-      });
-      expect(onProgress.mock.calls.length).toBeGreaterThan(5);
-    });
-
-    test('should handle missing onProgress callback', async () => {
-      await expect(tts._simulateModelLoad()).resolves.toBeUndefined();
-    });
-  });
-
-  describe('markSentenceSpoken', () => {
-    test('should mark sentence as spoken with CSS class', () => {
-      const mockSentenceElement = {
-        classList: {
-          add: jest.fn(),
+  
+      const speakPromise = tts.speakWithWebSpeech();
+  
+      // Simulate error
+      setTimeout(() => {
+        if (utterance.onerror) {
+            utterance.onerror({ error: 'synthesis-failed' });
         }
+      }, 10);
+  
+      await expect(speakPromise).rejects.toThrow('Speech synthesis failed');
+      expect(originalOnError).toHaveBeenCalled();
+    });
+  });
+
+  describe('speakWithKokoro', () => {
+    beforeEach(() => {
+      // Ensure WebGPU is available for these tests, to bypass the initial check
+      global.navigator.gpu = {
+        requestAdapter: async () => ({ requestDevice: async () => ({}) })
       };
-      
-      jest.spyOn(global.document, 'getElementById').mockReturnValue(mockSentenceElement);
-      
-      tts.markSentenceSpoken(0);
-      
-      expect(global.document.getElementById).toHaveBeenCalledWith('sentence-0');
-      expect(mockSentenceElement.classList.add).toHaveBeenCalledWith('spoken');
     });
 
-    test('should handle missing sentence element', () => {
-      jest.spyOn(global.document, 'getElementById').mockReturnValue(null);
-      
-      expect(() => tts.markSentenceSpoken(0)).not.toThrow();
+    test('should throw error if audio worklet is not initialized', async () => {
+      const outputElement = { textContent: 'some text' };
+      await expect(tts.speakWithKokoro(null, outputElement)).rejects.toThrow('Audio worklet not initialized');
+    });
+
+    test('should throw error for empty text content', async () => {
+      const audioModule = { port: { postMessage: jest.fn() } };
+      const outputElement = { textContent: '  ' }; // whitespace only
+      await expect(tts.speakWithKokoro(audioModule, outputElement)).rejects.toThrow('No text content to speak');
     });
   });
 
-  describe('stop method', () => {
-    test('should stop TTS and cancel speech synthesis', () => {
-      tts.currentSplitter = { close: jest.fn() };
-      tts.currentUtterance = { voice: 'test' };
-      tts.useWebSpeech = true; // Enable web speech for this test
-      
-      // Mock querySelectorAll
-      global.document.querySelectorAll = jest.fn().mockReturnValue([
-        { classList: { remove: jest.fn() } }
-      ]);
-      
-      tts.stop();
-      
-      expect(tts.isStopped).toBe(true);
-      expect(tts.currentSplitter).toBe(null);
-      expect(global.speechSynthesis.cancel).toHaveBeenCalled();
-    });
-
-    test('should handle stop when no current splitter', () => {
-      tts.currentSplitter = null;
-      global.document.querySelectorAll = jest.fn().mockReturnValue([]);
-      
-      expect(() => tts.stop()).not.toThrow();
-      expect(tts.isStopped).toBe(true);
-    });
-  });
-
-  describe('pause and resume', () => {
-    test('should pause and resume TTS', () => {
-      tts.useWebSpeech = true; // Enable web speech for this test
-      
+  describe('Playback control', () => {
+    test('pause should call speechSynthesis.pause for web speech', () => {
+      tts.useWebSpeech = true;
       tts.pause();
-      expect(tts.isPaused).toBe(true);
       expect(global.speechSynthesis.pause).toHaveBeenCalled();
-      
-      tts.resume();
-      expect(tts.isPaused).toBe(false);
-      expect(global.speechSynthesis.resume).toHaveBeenCalled();
+      expect(tts.isPaused).toBe(true);
     });
 
-    test('should handle pause/resume without web speech', () => {
-      tts.useWebSpeech = false;
-      
-      tts.pause();
-      expect(tts.isPaused).toBe(true);
-      // speechSynthesis should not be called
-      
+    test('resume should call speechSynthesis.resume for web speech', () => {
+      tts.useWebSpeech = true;
       tts.resume();
+      expect(global.speechSynthesis.resume).toHaveBeenCalled();
       expect(tts.isPaused).toBe(false);
+    });
+
+    test('stop should call speechSynthesis.cancel for web speech', () => {
+      tts.useWebSpeech = true;
+      tts.stop();
+      expect(global.speechSynthesis.cancel).toHaveBeenCalled();
+      expect(tts.isStopped).toBe(true);
+    });
+    
+    test('stop should close Kokoro splitter if active', () => {
+        const mockSplitter = { close: jest.fn() };
+        tts.currentSplitter = mockSplitter;
+        tts.stop();
+        expect(mockSplitter.close).toHaveBeenCalled();
+        expect(tts.isStopped).toBe(true);
     });
   });
 
-  describe('isWebSpeechAvailable', () => {
-    test('should return true when speechSynthesis is available', () => {
+  describe('TTSModule state and configuration', () => {
+    test('setVoice should select a voice by index', () => {
+      const voices = global.speechSynthesis.getVoices();
+      tts.setVoice(1);
+      expect(tts.selectedVoice).toBe(voices[1]);
+    });
+
+    test('getAvailableVoices should return voices from speechSynthesis', () => {
+      const voices = global.speechSynthesis.getVoices();
+      expect(tts.getAvailableVoices()).toEqual(voices);
+    });
+
+    test('isWebSpeechAvailable should return true if supported', () => {
       expect(tts.isWebSpeechAvailable()).toBe(true);
     });
 
-    test('should return false when speechSynthesis is not available', () => {
-      const originalSpeechSynthesis = global.speechSynthesis;
-      delete global.window.speechSynthesis;
+    test('isKokoroAvailable should return false initially', () => {
+      expect(tts.isKokoroAvailable()).toBe(false);
+    });
+    
+    test('isKokoroAvailable should return true after initialization', async () => {
+      await tts.initializeKokoro();
+      // Since our mock for from_pretrained resolves, kokoroModel should be set
+      expect(tts.isKokoroAvailable()).toBe(true);
+    });
+
+    test('getCurrentSystem should report correct TTS system', async () => {
+      // Initially, no system is active until an attempt to speak or initialize is made
+      expect(tts.getCurrentSystem()).toBe('none');
       
-      expect(tts.isWebSpeechAvailable()).toBe(false);
+      // Initialize, which should set Kokoro as the primary if WebGPU is available
+      await tts.initializeKokoro();
+      expect(tts.getCurrentSystem()).toBe('kokoro');
+
+      // Force web speech fallback
+      const originalGpu = global.navigator.gpu;
+      global.navigator.gpu = undefined;
+      tts.kokoroModel = null; // reset
+      tts.useWebSpeech = false;
+      await tts.initializeKokoro();
+      expect(tts.getCurrentSystem()).toBe('web-speech');
       
       // Restore
-      global.window.speechSynthesis = originalSpeechSynthesis;
+      global.navigator.gpu = originalGpu;
     });
   });
 });

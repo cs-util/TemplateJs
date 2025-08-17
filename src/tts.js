@@ -509,7 +509,7 @@ export class TTSModule {
   }
 
   getCurrentSystem() {
-    if (this.kokoroModel) return 'kokoro';
+    if (this.kokoroModel && !this.useWebSpeech) return 'kokoro';
     if (this.useWebSpeech) return 'web-speech';
     return 'none';
   }
