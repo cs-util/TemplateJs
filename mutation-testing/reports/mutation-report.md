@@ -1,6 +1,6 @@
 # 🧬 Mutation Testing Report
 
-> **Generated:** 2025-08-17T08:31:11.207Z  
+> **Generated:** 2025-08-17T10:21:48.695Z  
 > **Mutation Score:** 🟢 **100.0%**  
 > **Coverage Score:** 97.8%  
 > **Total Files Analyzed:** 3
@@ -119,11 +119,11 @@
 - **Coverage Gaps**: 1 lines not covered by any tests
 
 #### Top Performing Tests
-1. **Test #12**: Killed 8 mutants, covered 13
-2. **Test #0**: Killed 7 mutants, covered 23
+1. **Test #0**: Killed 8 mutants, covered 23
+2. **Test #12**: Killed 8 mutants, covered 13
 3. **Test #13**: Killed 6 mutants, covered 22
-4. **Test #1**: Killed 5 mutants, covered 26
-5. **Test #9**: Killed 5 mutants, covered 21
+4. **Test #1**: Killed 4 mutants, covered 26
+5. **Test #9**: Killed 4 mutants, covered 21
 
 
 ---
@@ -183,8 +183,8 @@
    ✅ #2: ConditionalExpression → "false" [12 tests]
    ✅ #3: LogicalOperator → "typeof name !== 'string' && name.trim() === ''" [12 tests]
    ✅ #4: ConditionalExpression → "false" [12 tests]
-   ✅ #5: EqualityOperator → "typeof name === 'string'" [12 tests]
    ✅ #6: StringLiteral → """" [12 tests]
+   ✅ #5: EqualityOperator → "typeof name === 'string'" [12 tests]
    ✅ #8: EqualityOperator → "name.trim() !== ''" [12 tests]
    ✅ #7: ConditionalExpression → "false" [12 tests]
    ✅ #9: MethodExpression → "name" [12 tests]
@@ -261,8 +261,8 @@
 
 - **39 mutants killed** by tests
 - **Average tests per mutant**: 1.0
-- **Most effective test**: 12 (killed 8 mutants)
-- **Top mutator types killed**: ConditionalExpression, BlockStatement, EqualityOperator
+- **Most effective test**: 0 (killed 8 mutants)
+- **Top mutator types killed**: ConditionalExpression, BlockStatement, StringLiteral
 
 ---
 
@@ -458,7 +458,7 @@ npm run test:mutation:changed-files
 *For questions or issues, consult your development team or the Stryker documentation.*
 
 **Report Generation Details**
-- Generated: 2025-08-17T08:31:11.210Z
+- Generated: 2025-08-17T10:21:48.698Z
 - Stryker Version: Latest
 - Analysis Includes: Source code, test coverage, mutant details, recommendations
 - Interactive Version: Available at `html/index.html`
