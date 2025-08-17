@@ -1,9 +1,10 @@
 {
-  "name": "templatejs",
+  "name": "local-llm-demo",
   "version": "1.0.0",
-  "description": "TemplateJs is a minimal single-page web app template designed for quick deployment.  It follows an AI-assisted iterative development process:",
-  "main": "index.js",
+  "description": "Browser-only demo showcasing local LLM and TTS with WebGPU/WASM support, featuring streaming text generation and sentence-aligned speech synthesis.",
+  "main": "index.html",
   "scripts": {
+    "start": "npx http-server -p 8000 -c-1",
     "test": "jest --coverage --config config/jest.config.js",
     "lint": "eslint . --config config/eslint.config.js",
     "test:watch": "jest --watch --config config/jest.config.js",
@@ -14,7 +15,18 @@
     "check:all": "npm run lint && npm run check:dup && npm run check:cycles && npm run check:boundaries",
     "validate:all": "npm run test && npm run check:all && npm run mutation"
   },
-  "keywords": [],
+  "keywords": [
+    "llm",
+    "tts",
+    "webgpu",
+    "wasm",
+    "transformers.js",
+    "kokoro",
+    "browser",
+    "offline",
+    "ai",
+    "speech-synthesis"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -29,6 +41,7 @@
     "eslint-plugin-jest": "^29.0.1",
     "fast-check": "^4.2.0",
     "globals": "^16.3.0",
+    "http-server": "^14.1.1",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^30.0.5",
     "jscpd": "^4.0.5",

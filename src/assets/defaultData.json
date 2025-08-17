@@ -1,8 +1,45 @@
 {
-    "someData": [
-        {
-            "id": "123",
-            "title": "Abc",            
-        }
-    ]
+  "samplePrompts": [
+    "Write a short story about a robot learning to paint.",
+    "Explain quantum computing in simple terms.",
+    "Tell me a fascinating fact about space exploration.",
+    "What are the benefits of renewable energy?",
+    "Describe the process of photosynthesis.",
+    "How does machine learning work?",
+    "What makes a good user interface design?"
+  ],
+  "sampleTexts": [
+    "The quick brown fox jumps over the lazy dog. This is a sample text for testing our text-to-speech system. It includes multiple sentences to demonstrate sentence highlighting.",
+    "Artificial intelligence is revolutionizing the way we interact with technology. From voice assistants to autonomous vehicles, AI is becoming an integral part of our daily lives.",
+    "Climate change is one of the most pressing challenges of our time. It requires global cooperation and innovative solutions to address its far-reaching impacts on our planet.",
+    "The human brain contains approximately 86 billion neurons, each connected to thousands of others. This incredible network enables consciousness, memory, and creativity."
+  ],
+  "defaultSettings": {
+    "llm": {
+      "maxNewTokens": 256,
+      "temperature": 0.8,
+      "topP": 0.95
+    },
+    "tts": {
+      "rate": 1.0,
+      "pitch": 1.0,
+      "sampleRate": 24000
+    },
+    "audio": {
+      "bufferSize": 4096,
+      "latency": "interactive"
+    }
+  },
+  "modelInfo": {
+    "llm": {
+      "defaultModel": "onnx-community/Qwen2.5-0.5B-Instruct-ONNX",
+      "description": "Small instruction-tuned language model optimized for browser deployment",
+      "size": "~500MB"
+    },
+    "tts": {
+      "defaultModel": "onnx-community/Kokoro-82M-v1.0-ONNX",
+      "description": "Lightweight neural text-to-speech model",
+      "size": "~82MB"
+    }
+  }
 }

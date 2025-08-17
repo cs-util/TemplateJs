@@ -1,134 +1,148 @@
-<!-- For the user stories & requirements see the README.md file -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Decoupled Modules Example with Person Class</title>
-  <!-- Favicon: A white box --> <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23fff'/%3E%3C/svg%3E" type="image/svg+xml">
-  <!-- Use Tailwind CSS for all CSS styling -->
+  <title>Local LLM + TTS Demo</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%236366f1'/%3E%3C/svg%3E" type="image/svg+xml">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @view-transition {
-      navigation: auto;
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .spoken { background-color: #fef3c7; }
+    .progress-bar {
+      transition: width 0.3s ease;
     }
-    
-    nav a[aria-current="page"]:after {
-      border-color: white;
-      view-transition-name: posts-nav;
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
     }
-    
-    /* Old stuff going out */
-    ::view-transition-old(posts-nav) {
-      animation: fade 0.2s linear forwards;
-      height: 100%;
-    }
-    
-    /* New stuff coming in */
-    ::view-transition-new(posts-nav) {
-      animation: fade 0.3s linear reverse;
-      height: 100%;
-    }
-    
-    @keyframes fade {
-      from { opacity: 1; }
-      to { opacity: 0; }
-    }
+    .loading { animation: pulse 1.5s infinite; }
   </style>
-  <script>
-    // Only use if browser supports View Transitions
-    if (document.startViewTransition) {
-      window.addEventListener('click', (e) => {
-        // Only handle internal links
-        if (e.target.tagName === 'A' && e.target.origin === window.location.origin) {
-          e.preventDefault();
-          document.startViewTransition(() => {
-            window.location.href = e.target.href;
-          });
-        }
-      });
-    }
-  </script>
-  <script src="src/index.js"></script>
 </head>
-<body class="font-mono p-8 bg-gray-50">
-  <div class="max-w-4xl mx-auto">
-    <header class="mb-8">
-      <h1 class="text-3xl font-bold text-blue-600 mb-4">Template Web App</h1>
-      <nav class="bg-blue-600 text-white p-4 rounded-lg mb-4">
-        <a href="index.html" class="mr-6 hover:underline font-bold relative" aria-current="page">
-          Home
-          <span class="absolute bottom-0 left-0 w-full h-0.5 bg-white"></span>
-        </a>
-        <a href="pages/features.html" class="mr-6 hover:underline">Features</a>
-        <a href="pages/about.html" class="hover:underline">About</a>
-      </nav>
-      <div class="bg-blue-100 border-l-4 border-blue-500 p-4 mb-6">
-        <p class="text-sm text-blue-700">This is a Tailwind CSS demonstration with modular JavaScript.</p>
-      </div>
-    </header>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-      <!-- Card 1 -->
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-bold mb-4 text-gray-800">Greeting Card</h2>
-        <p class="text-gray-600 mb-4">Click the button below to greet the person.</p>
-        <button id="greetBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
-          Greet
-        </button>
-      </div>
-      
-      <!-- Card 2 -->
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-bold mb-4 text-gray-800">Tailwind Features</h2>
-        <ul class="list-disc pl-5 space-y-2 text-gray-600">
-          <li>Responsive design with <span class="font-bold text-blue-500">breakpoints</span></li>
-          <li>Utility-first CSS framework</li>
-          <li>Customizable with configuration</li>
-        </ul>
-        <div class="mt-4">
-          <div class="flex gap-2">
-            <span class="bg-red-200 text-red-800 text-xs p-1 rounded">Tag</span>
-            <span class="bg-green-200 text-green-800 text-xs p-1 rounded">Utility</span>
-            <span class="bg-yellow-200 text-yellow-800 text-xs p-1 rounded">Responsive</span>
-          </div>
+<<body class="font-mono bg-gray-50 min-h-screen">
+  <div class="max-w-6xl mx-auto p-4">
+    <!-- Header with status -->
+    <header class="mb-6">
+      <h1 class="text-3xl font-bold text-indigo-600 mb-4">Local LLM + TTS Demo</h1>
+      <div class="bg-white p-4 rounded-lg shadow-sm border">
+        <div class="flex flex-wrap gap-4 text-sm">
+          <span>Device: <strong id="device-status" class="text-indigo-600">detecting...</strong></span>
+          <span>LLM: <strong id="llm-status" class="text-green-600">not loaded</strong></span>
+          <span>TTS: <strong id="tts-status" class="text-blue-600">not loaded</strong></span>
         </div>
       </div>
-    </div>
-    
-    <div class="bg-white p-6 rounded-lg shadow">
-      <h2 class="text-xl font-bold mb-4 text-gray-800">Interactive Components</h2>
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-          Username
-        </label>
-        <input class="w-full p-2 border rounded text-gray-700 focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username">
+    </header>
+
+    <!-- Progress bar for model loading -->
+    <div id="loading-progress" class="mb-6 hidden">
+      <div class="bg-gray-200 rounded-full h-2">
+        <div id="progress-bar" class="progress-bar bg-indigo-600 h-2 rounded-full" style="width: 0%"></div>
       </div>
-      <div class="flex justify-between">
-        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none transition">
-          Save
-        </button>
-        <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none transition">
-          Cancel
-        </button>
+      <p id="loading-text" class="text-sm text-gray-600 mt-1">Loading models...</p>
+    </div>
+
+    <!-- Tab Navigation -->
+    <nav class="flex space-x-1 mb-6">
+      <button class="tab-btn active bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium" data-tab="llm-stream">LLM Stream</button>
+      <button class="tab-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-300" data-tab="tts-only">TTS Only</button>
+      <button class="tab-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-300" data-tab="llm-tts">LLM → TTS</button>
+    </nav>
+
+    <!-- Tab A: LLM Stream -->
+    <div id="llm-stream" class="tab-content active">
+      <div class="bg-white p-6 rounded-lg shadow">
+        <h2 class="text-xl font-bold mb-4">LLM Text Generation</h2>
+        <textarea 
+          id="llm-prompt" 
+          class="w-full p-3 border rounded-lg resize-none" 
+          rows="3" 
+          placeholder="Enter your prompt here..."
+        >Write a short story about a robot learning to paint.</textarea>
+        <div class="flex justify-between items-center mt-4">
+          <button id="generate-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-medium">
+            Generate
+          </button>
+          <div id="llm-stats" class="text-sm text-gray-600">
+            <span id="ttfb">TTFB: -</span> | <span id="tokens-per-sec">Tokens/s: -</span>
+          </div>
+        </div>
+        <div id="llm-output" class="mt-4 p-4 bg-gray-50 rounded-lg min-h-32 whitespace-pre-wrap"></div>
+      </div>
+    </div>
+
+    <!-- Tab B: TTS Only -->
+    <div id="tts-only" class="tab-content">
+      <div class="bg-white p-6 rounded-lg shadow">
+        <h2 class="text-xl font-bold mb-4">Text-to-Speech</h2>
+        <textarea 
+          id="tts-text" 
+          class="w-full p-3 border rounded-lg resize-none" 
+          rows="4"
+        >The quick brown fox jumps over the lazy dog. This is a sample text for testing our text-to-speech system. It includes multiple sentences to demonstrate sentence highlighting.</textarea>
+        
+        <div class="flex flex-wrap gap-4 mt-4">
+          <button id="tts-play" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">Play</button>
+          <button id="tts-pause" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg">Pause</button>
+          <button id="tts-resume" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Resume</button>
+          <button id="tts-stop" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">Stop</button>
+        </div>
+
+        <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-sm font-medium mb-1">Rate</label>
+            <input type="range" id="tts-rate" min="0.1" max="2" step="0.1" value="1" class="w-full">
+            <span id="rate-value" class="text-sm text-gray-600">1.0</span>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Pitch</label>
+            <input type="range" id="tts-pitch" min="0" max="2" step="0.1" value="1" class="w-full">
+            <span id="pitch-value" class="text-sm text-gray-600">1.0</span>
+          </div>
+          <div id="voice-select-container">
+            <label class="block text-sm font-medium mb-1">Voice</label>
+            <select id="tts-voice" class="w-full p-2 border rounded">
+              <option>Loading voices...</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="tts-output" class="mt-4 p-4 bg-gray-50 rounded-lg min-h-32"></div>
+      </div>
+    </div>
+
+    <!-- Tab C: LLM → TTS -->
+    <div id="llm-tts" class="tab-content">
+      <div class="bg-white p-6 rounded-lg shadow">
+        <h2 class="text-xl font-bold mb-4">LLM Generation + Speech</h2>
+        <textarea 
+          id="combined-prompt" 
+          class="w-full p-3 border rounded-lg resize-none" 
+          rows="3" 
+          placeholder="Enter your prompt here..."
+        >Tell me a fascinating fact about space exploration.</textarea>
+        <div class="flex justify-between items-center mt-4">
+          <button id="generate-speak-btn" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-medium">
+            Generate & Speak
+          </button>
+          <div class="flex gap-4">
+            <button id="combined-pause" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg">Pause</button>
+            <button id="combined-stop" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">Stop</button>
+          </div>
+        </div>
+        <div id="combined-output" class="mt-4 p-4 bg-gray-50 rounded-lg min-h-32"></div>
+      </div>
+    </div>
+
+    <!-- Error messages -->
+    <div id="error-container" class="fixed bottom-4 right-4 hidden">
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded shadow-lg">
+        <span id="error-message"></span>
       </div>
     </div>
   </div>
-  
-  <!-- Load the main module -->
-  <script type="module">
 
-    import { tellBirthday } from './src/utils/utils.js';
-    import { Person } from './src/components/person.js';
-
-    // Create a new Person instance with values defined in the HTML.
-    const person = new Person('Alice', 40);
-    document.getElementById('greetBtn').addEventListener('click', () => {
-      alert(tellBirthday(person));
-    });
-
-  </script>
-
+  <script type="module" src="src/app.js"></script>
 </body>
+</html>
 </html>
