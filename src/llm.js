@@ -71,7 +71,7 @@ export class LLMModule {
       let transformers;
       try {
         transformers = await import('@huggingface/transformers');
-  } catch (_) {
+      } catch {
         throw new Error('Failed to load @huggingface/transformers package – ensure dependency is installed.');
       }
 
