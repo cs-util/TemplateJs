@@ -19,31 +19,6 @@
     }
     .loading { animation: pulse 1.5s infinite; }
   </style>
-  
-  <!-- Transformers.js v3 CDN import with environment setup -->
-  <script type="module">
-    import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.2';
-
-    // Run fully local (no Hub calls)
-    env.localModelPath = '/models/';   // base folder served by your dev server
-    env.allowLocalModels = true;
-    env.allowRemoteModels = false;
-
-    // Optional: tune WASM threads for CPU fallback
-    env.backends.onnx.wasm.numThreads = Math.min(navigator.hardwareConcurrency || 4, 8);
-
-    // Device selection
-    const DEVICE = navigator.gpu ? 'webgpu' : 'wasm';
-    window.__TRANSFORMERS_DEVICE__ = DEVICE; // expose for debugging
-    
-    // Make transformers available globally for the LLM module
-    window.transformers = { pipeline, env };
-    
-    // Optional: Smoke test to verify transformers.js is working
-    console.log('[transformers] Transformers.js v3 loaded successfully');
-    console.log('[transformers] Device detected:', DEVICE);
-    console.log('[transformers] Local model path:', env.localModelPath);
-  </script>
 </head>
 <body class="font-mono bg-gray-50 min-h-screen">
   <div class="max-w-6xl mx-auto p-4">

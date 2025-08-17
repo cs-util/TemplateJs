@@ -1,14 +1,8 @@
 import { LLMModule } from './llm.js';
 
-jest.mock('@huggingface/transformers', () => {
-  const env = { useBrowserCache: false, allowLocalModels: false, allowRemoteModels: true, backends: { onnx: { wasm: { numThreads: 0 } } } };
-  let impl = async () => async () => ({ generated_text: 'default' });
-  const pipeline = jest.fn(async () => impl);
-  pipeline.__setImpl = (fn) => { impl = fn; };
-  return { env, pipeline };
-});
-
-const getMock = async () => import('@huggingface/transformers');
+const getMockPipeline = () => {
+  return Promise.resolve(global.mockPipeline);
+};
 
 describe('LLMModule additional coverage', () => {
   beforeEach(() => {
@@ -20,18 +14,8 @@ describe('LLMModule additional coverage', () => {
     }
   });
 
-  test('setupEnvironment configures existing window.transformers env', () => {
-    window.transformers = { env: { backends: { onnx: { wasm: { numThreads: 0 } } } } };
-    const m = new LLMModule();
-    expect(window.transformers.env.useBrowserCache).toBe(true);
-    expect(window.transformers.env.allowLocalModels).toBe(true);
-    expect(window.transformers.env.backends.onnx.wasm.numThreads).toBe(8);
-    delete window.transformers;
-    expect(m).toBeDefined();
-  });
-
   test('non-streaming path simulates token streaming when onToken provided', async () => {
-    const { pipeline } = await getMock();
+    const pipeline = await getMockPipeline();
     pipeline.__setImpl(async () => [{ generated_text: 'Hello world' }]);
     const m = new LLMModule();
     const received = [];
@@ -45,7 +29,7 @@ describe('LLMModule additional coverage', () => {
   });
 
   test('device, model id and initialized state accessors', async () => {
-    const { pipeline } = await getMock();
+    const pipeline = await getMockPipeline();
     pipeline.__setImpl(async () => [{ generated_text: 'Accessor' }]);
     const m = new LLMModule();
     expect(m.isInitialized()).toBe(false);

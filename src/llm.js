@@ -1,6 +1,7 @@
+import { initializeTransformers } from './transformers-config.js';
+
 // Configuration
 // Primary model (ONNX format) – file set contains onnx/model*.onnx
-// Using the v3 transformers.js package loaded via CDN
 const LLM_MODEL_ID = 'onnx-community/Qwen2.5-0.5B-Instruct';
 
 // Local model base is read dynamically during environment configuration so tests
@@ -11,14 +12,6 @@ export class LLMModule {
     this.pipeline = null;
     this.device = null;
     this.isLoading = false;
-    this.setupEnvironment();
-  }
-
-  setupEnvironment() {
-    // env config applied after dynamic import if not already available.
-    if (typeof window !== 'undefined' && window.transformers) {
-      this._configureEnv(window.transformers.env);
-    }
   }
 
   _configureEnv(env) {
@@ -66,15 +59,9 @@ export class LLMModule {
     this.isLoading = true;
 
     try {
-      // Use globally available transformers (loaded via CDN in index.html)
-      let transformers;
-      if (typeof window !== 'undefined' && window.transformers) {
-        transformers = window.transformers;
-      } else {
-        throw new Error('Failed to load @huggingface/transformers package – ensure dependency is installed.');
-      }
-
-      const { pipeline, env } = transformers; // v3 API
+      // Initialize transformers through the configuration module
+      const transformers = await initializeTransformers();
+      const { pipeline, env } = transformers;
       this._configureEnv(env);
 
       // Detect device

@@ -1,6 +1,7 @@
 import { LLMModule } from './llm.js';
 import { TTSModule } from './tts.js';
 import { AudioModule } from './audio.js';
+import { initializeBrowserTransformers } from './browser-transformers.js';
 
 class AppController {
   constructor() {
@@ -12,9 +13,19 @@ class AppController {
     this.isGenerating = false;
     this.isSpeaking = false;
     
+    this.initializeTransformers();
     this.initializeUI();
     this.setupEventListeners();
     this.detectDevice();
+  }
+
+  async initializeTransformers() {
+    try {
+      await initializeBrowserTransformers();
+    } catch (error) {
+      console.error('Failed to initialize transformers:', error);
+      // Non-blocking error - app can still function with mocked transformers in tests
+    }
   }
 
   async detectDevice() {
