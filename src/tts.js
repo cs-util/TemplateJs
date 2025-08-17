@@ -1,5 +1,4 @@
 // Configuration
-const TTS_MODEL_ID = 'onnx-community/Kokoro-82M-v1.0-ONNX';
 const FALLBACK_TO_WEB_SPEECH = true;
 
 export class TTSModule {
@@ -108,7 +107,7 @@ export class TTSModule {
   }
 
   async speak(text, options = {}) {
-    const { outputElement, audioModule, onProgress } = options;
+    const { outputElement, onProgress } = options;
 
     try {
       // Initialize TTS system
@@ -128,7 +127,7 @@ export class TTSModule {
       if (this.useWebSpeech) {
         await this.speakWithWebSpeech(outputElement);
       } else {
-        await this.speakWithKokoro(audioModule, outputElement);
+        await this.speakWithKokoro();
       }
 
     } catch (error) {
@@ -199,7 +198,7 @@ export class TTSModule {
     });
   }
 
-  async speakWithKokoro(audioModule, outputElement) {
+  async speakWithKokoro() {
     // Placeholder for Kokoro implementation
     // In a real implementation, this would:
     // 1. Load the Kokoro ONNX model

@@ -49,6 +49,53 @@ describe('Text Processing Utilities', () => {
     });
   });
 
+  describe('splitIntoSentences', () => {
+    test('should split text into sentences', () => {
+      const text = 'Hello world. How are you? Fine!';
+      const sentences = splitIntoSentences(text);
+      
+      expect(sentences).toEqual(['Hello world.', 'How are you.', 'Fine.']);
+    });
+
+    test('should handle empty text', () => {
+      expect(splitIntoSentences('')).toEqual([]);
+    });
+
+    test('should handle text without punctuation', () => {
+      const sentences = splitIntoSentences('Hello world');
+      expect(sentences).toEqual(['Hello world.']);
+    });
+  });
+
+  describe('formatPromptForInstruction', () => {
+    test('should format prompt with instruction template', () => {
+      const prompt = 'What is AI?';
+      const formatted = formatPromptForInstruction(prompt);
+      
+      expect(formatted).toContain('<|im_start|>system');
+      expect(formatted).toContain('You are a helpful assistant.');
+      expect(formatted).toContain('<|im_start|>user');
+      expect(formatted).toContain('What is AI?');
+      expect(formatted).toContain('<|im_start|>assistant');
+    });
+  });
+
+  describe('tokenizeForDisplay', () => {
+    test('should tokenize text for display', () => {
+      const text = 'Hello world test';
+      const tokens = tokenizeForDisplay(text);
+      
+      expect(tokens).toContain('Hello');
+      expect(tokens).toContain('world');
+      expect(tokens).toContain('test');
+    });
+
+    test('should handle empty text', () => {
+      const tokens = tokenizeForDisplay('');
+      expect(tokens).toEqual([]);
+    });
+  });
+
   describe('estimateTokenCount', () => {
     test('should estimate token count for text', () => {
       const text = 'Hello world';

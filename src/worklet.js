@@ -102,7 +102,7 @@ class PCMQueueProcessor extends AudioWorkletProcessor {
     this.chunkIndex = 0;
   }
 
-  process(inputs, outputs, parameters) {
+  process(inputs, outputs) {
     const output = outputs[0];
     
     if (!output || output.length === 0) {

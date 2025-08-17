@@ -8,23 +8,9 @@ export const CONFIG = {
   TOP_P: 0.95
 };
 
-// Utility functions for text processing
-export function splitIntoSentences(text) {
-  return text
-    .split(/[.!?]+/)
-    .map(s => s.trim())
-    .filter(s => s.length > 0)
-    .map(s => s + '.');
-}
+import { splitIntoSentences, formatPromptForInstruction } from './utils/text-processing.js';
 
-export function formatPromptForInstruction(prompt) {
-  return `<|im_start|>system
-You are a helpful assistant.<|im_end|>
-<|im_start|>user
-${prompt}<|im_end|>
-<|im_start|>assistant
-`;
-}
+export { splitIntoSentences, formatPromptForInstruction };
 
 export function detectWebGPUSupport() {
   return 'gpu' in navigator;

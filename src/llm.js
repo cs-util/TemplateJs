@@ -1,6 +1,5 @@
 // Configuration
 const LLM_MODEL_ID = 'onnx-community/Qwen2.5-0.5B-Instruct-ONNX';
-const DEVICE_PRIORITY = ['webgpu', 'wasm'];
 
 export class LLMModule {
   constructor() {
@@ -35,8 +34,8 @@ export class LLMModule {
         if (adapter) {
           return 'webgpu';
         }
-      } catch (e) {
-        console.warn('WebGPU adapter request failed:', e);
+      } catch {
+        console.warn('WebGPU adapter request failed');
       }
     }
     return 'wasm';
@@ -60,7 +59,7 @@ export class LLMModule {
       try {
         // Try to load from CDN
         transformers = await import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/dist/transformers.min.js');
-      } catch (e) {
+      } catch {
         // Fallback error handling
         throw new Error('Failed to load Transformers.js library');
       }

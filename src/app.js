@@ -31,7 +31,7 @@ class AppController {
           deviceStatus.textContent = 'wasm (webgpu unavailable)';
           deviceStatus.className = 'text-orange-600';
         }
-      } catch (e) {
+      } catch {
         deviceStatus.textContent = 'wasm (webgpu error)';
         deviceStatus.className = 'text-orange-600';
       }

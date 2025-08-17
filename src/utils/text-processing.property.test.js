@@ -2,7 +2,6 @@ import fc from 'fast-check';
 import { 
   splitTextIntoChunks, 
   splitIntoSentences, 
-  normalizeText, 
   estimateTokenCount, 
   formatDuration, 
   calculateTokensPerSecond 
