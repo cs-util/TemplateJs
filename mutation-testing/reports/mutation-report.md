@@ -1,6 +1,6 @@
 # 🧬 Mutation Testing Report
 
-> **Generated:** 2025-08-17T08:12:53.200Z  
+> **Generated:** 2025-08-17T08:25:05.723Z  
 > **Mutation Score:** 🟢 **100.0%**  
 > **Coverage Score:** 97.8%  
 > **Total Files Analyzed:** 3
@@ -72,6 +72,60 @@
 | ArithmeticOperator | 3 | 3 | 0 | 0 | 🟢 100.0% |
 | ObjectLiteral | 1 | 1 | 0 | 0 | 🟢 100.0% |
 
+### Mutator-Specific Analysis
+
+#### StringLiteral
+- **Total Mutations**: 9
+- **Success Rate**: 88.9%
+- **Impact**: High (0 survived, 1 uncovered)
+- **Recommendation**: Tests are effectively catching this mutation type. Continue current testing approach.
+
+#### ConditionalExpression
+- **Total Mutations**: 10
+- **Success Rate**: 100.0%
+- **Impact**: Low (0 survived, 0 uncovered)
+- **Recommendation**: Tests are effectively catching this mutation type. Continue current testing approach.
+
+#### LogicalOperator
+- **Total Mutations**: 2
+- **Success Rate**: 100.0%
+- **Impact**: Low (0 survived, 0 uncovered)
+- **Recommendation**: Tests are effectively catching this mutation type. Continue current testing approach.
+
+#### BlockStatement
+- **Total Mutations**: 11
+- **Success Rate**: 100.0%
+- **Impact**: Low (0 survived, 0 uncovered)
+- **Recommendation**: Tests are effectively catching this mutation type. Continue current testing approach.
+
+#### EqualityOperator
+- **Total Mutations**: 7
+- **Success Rate**: 100.0%
+- **Impact**: Low (0 survived, 0 uncovered)
+- **Recommendation**: Tests are effectively catching this mutation type. Continue current testing approach.
+
+
+### Test Effectiveness Analysis
+
+#### Overall Test Coverage Insights
+- **Total Mutants Analyzed**: 45
+- **Average Test Coverage per Mutant**: 6.2 tests
+- **Most Tested Mutant**: #1 (covered by 12 tests)
+- **Least Tested Areas**: ObjectLiteral
+
+#### Test Quality Metrics
+- **Mutation Detection Rate**: 97.8%
+- **Test Efficiency**: 102.3% (killed/covered ratio)
+- **Coverage Gaps**: 1 lines not covered by any tests
+
+#### Top Performing Tests
+1. **Test #12**: Killed 8 mutants, covered 13
+2. **Test #0**: Killed 7 mutants, covered 23
+3. **Test #13**: Killed 6 mutants, covered 22
+4. **Test #1**: Killed 5 mutants, covered 26
+5. **Test #9**: Killed 5 mutants, covered 21
+
+
 ---
 
 ## 📁 File-by-File Breakdown
@@ -87,11 +141,22 @@
 | 🚫 No Coverage | 1 | 100.0% |
 | **Total** | **1** | **100%** |
 
+#### 📄 Source Code with Mutation Analysis
+
+```javascript
+  1| console.log("Hello from index.js!");
+   🚫 #39: StringLiteral → """" [0 tests]
+  2| 
+```
+
 #### 🚫 Coverage Gaps Summary
 
 - **1 uncovered mutants** across 1 lines
 - **Most affected lines**: 1
 - **Common uncovered operations**: StringLiteral
+
+##### Detailed No Coverage Mutants:
+1. **Mutant #39** - Line 1:13-35: `StringLiteral` → `""`
 
 ---
 
@@ -106,6 +171,99 @@
 | 🚫 No Coverage | 0 | 0.0% |
 | **Total** | **39** | **100%** |
 
+#### 📄 Source Code with Mutation Analysis
+
+```javascript
+  1| // person.js
+  2| class Person {
+  3|     constructor(name, age) {
+   ✅ #0: BlockStatement → "{}" [12 tests]
+  4|         if (typeof name !== 'string' || name.trim() === '') {
+   ✅ #1: ConditionalExpression → "true" [12 tests]
+   ✅ #2: ConditionalExpression → "false" [12 tests]
+   ✅ #3: LogicalOperator → "typeof name !== 'string' && name.trim() === ''" [12 tests]
+   ✅ #4: ConditionalExpression → "false" [12 tests]
+   ✅ #5: EqualityOperator → "typeof name === 'string'" [12 tests]
+   ✅ #6: StringLiteral → """" [12 tests]
+   ✅ #8: EqualityOperator → "name.trim() !== ''" [12 tests]
+   ✅ #7: ConditionalExpression → "false" [12 tests]
+   ✅ #9: MethodExpression → "name" [12 tests]
+   ✅ #10: StringLiteral → ""Stryker was here!"" [12 tests]
+   ✅ #11: BlockStatement → "{}" [1 tests]
+  5|             throw new Error("Invalid name");
+   ✅ #12: StringLiteral → """" [1 tests]
+  6|         }
+  7|         if (typeof age !== 'number' || age < 0) {
+   ✅ #13: ConditionalExpression → "true" [11 tests]
+   ✅ #14: ConditionalExpression → "false" [11 tests]
+   ✅ #15: LogicalOperator → "typeof age !== 'number' && age < 0" [11 tests]
+   ✅ #16: ConditionalExpression → "false" [11 tests]
+   ✅ #17: EqualityOperator → "typeof age === 'number'" [11 tests]
+   ✅ #18: StringLiteral → """" [11 tests]
+   ✅ #19: ConditionalExpression → "false" [11 tests]
+   ✅ #20: EqualityOperator → "age <= 0" [11 tests]
+   ✅ #21: EqualityOperator → "age >= 0" [11 tests]
+   ✅ #22: BlockStatement → "{}" [1 tests]
+  8|             throw new Error("Invalid age");
+   ✅ #23: StringLiteral → """" [1 tests]
+  9|         }
+ 10|         this.name = name.trim();
+   ✅ #24: MethodExpression → "name" [10 tests]
+ 11|         this.age = age;
+ 12|     }
+ 13| 
+ 14|     getGreeting() {
+   ✅ #25: BlockStatement → "{}" [1 tests]
+ 15|         return `Hello, my name is ${this.name} and I am ${this.age} years old.`;
+   ✅ #26: StringLiteral → "``" [1 tests]
+ 16|     }
+ 17| 
+ 18|     getAgeInMonths() {
+   ✅ #27: BlockStatement → "{}" [1 tests]
+ 19|         return this.age * 12;
+   ✅ #28: ArithmeticOperator → "this.age / 12" [1 tests]
+ 20|     }
+ 21| 
+ 22|     canVote() {
+   ✅ #29: BlockStatement → "{}" [3 tests]
+ 23|         return this.age >= 18;
+   ✅ #31: ConditionalExpression → "false" [3 tests]
+   ✅ #30: ConditionalExpression → "true" [3 tests]
+   ✅ #32: EqualityOperator → "this.age > 18" [3 tests]
+   ✅ #33: EqualityOperator → "this.age < 18" [3 tests]
+ 24|     }
+ 25| 
+ 26|     introduce() {
+   ✅ #34: BlockStatement → "{}" [1 tests]
+ 27|         return `Hi, I'm ${this.name} and I'm ${this.age} years old.`;
+   ✅ #35: StringLiteral → "``" [1 tests]
+ 28|     }
+ 29| 
+ 30|     getBirthYear() {
+   ✅ #36: BlockStatement → "{}" [1 tests]
+ 31|         const currentYear = new Date().getFullYear();
+ 32|         return currentYear - this.age;
+   ✅ #37: ArithmeticOperator → "currentYear + this.age" [1 tests]
+ 33|     }
+ 34| 
+ 35|     static fromJSON(json) {
+   ✅ #38: BlockStatement → "{}" [1 tests]
+ 36|         const data = JSON.parse(json);
+ 37|         return new Person(data.name, data.age);
+ 38|     }
+ 39| }
+ 40| 
+ 41| module.exports = Person;
+ 42| 
+```
+
+#### ✅ Successfully Killed Mutants Summary
+
+- **39 mutants killed** by tests
+- **Average tests per mutant**: 1.0
+- **Most effective test**: 12 (killed 8 mutants)
+- **Top mutator types killed**: ConditionalExpression, BlockStatement, EqualityOperator
+
 ---
 
 ### 🟢 src/utils/utils.js
@@ -119,6 +277,33 @@
 | 🚫 No Coverage | 0 | 0.0% |
 | **Total** | **5** | **100%** |
 
+#### 📄 Source Code with Mutation Analysis
+
+```javascript
+  1| function add(a, b) {
+   ✅ #40: BlockStatement → "{}" [2 tests]
+  2|     return a + b;
+   ✅ #41: ArithmeticOperator → "a - b" [2 tests]
+  3| }
+  4| 
+  5| function tellBirthday(person) {
+   ✅ #42: BlockStatement → "{}" [2 tests]
+  6|     return `${person.introduce()} I was born in ${person.getBirthYear()}.`;
+   ✅ #43: StringLiteral → "``" [2 tests]
+  7| }
+  8| 
+  9| module.exports = { add, tellBirthday };
+   ✅ #44: ObjectLiteral → "{}" [0 tests]
+ 10| 
+```
+
+#### ✅ Successfully Killed Mutants Summary
+
+- **5 mutants killed** by tests
+- **Average tests per mutant**: 1.0
+- **Most effective test**: 7 (killed 2 mutants)
+- **Top mutator types killed**: BlockStatement, ArithmeticOperator, StringLiteral
+
 ---
 
 ## 📚 Appendix
@@ -131,27 +316,149 @@ Mutation testing validates test quality by introducing small bugs (mutations) in
 2. **❌ Survived Mutants**: Tests missed the bug ❌ Need better tests  
 3. **🚫 No Coverage**: Code isn't tested ❌ Need more tests
 
+### Mutation Testing Process
+
+1. **Mutation Generation**: The tool creates variants of your code with small changes
+2. **Test Execution**: Your test suite runs against each mutant
+3. **Result Analysis**: 
+   - If tests fail → Mutant is "killed" (good)
+   - If tests pass → Mutant "survived" (bad)
+   - If no tests run → "No coverage" (very bad)
+
+### Interpreting Results
+
+#### Status Definitions
+- **Killed**: Tests caught the mutation (test quality is good for this area)
+- **Survived**: Tests didn't catch the mutation (test quality needs improvement)
+- **No Coverage**: No tests executed this code (coverage gap)
+- **Timeout**: Tests took too long (possible infinite loop)
+- **Runtime Error**: Mutation caused a runtime error
+- **Compile Error**: Mutation caused compilation to fail
+
+#### Mutator Types Explained
+- **ConditionalExpression**: Changes conditions (true ↔ false)
+- **EqualityOperator**: Changes equality operators (== ↔ !=, === ↔ !==)
+- **StringLiteral**: Changes string values
+- **BooleanLiteral**: Changes boolean values (true ↔ false)
+- **ArithmeticOperator**: Changes math operators (+, -, *, /, %)
+- **LogicalOperator**: Changes logical operators (&&, ||)
+- **BlockStatement**: Removes or modifies code blocks
+- **MethodExpression**: Changes method calls
+
 ### Recommended Next Steps
 
+#### Immediate Actions (Priority Order)
 1. **Address High Priority Files**: Focus on files with low coverage or poor mutation scores
-2. **Improve Test Assertions**: Strengthen tests to catch survived mutants
-3. **Increase Coverage**: Add tests for uncovered code paths
-4. **Regular Monitoring**: Run mutation testing in CI/CD pipeline
+2. **Fix No Coverage Issues**: Add tests for uncovered code paths
+3. **Improve Test Assertions**: Strengthen tests to catch survived mutants
+4. **Add Edge Case Tests**: Test boundary conditions and error scenarios
+
+#### Long-term Improvements
+1. **Regular Monitoring**: Run mutation testing in CI/CD pipeline
+2. **Set Quality Gates**: Require minimum mutation scores for commits
+3. **Team Training**: Educate team on mutation testing principles
+4. **Incremental Improvement**: Focus on most critical files first
+
+#### Test Quality Guidelines
+- **Target 80%+ mutation score** for critical business logic
+- **Focus on edge cases** and error conditions
+- **Test both positive and negative scenarios**
+- **Verify error messages and exception types**
+- **Test with various input combinations**
 
 ### Mutation Testing Best Practices
 
-- Target 80%+ mutation score for critical code
-- Focus on business logic and edge cases
-- Use mutation testing to guide test improvements
-- Don't aim for 100% - some mutants are equivalent
+#### Do's ✅
+- Use mutation testing to **guide test improvements**
+- Focus on **business-critical code** first
+- Set **realistic targets** (80%+ for important code)
+- **Combine with code coverage** for comprehensive analysis
+- **Run regularly** to prevent regression
+- **Use results to improve** test design
+
+#### Don'ts ❌
+- Don't aim for 100% mutation score (some mutants are equivalent)
+- Don't ignore "No Coverage" mutants
+- Don't rely solely on mutation score
+- Don't test generated or trivial code extensively
+- Don't let perfect be the enemy of good
+
+### Troubleshooting Common Issues
+
+#### Low Mutation Score
+- **Symptom**: Many survived mutants
+- **Solution**: Add more specific assertions and edge case tests
+- **Example**: Test both success and failure paths
+
+#### No Coverage Issues  
+- **Symptom**: High percentage of uncovered mutants
+- **Solution**: Increase test coverage first, then improve test quality
+- **Example**: Add unit tests for all public methods
+
+#### Equivalent Mutants
+- **Symptom**: Mutants that don't change behavior
+- **Solution**: This is normal - focus on actionable mutants
+- **Example**: Changing variable names doesn't affect functionality
+
+### Integration with Development Workflow
+
+#### CI/CD Integration
+```bash
+# Example pipeline step
+npm run test:mutation
+if mutation_score < 80%; then
+  echo "Mutation score too low"
+  exit 1
+fi
+```
+
+#### Git Hooks
+```bash
+# Pre-commit hook
+npm run test:mutation:changed-files
+```
+
+#### Quality Gates
+- **Minimum mutation score**: 70% for new code
+- **No decrease**: Mutation score shouldn't drop
+- **Coverage requirement**: 90%+ line coverage before mutation testing
 
 ### Additional Resources
 
 - [Mutation Testing Guide](https://stryker-mutator.io/docs/)
 - [Best Practices](https://blog.stryker-mutator.io/blog/)
+- [Academic Research](https://en.wikipedia.org/wiki/Mutation_testing)
 - [Interpreting Results](https://github.com/stryker-mutator/stryker/blob/master/docs/mutation-testing-elements/supported-mutators.md)
+
+### Tool Configuration
+
+#### Stryker Configuration Tips
+```json
+{
+  "mutate": ["src/**/*.js", "!src/**/*.test.js"],
+  "testRunner": "jest",
+  "coverageAnalysis": "perTest",
+  "thresholds": {
+    "high": 80,
+    "low": 60,
+    "break": 50
+  }
+}
+```
+
+#### Performance Optimization
+- Use **coverage analysis** to speed up execution
+- **Exclude test files** from mutation
+- **Parallelize execution** when possible
+- **Use incremental mode** for large codebases
 
 ---
 
 *Report generated by Stryker Mutation Testing Framework*  
 *For questions or issues, consult your development team or the Stryker documentation.*
+
+**Report Generation Details**
+- Generated: 2025-08-17T08:25:05.726Z
+- Stryker Version: Latest
+- Analysis Includes: Source code, test coverage, mutant details, recommendations
+- Interactive Version: Available at `html/index.html`
