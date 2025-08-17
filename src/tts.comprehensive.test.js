@@ -594,10 +594,6 @@ describe('TTSModule - Comprehensive Coverage', () => {
         }))
       };
       
-      // Set up a promise that resolves when the message handler is called
-      let handlerCalled = false;
-      const originalPortOnMessage = audioModule.port.onmessage;
-      
       const speakPromise = tts.speakWithKokoro(audioModule, outputElement);
 
       // Wait for the message handler to be set up
@@ -628,7 +624,7 @@ describe('TTSModule - Comprehensive Coverage', () => {
       // Let the promise complete
       try {
         await speakPromise;
-      } catch (error) {
+      } catch {
         // Ignore errors since we're just testing the message handling
       }
     });

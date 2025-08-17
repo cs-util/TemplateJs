@@ -63,7 +63,7 @@ export class TTSModule {
         if (typeof voiceSelect.appendChild === 'function') {
           voiceSelect.appendChild(option);
         } else if (typeof voiceSelect.append === 'function') {
-          try { voiceSelect.append(option); } catch (e) { /* ignore */ }
+          try { voiceSelect.append(option); } catch { /* ignore */ }
         } else {
           // If append isn't available, store options array so tests can inspect if needed
           voiceSelect.options = voiceSelect.options || [];
@@ -80,52 +80,63 @@ export class TTSModule {
   async initializeKokoro(onProgress) {
     if (this.kokoroModel) return this.kokoroModel;
     if (this.isLoading) {
-      while (this.isLoading) {
-        await new Promise(resolve => setTimeout(resolve, 100));
-      }
-      return this.kokoroModel;
+      return await this._waitForLoading();
     }
 
     this.isLoading = true;
 
     try {
-      onProgress?.({ percentage: 0, text: 'Loading Kokoro TTS model...' });
-      
-      // Check for WebGPU availability first
-      if (!navigator.gpu) {
-        throw new Error('WebGPU not available');
-      }
-
-      // Try to load Kokoro model
-      const { KokoroTTS } = await import('kokoro-js');
-      
-      this.kokoroModel = await KokoroTTS.from_pretrained("onnx-community/Kokoro-82M-v1.0-ONNX", {
-        dtype: "fp32",
-        device: "webgpu",
-        progress_callback: (item) => {
-          if (item.status === "progress" && item.file?.endsWith?.("onnx")) {
-            const progress = Math.round(item.progress * 100);
-            onProgress?.({ percentage: progress, text: `Loading Kokoro model: ${progress}%` });
-          }
-        },
-      });
-
-      onProgress?.({ percentage: 100, text: 'Kokoro TTS loaded successfully' });
-      this.useWebSpeech = false;
-      return this.kokoroModel;
-
+      return await this._loadKokoroModel(onProgress);
     } catch (error) {
-      console.warn('Kokoro TTS not available, falling back to Web Speech API:', error);
-
-      if (FALLBACK_TO_WEB_SPEECH && 'speechSynthesis' in window) {
-        this.useWebSpeech = true;
-        onProgress?.({ percentage: 100, text: 'Using Web Speech API' });
-        return 'web-speech';
-      } else {
-        throw new Error('No TTS system available');
-      }
+      return this._handleKokoroLoadError(error, onProgress);
     } finally {
       this.isLoading = false;
+    }
+  }
+
+  async _waitForLoading() {
+    while (this.isLoading) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+    return this.kokoroModel;
+  }
+
+  async _loadKokoroModel(onProgress) {
+    onProgress?.({ percentage: 0, text: 'Loading Kokoro TTS model...' });
+    
+    // Check for WebGPU availability first
+    if (!navigator.gpu) {
+      throw new Error('WebGPU not available');
+    }
+
+    // Try to load Kokoro model
+    const { KokoroTTS } = await import('kokoro-js');
+    
+    this.kokoroModel = await KokoroTTS.from_pretrained("onnx-community/Kokoro-82M-v1.0-ONNX", {
+      dtype: "fp32",
+      device: "webgpu",
+      progress_callback: (item) => {
+        if (item.status === "progress" && item.file?.endsWith?.("onnx")) {
+          const progress = Math.round(item.progress * 100);
+          onProgress?.({ percentage: progress, text: `Loading Kokoro model: ${progress}%` });
+        }
+      },
+    });
+
+    onProgress?.({ percentage: 100, text: 'Kokoro TTS loaded successfully' });
+    this.useWebSpeech = false;
+    return this.kokoroModel;
+  }
+
+  _handleKokoroLoadError(error, onProgress) {
+    console.warn('Kokoro TTS not available, falling back to Web Speech API:', error);
+
+    if (FALLBACK_TO_WEB_SPEECH && 'speechSynthesis' in window) {
+      this.useWebSpeech = true;
+      onProgress?.({ percentage: 100, text: 'Using Web Speech API' });
+      return 'web-speech';
+    } else {
+      throw new Error('No TTS system available');
     }
   }
 
@@ -242,7 +253,7 @@ export class TTSModule {
         utterance.onerror = (event) => {
           clearSafety();
           if (typeof originalOnError === 'function') {
-            try { originalOnError.call(utterance, event); } catch (e) { /* ignore */ }
+            try { originalOnError.call(utterance, event); } catch { /* ignore */ }
           }
           console.error('Speech synthesis error:', event);
           reject(new Error('Speech synthesis failed'));
@@ -254,7 +265,7 @@ export class TTSModule {
           // Try to simulate onend to keep behavior consistent
           try {
             if (typeof utterance.onend === 'function') utterance.onend();
-          } catch (e) {
+          } catch {
             // ignore
             currentIndex++;
             setTimeout(speakNext, 100);
