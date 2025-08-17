@@ -28,7 +28,6 @@ describe('LLMModule environment configuration', () => {
     window.LOCAL_LLM_LOCAL_ONLY = true;
     const mod = new LLMModule();
     global.mockPipeline.__setImpl(async () => [{ generated_text: 'test2' }]);
-    const env = global.mockEnv;
     await mod.generate('hello', { onToken: () => {} });
     // Environment configuration is handled through mocks in test environment
     delete window.LOCAL_LLM_LOCAL_ONLY;

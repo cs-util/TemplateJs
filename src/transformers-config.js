@@ -1,8 +1,11 @@
 /**
  * Transformers.js Configuration Module
- * Handles initialization and configuration of the Transformers.js library
+ * Handles loading and initialization of transformers.js with proper environment setup
  */
 
+import { configureWASMThreads, configureDeviceSelection } from './utils/transformers-utils.js';
+
+// Store the transformers instance globally to avoid reinitialization
 let transformersInstance = null;
 let initializationPromise = null;
 
@@ -36,7 +39,7 @@ export async function initializeTransformers() {
             pipeline: transformersModule.pipeline,
             env: transformersModule.env
           };
-        } catch (error) {
+        } catch {
           throw new Error('Failed to load @huggingface/transformers package – ensure dependency is installed.');
         }
       }
@@ -67,40 +70,35 @@ export async function initializeTransformers() {
 function configureTransformersEnv(env) {
   // Browser environment configuration
   if (typeof window !== 'undefined' && typeof navigator !== 'undefined') {
-    // Run fully local (no Hub calls) when in browser with local models
-    env.localModelPath = window.LOCAL_LLM_MODELS_BASE || '/models/';   // base folder served by dev server
-    env.allowLocalModels = true;
-    env.allowRemoteModels = !window.LOCAL_LLM_LOCAL_ONLY;
-
-    // Optional: tune WASM threads for CPU fallback
-    if (typeof navigator !== 'undefined' && navigator.hardwareConcurrency) {
-      env.backends = env.backends || {};
-      env.backends.onnx = env.backends.onnx || {};
-      env.backends.onnx.wasm = env.backends.onnx.wasm || {};
-      env.backends.onnx.wasm.numThreads = Math.min(navigator.hardwareConcurrency || 4, 8);
-    }
-
-    // Device selection
-    if (typeof navigator !== 'undefined' && navigator.gpu) {
-      const DEVICE = navigator.gpu ? 'webgpu' : 'wasm';
-      window.__TRANSFORMERS_DEVICE__ = DEVICE; // expose for debugging
-      
-      console.log('[transformers] Device detected:', DEVICE);
-    }
-    
-    console.log('[transformers] Local model path:', env.localModelPath);
+    configureBrowserEnv(env);
   } else {
-    // Node.js/test environment configuration
-    env.useBrowserCache = false;
-    env.allowLocalModels = true;
-    env.allowRemoteModels = !process.env.LOCAL_LLM_LOCAL_ONLY; // Allow remote for tests unless explicitly disabled
-    env.localModelPath = process.env.LOCAL_LLM_MODELS_BASE || './models/';
+    configureNodeEnv(env);
   }
 
   // Enable browser cache between sessions for browser
   if (typeof window !== 'undefined') {
     env.useBrowserCache = true;
   }
+}
+
+function configureBrowserEnv(env) {
+  // Run fully local (no Hub calls) when in browser with local models
+  env.localModelPath = window.LOCAL_LLM_MODELS_BASE || '/models/';   // base folder served by dev server
+  env.allowLocalModels = true;
+  env.allowRemoteModels = !window.LOCAL_LLM_LOCAL_ONLY;
+
+  configureWASMThreads(env);
+  configureDeviceSelection();
+  
+  console.log('[transformers] Local model path:', env.localModelPath);
+}
+
+function configureNodeEnv(env) {
+  // Node.js/test environment configuration
+  env.useBrowserCache = false;
+  env.allowLocalModels = true;
+  env.allowRemoteModels = !process.env.LOCAL_LLM_LOCAL_ONLY; // Allow remote for tests unless explicitly disabled
+  env.localModelPath = process.env.LOCAL_LLM_MODELS_BASE || './models/';
 }
 
 /**

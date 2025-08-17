@@ -3,6 +3,8 @@
  * Handles the CDN loading and configuration of Transformers.js in the browser
  */
 
+import { configureWASMThreads, configureDeviceSelection } from './utils/transformers-utils.js';
+
 /**
  * Initialize Transformers.js from CDN for browser usage
  * This function loads the Transformers.js library from CDN and configures it for local usage
@@ -23,21 +25,14 @@ export async function initializeBrowserTransformers() {
     env.allowLocalModels = true;
     env.allowRemoteModels = false;
 
-    // Optional: tune WASM threads for CPU fallback
-    env.backends = env.backends || {};
-    env.backends.onnx = env.backends.onnx || {};
-    env.backends.onnx.wasm = env.backends.onnx.wasm || {};
-    env.backends.onnx.wasm.numThreads = Math.min(navigator.hardwareConcurrency || 4, 8);
-
-    // Device selection
-    const DEVICE = navigator.gpu ? 'webgpu' : 'wasm';
-    window.__TRANSFORMERS_DEVICE__ = DEVICE; // expose for debugging
+    // Configure WASM threads and device selection using shared utilities
+    configureWASMThreads(env);
+    const DEVICE = configureDeviceSelection();
     
     // Make transformers available globally for compatibility
     window.transformers = { pipeline, env };
     
     console.log('[transformers] Transformers.js v3 loaded successfully');
-    console.log('[transformers] Device detected:', DEVICE);
     console.log('[transformers] Local model path:', env.localModelPath);
 
     return { pipeline, env };

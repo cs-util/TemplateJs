@@ -2,53 +2,26 @@
  * Global test setup for transformers mocking
  */
 
-// Create a mock transformers environment
-const mockEnv = {
-  useBrowserCache: false,
-  allowLocalModels: true,
-  allowRemoteModels: true,
-  localModelPath: '/models/',
-  backends: {
-    onnx: {
-      wasm: {
-        numThreads: 4
-      }
-    }
-  }
-};
+import { 
+  createMockEnv, 
+  createMockPipeline, 
+  createMockTransformersConfig,
+  createMockBrowserTransformers,
+  createMockTransformersPackage
+} from './__mocks__/transformers-test-utils.js';
 
-// Create a configurable mock pipeline implementation
-let mockPipelineImpl = async () => async () => ({ generated_text: 'mocked response' });
-
-const mockPipeline = jest.fn(async () => mockPipelineImpl);
-mockPipeline.__setImpl = (fn) => { mockPipelineImpl = fn; };
+// Create shared mock instances
+const mockEnv = createMockEnv();
+const mockPipeline = createMockPipeline();
 
 // Mock the transformers-config module
-jest.mock('./transformers-config.js', () => ({
-  initializeTransformers: jest.fn(async () => ({
-    pipeline: mockPipeline,
-    env: mockEnv
-  })),
-  getTransformersInstance: jest.fn(() => ({
-    pipeline: mockPipeline,
-    env: mockEnv
-  })),
-  resetTransformersInstance: jest.fn()
-}));
+jest.mock('./transformers-config.js', () => createMockTransformersConfig(mockPipeline, mockEnv));
 
 // Mock the browser-transformers module for app tests
-jest.mock('./browser-transformers.js', () => ({
-  initializeBrowserTransformers: jest.fn(async () => ({
-    pipeline: mockPipeline,
-    env: mockEnv
-  }))
-}));
+jest.mock('./browser-transformers.js', () => createMockBrowserTransformers(mockPipeline, mockEnv));
 
 // Mock @huggingface/transformers package directly for compatibility
-jest.mock('@huggingface/transformers', () => ({
-  env: mockEnv,
-  pipeline: mockPipeline
-}));
+jest.mock('@huggingface/transformers', () => createMockTransformersPackage(mockPipeline, mockEnv));
 
 // Export for test access
 global.mockPipeline = mockPipeline;

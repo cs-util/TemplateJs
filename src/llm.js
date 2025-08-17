@@ -18,13 +18,26 @@ export class LLMModule {
     // Enable browser cache between sessions
     env.useBrowserCache = true;
     env.allowLocalModels = true;
+    
+    this._configureRemoteModels(env);
+    this._configureModelPath(env);
+    this._configureONNXThreads(env);
+  }
+
+  _configureRemoteModels(env) {
     // Allow remote models unless user explicitly sets local-only flag
     const forceLocalOnly = (typeof window !== 'undefined' && window.LOCAL_LLM_LOCAL_ONLY) || false;
     env.allowRemoteModels = !forceLocalOnly;
+  }
+
+  _configureModelPath(env) {
     const base = (typeof window !== 'undefined' && window.LOCAL_LLM_MODELS_BASE) || null;
     if (base) {
       env.localModelPath = base.endsWith('/') ? base : `${base}/`;
     }
+  }
+
+  _configureONNXThreads(env) {
     // Optimize ONNX WASM threads (safe fallback 4)
     if (env.backends?.onnx?.wasm) {
       env.backends.onnx.wasm.numThreads = navigator.hardwareConcurrency || 4;

@@ -13,7 +13,8 @@ module.exports = {
     '!src/**/*.test.js',      // exclude standard unit tests
     '!src/**/*.property.test.js', // exclude property-based tests
     '!src/**/__mocks__/**',   // exclude any mocks if added later
-    '!src/test-setup.js'      // exclude test setup file
+    '!src/test-setup.js',     // exclude test setup file
+    '!src/browser-transformers.js' // exclude browser CDN loader (tested via integration)
   ],
   coverageReporters: ["json", "lcov", "text", "clover"],
   coverageThreshold: {
