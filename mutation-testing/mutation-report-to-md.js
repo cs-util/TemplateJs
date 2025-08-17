@@ -54,7 +54,7 @@ function generateMarkdownReport() {
   markdown += generatePriorityActions(report);
   markdown += generateDetailedAnalysis(report);
   markdown += generateFileBreakdown(report);
-  markdown += generateAppendix(report);
+  markdown += generateAppendix();
 
   // Write markdown file
   const mdPath = path.join(__dirname, '/reports/mutation-report.md');
@@ -72,7 +72,7 @@ function calculateOverallStats(report) {
   const mutatorStats = {};
   const survivalReasons = {};
 
-  Object.entries(report.files).forEach(([filePath, fileData]) => {
+  Object.entries(report.files).forEach(([, fileData]) => {
     fileData.mutants.forEach(mutant => {
       totalMutants++;
       
@@ -180,7 +180,6 @@ ${riskEmoji} **Risk Level: ${riskLevel}**
 }
 
 function generatePriorityActions(report) {
-  const actions = [];
   const fileIssues = [];
   
   Object.entries(report.files).forEach(([filePath, fileData]) => {
@@ -219,14 +218,14 @@ function generatePriorityActions(report) {
   if (highPriorityFiles.length > 0) {
     markdown += `#### 🔴 HIGH PRIORITY (Immediate attention needed)\n\n`;
     highPriorityFiles.slice(0, 5).forEach(file => {
-      markdown += generateFileActionItem(file, 'HIGH');
+      markdown += generateFileActionItem(file);
     });
   }
 
   if (mediumPriorityFiles.length > 0) {
     markdown += `#### 🟡 MEDIUM PRIORITY (Address soon)\n\n`;
     mediumPriorityFiles.slice(0, 5).forEach(file => {
-      markdown += generateFileActionItem(file, 'MEDIUM');
+      markdown += generateFileActionItem(file);
     });
   }
 
@@ -258,7 +257,7 @@ function calculatePriority(coverage, mutationScore, survivedMutants) {
   return priority;
 }
 
-function generateFileActionItem(file, priorityLevel) {
+function generateFileActionItem(file) {
   const issues = [];
   
   if (file.coverage < 50) {
@@ -458,7 +457,6 @@ function getHealthStatus(stats) {
 
 function suggestFix(mutant) {
   const mutatorName = mutant.mutatorName;
-  const replacement = mutant.replacement;
   
   switch (mutatorName) {
     case 'ConditionalExpression':
@@ -504,7 +502,7 @@ function analyzeCoverageGaps(noCoverageMutants) {
   };
 }
 
-function generateAppendix(report) {
+function generateAppendix() {
   return `## 📚 Appendix
 
 ### Understanding Mutation Testing
