@@ -2,7 +2,8 @@
 // Since this config file is in ./config, we need to go up one level to reach the repo root
 module.exports = {
   rootDir: '../',
-  testPathIgnorePatterns: ['/node_modules/', '/.stryker-tmp/'],
+  // Don't ignore .stryker-tmp so that Stryker's sandboxed test copies are executed during mutation testing
+  testPathIgnorePatterns: ['/node_modules/'],
   collectCoverage: true,
   // Include all source files so newly added modules without tests are reported with 0% coverage
   // This ensures gaps (e.g. currently untested audio.js) are visible and will impact thresholds

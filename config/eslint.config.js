@@ -2,9 +2,19 @@ const globals = require('globals');
 const js = require('@eslint/js');
 
 module.exports = [
+  // Global ignores (placed first so they apply regardless of later configs)
+  {
+    ignores: [
+      '.stryker-tmp/**',
+      '**/.stryker-tmp/**',
+      'coverage/**',
+      'config/coverage/**',
+      'mutation-testing/reports/**',
+      'reports/**'
+    ]
+  },
   js.configs.recommended,
   {
-  ignores: ['coverage/**', 'reports/**', 'node_modules/**', '.stryker-tmp/**'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
