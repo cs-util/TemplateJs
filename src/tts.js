@@ -404,7 +404,7 @@ export class TTSModule {
     if (this.currentSplitter) {
       try {
         this.currentSplitter.close?.();
-      } catch (e) {
+      } catch {
         // Ignore errors when closing splitter
       }
       this.currentSplitter = null;

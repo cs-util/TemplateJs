@@ -23,7 +23,8 @@ global.window = {
 // Mock Kokoro TTS
 jest.mock('kokoro-js', () => ({
   KokoroTTS: {
-    from_pretrained: jest.fn(() => {
+    from_pretrained: jest.fn().mockImplementation(() => {
+      // Re-evaluate the global state each time the function is called
       if (!global.navigator?.gpu) {
         throw new Error('WebGPU not available');
       }
@@ -170,15 +171,33 @@ describe('TTSModule speakWithKokoro', () => {
     try {
       global.navigator = { gpu: undefined };
       global.speechSynthesis = undefined;
-      global.window = {};
       
+      // Remove speechSynthesis from the window object
+      delete window.speechSynthesis;
+      global.window = window;
+      
+      // Mock the Kokoro module to fail for this test
+      const kokoroModule = await import('kokoro-js');
+      const mockKokoroTTS = kokoroModule.KokoroTTS;
+      mockKokoroTTS.from_pretrained.mockImplementationOnce(() => {
+        throw new Error('WebGPU not available');
+      });
+      
+      // Clear any cached kokoro model
       const newTts = new TTSModule();
+      newTts.kokoroModel = null;
+      newTts.useWebSpeech = false;
+      
       await expect(newTts.initializeKokoro()).rejects.toThrow('No TTS system available');
     } finally {
       // Restore original values
       global.navigator = originalNavigator;
       global.speechSynthesis = originalSpeechSynthesis;
       global.window = originalWindow;
+      // Restore speechSynthesis to window if it was there originally
+      if (originalWindow && originalWindow.speechSynthesis) {
+        window.speechSynthesis = originalWindow.speechSynthesis;
+      }
     }
   });
 });
