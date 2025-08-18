@@ -27,7 +27,7 @@ export async function initializeBrowserTransformers() {
 
     // Configure WASM threads and device selection using shared utilities
     configureWASMThreads(env);
-    const DEVICE = configureDeviceSelection();
+    configureDeviceSelection();
     
     // Make transformers available globally for compatibility
     window.transformers = { pipeline, env };
