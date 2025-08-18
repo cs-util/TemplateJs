@@ -23,7 +23,15 @@ export function configureWASMThreads(env) {
 export function configureDeviceSelection() {
   // Device selection
   if (typeof navigator !== 'undefined' && navigator.gpu) {
-    const DEVICE = navigator.gpu ? 'webgpu' : 'wasm';
+    const DEVICE = 'webgpu';
+    if (typeof window !== 'undefined') {
+      window.__TRANSFORMERS_DEVICE__ = DEVICE; // expose for debugging
+    }
+    
+    console.log('[transformers] Device detected:', DEVICE);
+    return DEVICE;
+  } else if (typeof navigator !== 'undefined') {
+    const DEVICE = 'wasm';
     if (typeof window !== 'undefined') {
       window.__TRANSFORMERS_DEVICE__ = DEVICE; // expose for debugging
     }
@@ -31,5 +39,7 @@ export function configureDeviceSelection() {
     console.log('[transformers] Device detected:', DEVICE);
     return DEVICE;
   }
+  
+  // When navigator is completely undefined, just return wasm without logging
   return 'wasm';
 }
