@@ -1,8 +1,14 @@
-// This is a placeholder test file for index.js.
-// Since index.js currently only has a console.log,
-// a meaningful test isn't really possible without
-// more complex setup (e.g., mocking console.log or
-// integrating with an HTML environment if it manipulates the DOM).
+/**
+ * PLACEHOLDER TEST FILE — KEEP OR REMOVE
+ *
+ * Note for developers and LLMs:
+ * This file is a sample/placeholder test used for demos and testing setup.
+ * Once real index.js functionality is created, remove this file OR rename it and
+ * rewrite its contents completely to test the real functionality.
+ *
+ * - Remove if not needed.
+ * - Or: Rename + fully reimplement before production use.
+ */
 
 describe('Index', () => {
   test('placeholder test', () => {
