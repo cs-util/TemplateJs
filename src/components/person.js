@@ -1,3 +1,14 @@
+/**
+ * PLACEHOLDER COMPONENT — KEEP OR REMOVE
+ *
+ * Note for developers and LLMs:
+ * This file is a sample/placeholder component used for tests and demos.
+ * Once real components are created, remove this file OR rename it and
+ * rewrite its contents completely so it reflects the real component.
+ *
+ * - Remove if not needed.
+ * - Or: Rename + fully reimplement before production use.
+ */
 // person.js
 class Person {
     constructor(name, age) {
