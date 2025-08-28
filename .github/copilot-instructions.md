@@ -2,8 +2,8 @@
 
 ## New Feature Specification Requirements
 
-If (and only if) a user requests a new feature, **DO NOT START IMPLEMENTATION IMMEDIATELY**. 
-Follow this specification process:
+When the user does a new request, **DO NOT START IMPLEMENTATION IMMEDIATELY**. 
+First follow this specification process:
 
 ### 1. Requirements Gathering
 - Ask **one question at a time** for thorough, step-by-step specification
@@ -13,7 +13,7 @@ Follow this specification process:
 - Continue until requirements are complete
 
 ### 2. Specification Development
-Create specification appropriate to feature size:
+Understand and document the specification appropriate to the feature size:
 
 **For major features**:
 - **Functional requirements** - What the feature does
@@ -29,11 +29,10 @@ Create specification appropriate to feature size:
 - Key edge cases to handle
 
 ### 3. Final Specification Document
-Compile findings into a comprehensive, developer-ready specification .md file with all above elements. 
-Place at appropriate location next to relevant code files.
+Compile findings into a comprehensive, developer-ready specification .md file with all above elements. Place at appropriate location next to relevant code files.
 
-### 4. Implementation Guidelines
-When implementing the feature, follow these strict rules:
+## Implementation Guidelines
+When implementing, follow these strict rules:
 
 - **Stay focused**: Only change code directly related to the current task to keep pull requests focused
 - **Preserve existing comments**: Don't remove unrelated comments from the codebase
@@ -47,9 +46,8 @@ When implementing the feature, follow these strict rules:
 
 This repository has a comprehensive testing setup with the following key commands:
 
-1. **During development:** Use `npm run test:watch` for continuous testing
-2. **Before committing:** Run `npm test` to ensure all tests pass, then run `npm run check:all` (Runs all quality checks: linting, duplication detection, circular dependency checks, and architectural boundaries)
-3. **Before releases:** Run `npm run validate:all` for complete validation (tests + mutation + all checks)
+1. **Before committing:** Run run `npm run check:all` and afterwards `npm test`
+2. **Before releases:** Run `npm run validate:all` 
 
 **IMPORTANT**: Always use the `run_in_terminal` tool to actually execute these commands. Never assume or report test results without actually running the commands and showing the real output. If you claim tests pass or fail, you must demonstrate this with actual command execution.
 
@@ -57,20 +55,16 @@ This repository has a comprehensive testing setup with the following key command
 
 - `*.test.js` - Standard unit tests  
 - `*.property.test.js` - Property-based tests using fast-check library
-- All tests require 100% code coverage
-- Mutation testing ensures test quality with >80% mutation score
+- Mutation testing is setup to ensure high test quality
 
 ## Test Failure Resolution
 
 When tests fail during development:
 
-1. **Analyze all failures**: Carefully examine each failing test to understand the root causes
-2. **Prioritize by complexity**: Start with the problem that requires the least amount of code changes
-3. **Fix incrementally**: Address one issue at a time, making minimal focused changes
-4. **Verify immediately**: After each fix, run the tests again using `run_in_terminal` to confirm that specific failure is resolved
-5. **Iterate**: Continue this process until all tests pass
-
-**CRITICAL**: Never claim that tests pass or fail without actually executing the test commands using the `run_in_terminal` tool and showing the real output. Always provide evidence of test execution.
+1. **Prioritize by complexity**: Start with the problem that requires the least amount of code changes
+2. **Fix incrementally**: Address one issue at a time, making minimal focused changes
+3. **Verify immediately**: After each fix, run the tests again using `run_in_terminal` to confirm that specific failure is resolved
+4. **Iterate**: Continue this process until all tests pass
 
 This approach minimizes the risk of introducing new issues and makes debugging more manageable.
 
