@@ -73,3 +73,8 @@ When tests fail during development:
 **CRITICAL**: Never claim that tests pass or fail without actually executing the test commands using the `run_in_terminal` tool and showing the real output. Always provide evidence of test execution.
 
 This approach minimizes the risk of introducing new issues and makes debugging more manageable.
+
+---
+
+# External Dependency Guidelines
+This project follows a no-build approach. Use ES modules with an <script type="importmap"> to map bare specifiers, then load code via <script type="module">. You should first try to source module URLs from unpkg.com, which is optimized for no-build workflows.
