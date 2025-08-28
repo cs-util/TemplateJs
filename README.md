@@ -6,23 +6,26 @@ It follows an AI-assisted iterative development process:
 - Each iteration is a single commit for easy review.
 - AI-assisted coding minimizes manual intervention.
 - The focus is on defining clear requirements rather than manual coding.
+- **Autonomous agents** can implement features and fix bugs automatically.
 
-This approach enables rapid prototyping and structured iteration.
+This approach enables rapid prototyping and structured iteration with minimal human intervention.
 
 ## Using the Template
 1.  **Fork and Open in CodeSpaces:** Fork this repository and open your fork using GitHub CodeSpaces.
 2.  **Configure GitHub Pages:** Navigate to your repository's `Settings` -> `Pages`. In the "Branch" section, select the `main` branch to be automatically deployed by GitHub.
-3.  **Access Your WebApp:** If your fork is `github.com/YourUserName/YourFork`, your WebApp will be live at `YourUserName.github.io/YourFork`.
-4.  **Install Recommended VSCode Extensions (Optional but Recommended):**
+3.  **Set up Autonomous Agents (Optional):** See [`docs/autonomous-agents-setup.md`](docs/autonomous-agents-setup.md) for configuring AI agents that can automatically implement features and fix bugs.
+4.  **Access Your WebApp:** If your fork is `github.com/YourUserName/YourFork`, your WebApp will be live at `YourUserName.github.io/YourFork`.
+5.  **Install Recommended VSCode Extensions (Optional but Recommended):**
     *   "**Live Server**": Renders the `index.html` page and provides live updates during development.
     *   "**GitHub Copilot**": Assists with coding tasks within CodeSpaces.
     *   "**Git Graph**": Helps visualize and manage Git branches.
-5.  **Development Workflow:**
+6.  **Development Workflow:**
     *   Modify `index.html` for the main page structure.
     *   Add or edit JavaScript modules in the `src/` directory.
     *   Place static assets like images or JSON files in `src/assets/`.
     *   Create new HTML pages in the `pages/` directory if needed.
     *   Regularly commit and push your changes to the `main` branch to update your live application.
+    *   **Use autonomous agents:** Use an agent trigger (e.g., `@claude`, `/cursor start`) in an issue to have it implemented automatically.
 
 ## Project Structure
 This template uses a structured approach to organize files and facilitate development:
@@ -50,17 +53,27 @@ This template uses a structured approach to organize files and facilitate develo
         └── utils.test.js
 ```
 
-### Best Practices:
-*   **Modularity:** Keep JavaScript modules in `src/components/` or `src/utils/` focused on specific functionalities.
-*   **Separation of Concerns:**
-    *   `index.html` defines the structure.
-    *   JavaScript in `src/` handles the logic.
-    *   Static assets are stored in `src/assets/`.
-    *   Additional distinct pages go into the `pages/` directory.
-*   **Testing:** Write unit tests for your JavaScript modules (e.g., `*.test.js`). This template is set up for Jest, but you can adapt it.
-*   **Dependencies:** Manage front-end dependencies using `package.json`.
-*   **Babel:** `babel.config.js` is configured for modern JavaScript. You can extend it if needed.
-*   **Clarity:** Ensure your file and folder names are descriptive.
+### For Contributors
+- Use structured issue templates for clear agent input
+- Use an agent trigger (e.g., `@claude`, `/cursor start`) on issues to assign them to autonomous agents
+- Review agent-created PRs thoroughly before merging
+- Run `npm run validate:all` to ensure all quality gates pass
+
+## Autonomous Agents
+
+This repository includes autonomous AI agents that can:
+- **Implement features** automatically from issue descriptions
+- **Fix bugs** with proper test coverage
+- **Maintain code quality** through automated monitoring
+- **Create pull requests** with comprehensive descriptions
+
+**Quick Start:**
+1. Create an issue using one of the provided templates
+2. Use an agent trigger (e.g., comment `@claude` or use `/cursor start`) to assign it to an agent
+3. The agent will create a branch, implement the feature, and open a PR
+4. Review and merge when satisfied
+
+See [`docs/autonomous-agents-setup.md`](docs/autonomous-agents-setup.md) for complete setup and usage instructions.
 
 ## Disclaimer
 TemplateJs is provided as-is. It is a general-purpose template and does not include domain-specific functionality. Use and modify as needed.
