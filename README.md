@@ -25,7 +25,7 @@ This approach enables rapid prototyping and structured iteration with minimal hu
     *   Place static assets like images or JSON files in `src/assets/`.
     *   Create new HTML pages in the `pages/` directory if needed.
     *   Regularly commit and push your changes to the `main` branch to update your live application.
-    *   **Use autonomous agents:** Comment `@claude` on issues to have them implemented automatically.
+    *   **Use autonomous agents:** Use an agent trigger (e.g., `@claude`, `/cursor start`) in an issue to have it implemented automatically.
 
 ## Project Structure
 This template uses a structured approach to organize files and facilitate development:
@@ -55,7 +55,7 @@ This template uses a structured approach to organize files and facilitate develo
 
 ### For Contributors
 - Use structured issue templates for clear agent input
-- Comment `@claude` on issues to assign them to autonomous agents
+- Use an agent trigger (e.g., `@claude`, `/cursor start`) on issues to assign them to autonomous agents
 - Review agent-created PRs thoroughly before merging
 - Run `npm run validate:all` to ensure all quality gates pass
 
@@ -69,7 +69,7 @@ This repository includes autonomous AI agents that can:
 
 **Quick Start:**
 1. Create an issue using one of the provided templates
-2. Comment `@claude` to assign it to the Claude agent
+2. Use an agent trigger (e.g., comment `@claude` or use `/cursor start`) to assign it to an agent
 3. The agent will create a branch, implement the feature, and open a PR
 4. Review and merge when satisfied
 
