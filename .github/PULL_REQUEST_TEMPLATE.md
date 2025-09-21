@@ -1,5 +1,7 @@
 # Pull Request
 
+> For AI assistants and contributors: see `AGENTS.md` for repo workflows, validation, and guardrails.
+
 ## Description
 **Summary of changes:**
 <!-- Brief description of what this PR accomplishes -->

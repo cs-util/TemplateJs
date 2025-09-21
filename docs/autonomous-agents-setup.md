@@ -46,8 +46,8 @@ This repository is configured to work with autonomous AI agents that can automat
 
 ## Repository Configuration
 
-### Agent Guidelines (`.github/copilot-instructions.md`)
-Contains comprehensive instructions for AI agents including:
+### Agent Guidelines (`AGENTS.md`)
+Canonical agent instructions live in the repository root `AGENTS.md`. It includes:
 - Development standards and quality requirements
 - Testing strategies and coverage requirements
 - File structure conventions
@@ -78,27 +78,13 @@ Provides Cursor CLI agents with:
 - **Purpose:** Tasks specifically designed for autonomous agents
 - **Features:** Clear objectives, technical constraints, success criteria
 
-## Quality Gates
+## Quality gates and validation
 
-All agent implementations must pass these automated checks:
+To avoid duplication, refer to the canonical guidance in AGENTS.md for:
+- Required tests and quality checks
+- Exact validation commands to run locally and before PRs
 
-### Test Requirements
-- **100% test coverage** - `npm test`
-- **Property-based testing** - Using fast-check library
-- **Mutation testing** - >80% mutation score via `npm run mutation`
-
-### Code Quality Checks
-- **Linting** - ESLint with project configuration
-- **No duplication** - jscpd detection and prevention  
-- **No circular dependencies** - madge validation
-- **Architectural boundaries** - dependency-cruiser enforcement
-
-### Validation Commands
-```bash
-npm test              # All tests with coverage
-npm run check:all     # All quality checks
-npm run validate:all  # Complete validation (tests + mutation + checks)
-```
+Agents should follow AGENTS.md as the single source of truth and must pass all checks defined there before opening a PR.
 
 ## Security and Permissions
 
