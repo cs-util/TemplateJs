@@ -94,3 +94,52 @@ Ask for human confirmation in the issue before:
 - Adding dependencies/build tools
 - Large refactors
 - Changing public URLs or Pages config
+
+## Feature development process (for agents)
+
+Follow this lightweight spec-first flow before coding:
+
+1) Requirements gathering
+- Ask one question at a time and iterate until requirements are complete.
+- Build each question on previous answers; prefer numbered response options to keep it structured.
+
+2) Specification development
+- Major features: capture functional requirements, architecture choices/integration points, data handling (I/O, validation), error handling and edge cases, testing strategy (unit, property-based, integration), and any UI/performance considerations.
+- Smaller changes: clearly state what changes, how it integrates, and key edge cases.
+
+3) Final specification
+- Compile a concise developer-ready spec markdown next to relevant code when the change is non-trivial.
+
+## Implementation guidelines (agents)
+
+- Stay focused: Only change code directly related to the current task; keep diffs small.
+- Preserve existing comments; don’t remove unrelated documentation.
+- Add meaningful, long-lived documentation where it clarifies intent; avoid narrating obvious changes.
+
+## Testing and quality checks
+
+- During development: run these frequently
+  - Quality checks: `npm run check:all`
+  - Tests (unit + property): `npm test`
+- Before opening a PR: use the single entry point `npm run validate:all` (runs tests, checks, and mutation testing).
+
+Test structure
+- `*.test.js` — unit tests
+- `*.property.test.js` — property-based tests (fast-check)
+- Mutation testing: included via `npm run mutation` and in CI; keep score healthy.
+
+Failure triage loop
+1. Prioritize the simplest fix first.
+2. Make minimal, focused changes.
+3. Re-run the specific failing tests/checks immediately.
+4. Iterate until green.
+
+Verification discipline for agents
+- When claiming tests pass or fail, actually run the commands and include real output.
+
+## Dependencies & no-build approach
+
+This project follows a no-build, static workflow:
+- Use native ES modules and `<script type="importmap">` to map bare specifiers when needed.
+- Prefer CDN URLs from unpkg.com for third-party modules compatible with ESM.
+- Do not add bundlers/build chains unless explicitly requested in an issue/PR.

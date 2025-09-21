@@ -245,17 +245,9 @@ code --add-mcp "{\"name\":\"playwright\",\"command\":\"npx\",\"args\":[\"@playwr
 
 (see §4)
 
-### Optional: `.github/copilot-instructions.md`
+### Optional: Repo-specific agent notes
 
-```md
-# Copilot repo guidance for Playwright (JS)
-- Prefer role-based locators: `getByRole`, `getByLabel`, `getByText`.
-- Use web-first assertions: `expect(locator).toBeVisible()`, `toHaveText`, `toHaveURL`.
-- Avoid `page.waitForTimeout` except as a last resort.
-- Base URL: http://localhost:3000
-- Generate tests without `--ui` and without calling `show-report`.
-- Emit JSON (`test-results.json`) and JUnit (`junit.xml`) on CI; HTML report open is **never**.
-```
+Keep agent-facing guidance centralized in `AGENTS.md`. For Playwright specifics, add a short subsection there (or link to this document) rather than maintaining a separate `.github/copilot-instructions.md`.
 
 ---
 
