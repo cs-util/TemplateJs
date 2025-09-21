@@ -87,6 +87,16 @@
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-Adf5tUsgGAaHo9dZYkTfGZNVVRFlE0YyqS/fWznuaCG2lLBVmOAXoJ1i8LJIWrJd" crossorigin="anonymous"></script>
-  <script src="src/index.js" defer></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "snap2map/index": "./src/index.js",
+        "snap2map/calibrator": "./src/calibration/calibrator.js"
+      }
+    }
+  </script>
+  <script type="module">
+    import 'snap2map/index';
+  </script>
 </body>
 </html>

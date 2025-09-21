@@ -12,6 +12,9 @@ module.exports = {
     '!src/**/*.property.test.js', // exclude property-based tests
     '!src/**/__mocks__/**'    // exclude any mocks if added later
   ],
+  transform: {
+    '^.+\.js$': ['babel-jest', { configFile: require.resolve('./babel.config.js') }],
+  },
   coverageReporters: ["json", "lcov", "text", "clover"],
   coverageThreshold: {
     global: {

@@ -1,12 +1,11 @@
-const calibratorModule = require('./calibrator');
-const { EARTH_RADIUS_METERS, degToRad, radToDeg } = require('../geo/coordinate');
-const {
+import {
   calibrateMap,
   computeAccuracyRing,
   projectLocationToPixel,
   accuracyRingRadiusPixels,
   __internals,
-} = calibratorModule;
+} from './calibrator.js';
+import { EARTH_RADIUS_METERS, degToRad, radToDeg } from '../geo/coordinate.js';
 
 describe('calibrator', () => {
   const origin = { lat: 39.7392, lon: -104.9903 };

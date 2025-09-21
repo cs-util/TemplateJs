@@ -1,4 +1,4 @@
-const {
+import {
   fitSimilarity,
   fitAffine,
   fitHomography,
@@ -9,7 +9,7 @@ const {
   invertSimilarity,
   invertAffine,
   invertHomography,
-} = require('./transformations');
+} from './transformations.js';
 
 describe('transformations', () => {
   test('fitSimilarity recovers known transform', () => {

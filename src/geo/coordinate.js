@@ -1,14 +1,14 @@
-const EARTH_RADIUS_METERS = 6378137;
+export const EARTH_RADIUS_METERS = 6378137;
 
-function degToRad(degrees) {
+export function degToRad(degrees) {
   return (degrees * Math.PI) / 180;
 }
 
-function radToDeg(radians) {
+export function radToDeg(radians) {
   return (radians * 180) / Math.PI;
 }
 
-function computeOrigin(pairs) {
+export function computeOrigin(pairs) {
   if (!pairs || pairs.length === 0) {
     throw new Error('At least one coordinate is required to compute an origin');
   }
@@ -27,7 +27,7 @@ function computeOrigin(pairs) {
   };
 }
 
-function wgs84ToEnu(position, origin) {
+export function wgs84ToEnu(position, origin) {
   if (!origin) {
     throw new Error('Origin is required to convert to ENU');
   }
@@ -45,7 +45,7 @@ function wgs84ToEnu(position, origin) {
   return { x: east, y: north };
 }
 
-function enuToWgs84(vector, origin) {
+export function enuToWgs84(vector, origin) {
   if (!origin) {
     throw new Error('Origin is required to convert from ENU');
   }
@@ -66,11 +66,4 @@ const api = {
   enuToWgs84,
 };
 
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = api;
-}
-
-if (typeof window !== 'undefined') {
-  window.Snap2Map = window.Snap2Map || {};
-  window.Snap2Map.coordinate = api;
-}
+export default api;

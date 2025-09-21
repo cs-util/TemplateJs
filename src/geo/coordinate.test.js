@@ -1,11 +1,11 @@
-const {
+import {
   EARTH_RADIUS_METERS,
   degToRad,
   radToDeg,
   computeOrigin,
   wgs84ToEnu,
   enuToWgs84,
-} = require('./coordinate');
+} from './coordinate.js';
 
 describe('coordinate utilities', () => {
   test('degToRad and radToDeg are inverses', () => {

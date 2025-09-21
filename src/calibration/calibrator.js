@@ -1,8 +1,5 @@
-const {
-  computeOrigin,
-  wgs84ToEnu,
-} = require('../geo/coordinate');
-const {
+import { computeOrigin, wgs84ToEnu } from '../geo/coordinate.js';
+import {
   fitSimilarity,
   fitAffine,
   fitHomography,
@@ -10,7 +7,7 @@ const {
   applyInverseTransform,
   jacobianForTransform,
   averageScaleFromJacobian,
-} = require('../geo/transformations');
+} from '../geo/transformations.js';
 
 const DEFAULT_OPTIONS = {
   iterations: 150,
@@ -138,7 +135,7 @@ function calibrationStatus(kind) {
   return { level: 'low', message: 'Accuracy low (similarity). Add more reference points.' };
 }
 
-function computeAccuracyRing(calibration, gpsAccuracy) {
+export function computeAccuracyRing(calibration, gpsAccuracy) {
   if (!calibration || !calibration.model) {
     return null;
   }
@@ -205,7 +202,7 @@ function runRansacForKind(kind, pairs, options) {
   };
 }
 
-function calibrateMap(pairs, userOptions = {}) {
+export function calibrateMap(pairs, userOptions = {}) {
   if (!pairs || pairs.length < 2) {
     return {
       status: 'insufficient-pairs',
@@ -248,7 +245,7 @@ function calibrateMap(pairs, userOptions = {}) {
   };
 }
 
-function projectLocationToPixel(calibration, location) {
+export function projectLocationToPixel(calibration, location) {
   if (!calibration || calibration.status !== 'ok') {
     return null;
   }
@@ -260,7 +257,7 @@ function projectLocationToPixel(calibration, location) {
   return pixel;
 }
 
-function accuracyRingRadiusPixels(calibration, location, gpsAccuracy) {
+export function accuracyRingRadiusPixels(calibration, location, gpsAccuracy) {
   if (!calibration || calibration.status !== 'ok') {
     return null;
   }
@@ -288,7 +285,7 @@ const api = {
   accuracyRingRadiusPixels,
 };
 
-const internals = {
+export const __internals = {
   pickModelKinds,
   computeResidualMeters,
   huberWeight,
@@ -297,11 +294,6 @@ const internals = {
   runRansacForKind,
 };
 
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { ...api, __internals: internals };
-}
+const exported = { ...api, __internals };
 
-if (typeof window !== 'undefined') {
-  window.Snap2Map = window.Snap2Map || {};
-  window.Snap2Map.calibrator = api;
-}
+export default exported;

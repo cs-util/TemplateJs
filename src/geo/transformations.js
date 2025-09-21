@@ -1,4 +1,4 @@
-const TOLERANCE = 1e-9;
+export const TOLERANCE = 1e-9;
 
 function ensureWeights(length, weights) {
   if (!weights) {
@@ -10,7 +10,7 @@ function ensureWeights(length, weights) {
   return weights;
 }
 
-function fitSimilarity(pairs, weights) {
+export function fitSimilarity(pairs, weights) {
   if (pairs.length < 2) {
     return null;
   }
@@ -175,7 +175,7 @@ function solveLeastSquares(rows, values, variableCount) {
   return gaussianElimination(ata, atb);
 }
 
-function fitAffine(pairs, weights) {
+export function fitAffine(pairs, weights) {
   if (pairs.length < 3) {
     return null;
   }
@@ -210,7 +210,7 @@ function fitAffine(pairs, weights) {
   };
 }
 
-function fitHomography(pairs, weights) {
+export function fitHomography(pairs, weights) {
   if (pairs.length < 4) {
     return null;
   }
@@ -278,7 +278,7 @@ function applyHomography(transform, pixel) {
   };
 }
 
-function invertSimilarity(transform) {
+export function invertSimilarity(transform) {
   const { scale, cos, sin, translation } = transform;
   const invScale = 1 / scale;
   const invCos = cos;
@@ -299,7 +299,7 @@ function invertSimilarity(transform) {
   };
 }
 
-function invertAffine(transform) {
+export function invertAffine(transform) {
   const [[a, b, c], [d, e, f]] = transform.matrix;
   const det = a * e - b * d;
 
@@ -321,7 +321,7 @@ function invertAffine(transform) {
   };
 }
 
-function invertHomography(transform) {
+export function invertHomography(transform) {
   const [[a, b, c], [d, e, f], [g, h, i]] = transform.matrix;
   const det =
     a * (e * i - f * h) -
@@ -353,7 +353,7 @@ function invertHomography(transform) {
   };
 }
 
-function applyTransform(transform, pixel) {
+export function applyTransform(transform, pixel) {
   if (!transform) {
     return null;
   }
@@ -370,7 +370,7 @@ function applyTransform(transform, pixel) {
   throw new Error(`Unsupported transform type: ${transform.type}`);
 }
 
-function applyInverseTransform(transform, vector) {
+export function applyInverseTransform(transform, vector) {
   if (!transform) {
     return null;
   }
@@ -388,7 +388,7 @@ function applyInverseTransform(transform, vector) {
   throw new Error(`Unsupported transform type: ${transform.type}`);
 }
 
-function jacobianForTransform(transform, pixel) {
+export function jacobianForTransform(transform, pixel) {
   if (transform.type === 'similarity') {
     const { scale, cos, sin } = transform;
     return [
@@ -429,7 +429,7 @@ function jacobianForTransform(transform, pixel) {
   return null;
 }
 
-function averageScaleFromJacobian(jacobian) {
+export function averageScaleFromJacobian(jacobian) {
   if (!jacobian) {
     return null;
   }
@@ -453,11 +453,4 @@ const api = {
   invertHomography,
 };
 
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = api;
-}
-
-if (typeof window !== 'undefined') {
-  window.Snap2Map = window.Snap2Map || {};
-  window.Snap2Map.transformations = api;
-}
+export default api;
