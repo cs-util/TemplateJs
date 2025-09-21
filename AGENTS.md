@@ -141,7 +141,7 @@ Follow this lightweight spec-first flow before coding:
 Test structure
 - `*.test.js` — unit tests
 - `*.property.test.js` — property-based tests (fast-check)
-- Mutation testing: included via `npm run mutation` and in CI; keep score healthy.
+- Mutation testing: included via `npm run mutation` and in CI; aim for a score >80%.
 
 Failure triage loop
 1. Prioritize the simplest fix first.
