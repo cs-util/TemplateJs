@@ -16,7 +16,6 @@ Canonical instructions for coding agents. Human-facing docs are in `README.md`.
 
 ## Build/Serve
 - Static app; serve `index.html` with a simple static server (e.g., VS Code Live Server)
-- Don’t add bundlers/build chains unless explicitly requested
 
 ## Tests
 - Run all tests: `npm test`
@@ -32,8 +31,7 @@ Failure loop
 ## Coding guidelines
 - Small, focused modules in `src/` (`components/`, `utils/`)
 - Keep public HTML under `pages/` stable; don’t break URLs
-- Minimize dependencies; no frameworks/build tools without approval
-- If lint/format scripts exist, run them; don’t add new linters/formatters without approval
+- Use existing lint/format scripts if present
 
 ## Commits & PRs
 - Commits: concise; Conventional Commits preferred (e.g., `feat: add person card`); don’t churn history for formatting
@@ -49,7 +47,6 @@ Checklist
 - No secrets (.env/tokens/creds)
 - No deploy changes (Pages/release flows)
 - Least privilege: prefer read-only changes
-- Don’t restructure or add build steps unless the issue asks
 
 ## File map (read before changing code)
 - `README.md`
@@ -58,7 +55,6 @@ Checklist
 - `src/` — app code and tests
 
 ## When in doubt — ask before
-- Adding dependencies/build tools
 - Large refactors
 - Changing public URLs or Pages config
 
