@@ -34,6 +34,15 @@
   ```
 - If script names change, read `package.json` and adapt accordingly.
 
+### When to run what (agents)
+
+- Before committing: run `npm run check:all` and then `npm test`.
+- Before releases/PRs: run `npm run validate:all` (tests + quality checks + mutation testing).
+
+Execution discipline for agents:
+- Always execute these commands in a real terminal and include the actual output in your notes/PRs.
+- In this environment, use the terminal tool (run_in_terminal) to run commands; never assume results without running them.
+
 ## Build / Serve (local)
 
 - This is a static app. Serve `index.html` with a simple static server
@@ -48,6 +57,12 @@
   ```
 - Place/keep tests near code (e.g., `src/**/foo.test.js`, `*.property.test.js`).
 - Keep tests deterministic and fast; avoid end-to-end harnesses unless requested.
+
+Test failure resolution loop (agents):
+1) Prioritize the simplest fix first.
+2) Make minimal, focused changes.
+3) Re-run the specific failing tests immediately (from a terminal) and include the real output.
+4) Iterate until green.
 
 ## Coding guidelines
 
@@ -141,5 +156,6 @@ Verification discipline for agents
 
 This project follows a no-build, static workflow:
 - Use native ES modules and `<script type="importmap">` to map bare specifiers when needed.
+- Then load your entry/module scripts with `<script type="module">` and import using the mapped specifiers.
 - Prefer CDN URLs from unpkg.com for third-party modules compatible with ESM.
 - Do not add bundlers/build chains unless explicitly requested in an issue/PR.
