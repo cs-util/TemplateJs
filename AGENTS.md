@@ -1,111 +1,63 @@
 # AGENTS.md — TemplateJs
 
-> Canonical instructions for coding agents (Copilot Agent Mode, Cursor/Copilot Chat, etc.).
-> Human docs remain in `README.md`.
+Canonical instructions for coding agents. Human-facing docs are in `README.md`.
 
-## Project quick facts
-- Type: Minimal single-page web app (static HTML + modular JS)
-- Entrypoint: `index.html`; additional static pages under `pages/`
-- Source: `src/` (code) with colocated tests like `*.test.js`
-- Deploy: GitHub Pages from `main` branch (static assets)
-- Preferred dev env: GitHub Codespaces (optional). See `README.md` for human-oriented details.
-  
-## Environment
-- Node: Use Node 20 LTS (>=20.x)
-- Package manager: npm only
-- OS: Linux/macOS/Windows supported
+## Quick facts
+- Minimal single-page web app (static HTML + modular JS)
+- Entrypoint: `index.html` (+ static pages in `pages/`)
+- Source in `src/` with colocated tests
+- Deploy via GitHub Pages from `main` (static assets)
+- Preferred dev env: Codespaces (optional)
 
-## Setup
-- Deterministic install:
-  ```bash
-  npm ci
-  ```
+## Runbook
+- Before commit: `npm run check:all` then `npm test`
+- Before PR/release: `npm run validate:all` (tests + checks + mutation)
+- Always run commands in a real terminal and include actual output in notes/PRs.
 
-- Sanity check:
-  ```bash
-  node -v && npm -v
-  ```
-
-## Validate (always run before PR)
-
-- Single entry point:
-  ```bash
-  npm run validate:all
-  ```
-- If script names change, read `package.json` and adapt accordingly.
-
-### When to run what (agents)
-
-- Before committing: run `npm run check:all` and then `npm test`.
-- Before releases/PRs: run `npm run validate:all` (tests + quality checks + mutation testing).
-
-Execution discipline for agents:
-- Always execute these commands in a real terminal and include the actual output in your notes/PRs.
-- In this environment, use the terminal tool (run_in_terminal) to run commands; never assume results without running them.
-
-## Build / Serve (local)
-
-- This is a static app. Serve `index.html` with a simple static server
-  (e.g., VS Code Live Server). Do not add bundlers or build chains
-  unless explicitly requested in the issue/PR.
+## Build/Serve
+- Static app; serve `index.html` with a simple static server (e.g., VS Code Live Server)
+- Don’t add bundlers/build chains unless explicitly requested
 
 ## Tests
+- Run all tests: `npm test`
+- Tests live near code: `src/**/foo.test.js`, `*.property.test.js`
+- Keep tests deterministic and fast; avoid E2E unless asked
 
-- Run unit and property tests:
-  ```bash
-  npm test
-  ```
-- Place/keep tests near code (e.g., `src/**/foo.test.js`, `*.property.test.js`).
-- Keep tests deterministic and fast; avoid end-to-end harnesses unless requested.
-
-Test failure resolution loop (agents):
-1) Prioritize the simplest fix first.
-2) Make minimal, focused changes.
-3) Re-run the specific failing tests immediately (from a terminal) and include the real output.
-4) Iterate until green.
+Failure loop
+1) Prefer the simplest fix
+2) Make minimal, focused changes
+3) Re-run failing tests immediately and include real output
+4) Iterate until green
 
 ## Coding guidelines
+- Small, focused modules in `src/` (`components/`, `utils/`)
+- Keep public HTML under `pages/` stable; don’t break URLs
+- Minimize dependencies; no frameworks/build tools without approval
+- If lint/format scripts exist, run them; don’t add new linters/formatters without approval
 
-- Prefer small, focused modules in `src/` (`components/`, `utils/`).
-- Keep public HTML under `pages/` stable; avoid breaking URLs.
-- Minimal dependencies. Do not introduce frameworks/build tools without approval.
-- If `lint`/`format` scripts exist, run them. Otherwise don’t add new
-  linters/formatters without approval.
+## Commits & PRs
+- Commits: concise; Conventional Commits preferred (e.g., `feat: add person card`); don’t churn history for formatting
+- PRs: small, scoped diffs; explain what you ran (install/tests/validation); add/update tests for changed behavior
 
-## Commit & PR conventions (agents)
-
-- Commits: Use concise messages. Prefer Conventional Commit style if possible
-  (e.g., `feat: add person card`), but don’t churn history for formatting.
-- PRs: Keep diffs small and scoped to the issue.
-- Explain what you ran: Include the exact commands executed (install, tests, validation).
-- Add/Update tests for changed behavior.
-
-### PR checklist (required)
-
+Checklist
 - [ ] `npm ci` and `npm run validate:all` pass locally
 - [ ] Tests added/updated for new behavior
-- [ ] No unrelated refactors or drive-by changes
-- [ ] PR description includes: summary, commands run, and test output (brief)
+- [ ] No unrelated refactors/drive-bys
+- [ ] PR description includes summary, commands run, brief test output
 
 ## Safety & guardrails
+- No secrets (.env/tokens/creds)
+- No deploy changes (Pages/release flows)
+- Least privilege: prefer read-only changes
+- Don’t restructure or add build steps unless the issue asks
 
-- No secrets. Never add `.env`, tokens, or credentials.
-- No deploy changes. Do not modify GitHub Pages settings or release flows.
-- Least privilege. Prefer read-only changes (tests, small fixes). Any
-  write-heavy or destructive ops require explicit human approval.
-- Don’t restructure the project or add build steps unless the issue asks for it.
+## File map (read before changing code)
+- `README.md`
+- `package.json` source of truth for commands
+- `index.html`, `pages/` static entry points
+- `src/` — app code and tests
 
-## File map to read before changing code
-
-- `README.md` — human overview, Pages, Codespaces.
-- `package.json` — scripts and the source of truth for commands.
-- `index.html`, `pages/` — static entry points.
-- `src/` — app code and tests.
-
-## When in doubt
-
-Ask for human confirmation in the issue before:
-
+## When in doubt — ask before
 - Adding dependencies/build tools
 - Large refactors
 - Changing public URLs or Pages config
@@ -123,34 +75,31 @@ Follow this lightweight spec-first flow before coding:
 - Smaller changes: clearly state what changes, how it integrates, and key edge cases.
 
 3) Final specification
-- Compile a concise developer-ready spec markdown next to relevant code when the change is non-trivial.
+- Compile a concise developer-ready spec markdown next to new components if any were added
 
-## Implementation guidelines (agents)
+## Implementation guidelines
+- Only change code directly related to the current task; keep diffs small
+- Preserve existing comments/docs; add concise, long-lived docs where useful and avoid narrating changes via comments
 
-- Stay focused: Only change code directly related to the current task; keep diffs small.
-- Preserve existing comments; don’t remove unrelated documentation.
-- Add meaningful, long-lived documentation where it clarifies intent; avoid narrating obvious changes.
-
-## Testing and quality checks
-
-- During development: run these frequently
-  - Quality checks: `npm run check:all`
-  - Tests (unit + property): `npm test`
-- Before opening a PR: use the single entry point `npm run validate:all` (runs tests, checks, and mutation testing).
+## Quality checks
+- During development: run frequently
+  - `npm run check:all`
+  - `npm test`
+- Before PR: `npm run validate:all` (tests + checks + mutation)
 
 Test structure
-- `*.test.js` — unit tests
-- `*.property.test.js` — property-based tests (fast-check)
-- Mutation testing: included via `npm run mutation` and in CI; aim for a score >80%.
+- `*.test.js` — unit
+- `*.property.test.js` — property-based (fast-check)
+- Mutation: `npm run mutation` (CI too); aim >50%
 
 Failure triage loop
-1. Prioritize the simplest fix first.
-2. Make minimal, focused changes.
-3. Re-run the specific failing tests/checks immediately.
-4. Iterate until green.
+1. Simplest fix first
+2. Minimal changes
+3. Re-run the specific failing scope
+4. Iterate until green
 
-Verification discipline for agents
-- When claiming tests pass or fail, actually run the commands and include real output.
+Verification discipline
+- Only claim pass/fail with real command output
 
 ## Dependencies & no-build approach
 
