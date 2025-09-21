@@ -13,7 +13,8 @@ module.exports = {
     '!src/**/__mocks__/**'    // exclude any mocks if added later
   ],
   transform: {
-    '^.+\.js$': ['babel-jest', { configFile: require.resolve('./babel.config.js') }],
+    // Use a double-escaped dot so the regex sees a literal dot and ESLint doesn't flag a useless escape
+    '^.+\\.js$': ['babel-jest', { configFile: require.resolve('./babel.config.js') }],
   },
   coverageReporters: ["json", "lcov", "text", "clover"],
   coverageThreshold: {

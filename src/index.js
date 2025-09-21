@@ -1,4 +1,5 @@
 /* istanbul ignore file */
+/* global L */
 import {
   calibrateMap,
   computeAccuracyRing,
@@ -486,7 +487,6 @@ function setActiveView(view) {
 function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js').catch((error) => {
-      // eslint-disable-next-line no-console
       console.warn('Service worker registration failed', error);
     });
   }

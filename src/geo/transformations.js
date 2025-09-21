@@ -36,19 +36,26 @@ export function fitSimilarity(pairs, weights) {
   pixelCentroid = { x: pixelCentroid.x / weightSum, y: pixelCentroid.y / weightSum };
   enuCentroid = { x: enuCentroid.x / weightSum, y: enuCentroid.y / weightSum };
 
+  // Precompute centered deltas to avoid duplicated code patterns
+  const deltas = pairs.map((p, i) => {
+    const weight = w[i];
+    return {
+      weight,
+      px: p.pixel.x - pixelCentroid.x,
+      py: p.pixel.y - pixelCentroid.y,
+      ex: p.enu.x - enuCentroid.x,
+      ey: p.enu.y - enuCentroid.y,
+    };
+  });
+
   let sxx = 0;
   let sxy = 0;
   let syx = 0;
   let syy = 0;
   let denom = 0;
 
-  for (let i = 0; i < pairs.length; i += 1) {
-    const weight = w[i];
-    const px = pairs[i].pixel.x - pixelCentroid.x;
-    const py = pairs[i].pixel.y - pixelCentroid.y;
-    const ex = pairs[i].enu.x - enuCentroid.x;
-    const ey = pairs[i].enu.y - enuCentroid.y;
-
+  for (let i = 0; i < deltas.length; i += 1) {
+    const { weight, px, py, ex, ey } = deltas[i];
     sxx += weight * ex * px;
     sxy += weight * ex * py;
     syx += weight * ey * px;
@@ -67,14 +74,8 @@ export function fitSimilarity(pairs, weights) {
   const sin = Math.sin(theta);
 
   let numerator = 0;
-
-  for (let i = 0; i < pairs.length; i += 1) {
-    const weight = w[i];
-    const px = pairs[i].pixel.x - pixelCentroid.x;
-    const py = pairs[i].pixel.y - pixelCentroid.y;
-    const ex = pairs[i].enu.x - enuCentroid.x;
-    const ey = pairs[i].enu.y - enuCentroid.y;
-
+  for (let i = 0; i < deltas.length; i += 1) {
+    const { weight, px, py, ex, ey } = deltas[i];
     const rotatedPx = cos * px - sin * py;
     const rotatedPy = sin * px + cos * py;
     numerator += weight * (ex * rotatedPx + ey * rotatedPy);
@@ -122,6 +123,19 @@ function buildNormalEquations(rows, values, variableCount) {
   }
 
   return { ata, atb };
+}
+
+// Helper to build a weighted linear system for least-squares from pairs.
+// The callback receives (rowsAcc, valuesAcc, pair, weight) to push two equations per pair.
+function buildLinearSystem(pairs, weights, pushRowValues) {
+  const w = ensureWeights(pairs.length, weights);
+  const rows = [];
+  const values = [];
+  for (let i = 0; i < pairs.length; i += 1) {
+    const weight = Math.sqrt(w[i]);
+    pushRowValues(rows, values, pairs[i], weight);
+  }
+  return { rows, values };
 }
 
 function gaussianElimination(matrix, vector) {
@@ -180,18 +194,13 @@ export function fitAffine(pairs, weights) {
     return null;
   }
 
-  const w = ensureWeights(pairs.length, weights);
-  const rows = [];
-  const values = [];
-
-  for (let i = 0; i < pairs.length; i += 1) {
-    const weight = Math.sqrt(w[i]);
-    const { x, y } = pairs[i].pixel;
-    rows.push([weight * x, weight * y, weight, 0, 0, 0]);
-    values.push(weight * pairs[i].enu.x);
-    rows.push([0, 0, 0, weight * x, weight * y, weight]);
-    values.push(weight * pairs[i].enu.y);
-  }
+  const { rows, values } = buildLinearSystem(pairs, weights, (rowsAcc, valuesAcc, pair, weight) => {
+    const { x, y } = pair.pixel;
+    rowsAcc.push([weight * x, weight * y, weight, 0, 0, 0]);
+    valuesAcc.push(weight * pair.enu.x);
+    rowsAcc.push([0, 0, 0, weight * x, weight * y, weight]);
+    valuesAcc.push(weight * pair.enu.y);
+  });
 
   const solution = solveLeastSquares(rows, values, 6);
 
@@ -215,20 +224,14 @@ export function fitHomography(pairs, weights) {
     return null;
   }
 
-  const w = ensureWeights(pairs.length, weights);
-  const rows = [];
-  const values = [];
-
-  for (let i = 0; i < pairs.length; i += 1) {
-    const weight = Math.sqrt(w[i]);
-    const { x, y } = pairs[i].pixel;
-    const { x: X, y: Y } = pairs[i].enu;
-
-    rows.push([weight * x, weight * y, weight, 0, 0, 0, -weight * X * x, -weight * X * y]);
-    values.push(weight * X);
-    rows.push([0, 0, 0, weight * x, weight * y, weight, -weight * Y * x, -weight * Y * y]);
-    values.push(weight * Y);
-  }
+  const { rows, values } = buildLinearSystem(pairs, weights, (rowsAcc, valuesAcc, pair, weight) => {
+    const { x, y } = pair.pixel;
+    const { x: X, y: Y } = pair.enu;
+    rowsAcc.push([weight * x, weight * y, weight, 0, 0, 0, -weight * X * x, -weight * X * y]);
+    valuesAcc.push(weight * X);
+    rowsAcc.push([0, 0, 0, weight * x, weight * y, weight, -weight * Y * x, -weight * Y * y]);
+    valuesAcc.push(weight * Y);
+  });
 
   const solution = solveLeastSquares(rows, values, 8);
 

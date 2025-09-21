@@ -202,6 +202,15 @@ function runRansacForKind(kind, pairs, options) {
   };
 }
 
+function pixelFromLocation(calibration, location) {
+  if (!calibration || calibration.status !== 'ok') {
+    return null;
+  }
+  const enu = wgs84ToEnu(location, calibration.origin);
+  const pixel = applyInverseTransform(calibration.model, enu);
+  return pixel || null;
+}
+
 export function calibrateMap(pairs, userOptions = {}) {
   if (!pairs || pairs.length < 2) {
     return {
@@ -246,23 +255,14 @@ export function calibrateMap(pairs, userOptions = {}) {
 }
 
 export function projectLocationToPixel(calibration, location) {
-  if (!calibration || calibration.status !== 'ok') {
-    return null;
-  }
-  const enu = wgs84ToEnu(location, calibration.origin);
-  const pixel = applyInverseTransform(calibration.model, enu);
-  if (!pixel) {
-    return null;
-  }
-  return pixel;
+  return pixelFromLocation(calibration, location);
 }
 
 export function accuracyRingRadiusPixels(calibration, location, gpsAccuracy) {
   if (!calibration || calibration.status !== 'ok') {
     return null;
   }
-  const enu = wgs84ToEnu(location, calibration.origin);
-  const pixel = applyInverseTransform(calibration.model, enu);
+  const pixel = pixelFromLocation(calibration, location);
   if (!pixel) {
     return null;
   }
