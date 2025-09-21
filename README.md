@@ -1,4 +1,5 @@
 # TemplateJs
+For AI assistants, see `AGENTS.md`.
 TemplateJs is a minimal single-page web app template designed for quick deployment.
 It follows an AI-assisted iterative development process:
 

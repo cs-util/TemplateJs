@@ -46,8 +46,8 @@ This repository is configured to work with autonomous AI agents that can automat
 
 ## Repository Configuration
 
-### Agent Guidelines (`.github/copilot-instructions.md`)
-Contains comprehensive instructions for AI agents including:
+### Agent Guidelines (`AGENTS.md`)
+Canonical agent instructions live in the repository root `AGENTS.md`. It includes:
 - Development standards and quality requirements
 - Testing strategies and coverage requirements
 - File structure conventions
