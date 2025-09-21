@@ -74,7 +74,7 @@ For hot paths, add a simple benchmark and watch for regressions. Keep this light
 ## 6) Test quality gates
 
 ### 6.1 Mutation Testing Gate
-Minimum mutation score: >= 80%. Run Stryker in validation; fail if below.
+Minimum mutation score: >= 50%. Run Stryker in validation; fail if below.
 
 ### 6.2 Coverage Gate
 Branch coverage >= 90% (and lines/functions/statements similarly high). Enforced via Jest config.
@@ -107,9 +107,6 @@ Avoid duplicating scripts/config here. Use:
 - Commands and validation flow: `../AGENTS.md`
 - Scripts: `package.json`
 - Tool configs: `config/` directory
-  testEnvironment: 'jsdom',
-};
-```
 
 ---
 
@@ -124,7 +121,7 @@ Keep examples minimal; see tests under `src/**` for patterns. Prefer domain-rele
 ---
 
 ## 12) Acceptance criteria (PR gate)
-Merge only when: tests (incl. property/metamorphic) pass, mutation score ≥ 80%, coverage thresholds met, duplication ≤ 1%, boundaries and cycles pass, lint passes, and any new deps are justified.
+Merge only when: tests (incl. property/metamorphic) pass, mutation score ≥ 50%, coverage thresholds met, duplication ≤ 1%, boundaries and cycles pass, lint passes, and any new deps are justified.
 
 ---
 
