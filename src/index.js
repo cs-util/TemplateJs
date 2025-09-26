@@ -342,45 +342,70 @@ function clearActivePairMarkers() {
   }
 }
 
+function setIdlePairStatus(guided) {
+  dom.pairStatus.textContent = guided
+    ? 'Guided setup preparing the next pair…'
+    : 'Tap “Start pair” and select a pixel on the photo followed by its real-world location on the map.';
+  dom.confirmPairButton.disabled = true;
+  dom.cancelPairButton.disabled = !guided;
+}
+
+function setGuidedPairStatus({ pairNumber, hasPixel, hasWorld }) {
+  dom.cancelPairButton.disabled = false;
+  dom.confirmPairButton.disabled = true;
+
+  if (!hasPixel) {
+    dom.pairStatus.textContent = `Guided Pair ${pairNumber} — Step 1/2: tap the photo.`;
+    return;
+  }
+
+  if (!hasWorld) {
+    dom.pairStatus.textContent = `Guided Pair ${pairNumber} — Step 2/2: tap the map or use your position.`;
+    return;
+  }
+
+  dom.pairStatus.textContent = `Guided Pair ${pairNumber} — finishing…`;
+}
+
+function setManualPairStatus({ pairNumber, hasPixel, hasWorld }) {
+  dom.cancelPairButton.disabled = false;
+  dom.confirmPairButton.disabled = !(hasPixel && hasWorld);
+
+  if (!hasPixel && !hasWorld) {
+    dom.pairStatus.textContent = `Pair ${pairNumber} — Step 1/2: tap the photo to drop the pixel anchor.`;
+    return;
+  }
+
+  if (hasPixel && !hasWorld) {
+    dom.pairStatus.textContent = `Pair ${pairNumber} — Step 2/2: tap the OpenStreetMap view or use your current position.`;
+    return;
+  }
+
+  dom.pairStatus.textContent = `Pair ${pairNumber} ready — confirm to store it or tap cancel to discard.`;
+}
+
 function updatePairStatus() {
   if (!dom.pairStatus) {
     return;
   }
+
   const guided = isGuidedActive();
   const pairNumber = state.pairs.length + 1;
 
   if (!state.activePair) {
-    dom.pairStatus.textContent = guided
-      ? 'Guided setup preparing the next pair…'
-      : 'Tap “Start pair” and select a pixel on the photo followed by its real-world location on the map.';
-    dom.confirmPairButton.disabled = true;
-    dom.cancelPairButton.disabled = !guided;
+    setIdlePairStatus(guided);
     return;
   }
 
   const hasPixel = Boolean(state.activePair.pixel);
   const hasWorld = Boolean(state.activePair.wgs84);
-  dom.cancelPairButton.disabled = false;
 
   if (guided) {
-    dom.confirmPairButton.disabled = true;
-    if (!hasPixel) {
-      dom.pairStatus.textContent = `Guided Pair ${pairNumber} — Step 1/2: tap the photo.`;
-    } else if (!hasWorld) {
-      dom.pairStatus.textContent = `Guided Pair ${pairNumber} — Step 2/2: tap the map or use your position.`;
-    } else {
-      dom.pairStatus.textContent = `Guided Pair ${pairNumber} — finishing…`;
-    }
-  } else {
-    dom.confirmPairButton.disabled = !(hasPixel && hasWorld);
-    if (!hasPixel && !hasWorld) {
-      dom.pairStatus.textContent = `Pair ${pairNumber} — Step 1/2: tap the photo to drop the pixel anchor.`;
-    } else if (hasPixel && !hasWorld) {
-      dom.pairStatus.textContent = `Pair ${pairNumber} — Step 2/2: tap the OpenStreetMap view or use your current position.`;
-    } else {
-      dom.pairStatus.textContent = `Pair ${pairNumber} ready — confirm to store it or tap cancel to discard.`;
-    }
+    setGuidedPairStatus({ pairNumber, hasPixel, hasWorld });
+    return;
   }
+
+  setManualPairStatus({ pairNumber, hasPixel, hasWorld });
 }
 
 function beginPairMode() {
@@ -397,6 +422,48 @@ function cancelPairMode() {
   dom.addPairButton.disabled = isGuidedActive();
 }
 
+function showGuidedPairSavedToast(index) {
+  if (!state.guidedPairing.pendingToast) {
+    return;
+  }
+
+  const residual =
+    state.calibration && Array.isArray(state.calibration.residuals)
+      ? state.calibration.residuals[index]
+      : null;
+  const residualText = residual !== null && residual !== undefined ? `${residual.toFixed(1)} m` : '—';
+  const tone = residual !== null && residual <= 30 ? 'success' : 'info';
+  showToast(`Pair ${index + 1} saved — residual ${residualText}.`, { tone });
+  state.guidedPairing.pendingToast = false;
+}
+
+function promptNextGuidedPair() {
+  state.guidedPairing.step = 'photo';
+  beginPairMode();
+  updatePairStatus();
+  setActiveView('photo');
+  const nextPairNumber = state.pairs.length + 1;
+  const message = nextPairNumber === 2 ? 'Tap the second point on your photo.' : 'Tap the next point on your photo.';
+  showToast(message);
+}
+
+function advanceGuidedFlow() {
+  if (!isGuidedActive()) {
+    return;
+  }
+
+  state.guidedPairing.pairsCompleted += 1;
+
+  if (state.pairs.length >= state.guidedPairing.targetCount) {
+    setActiveView('photo');
+    stopGuidedPairing('complete');
+    updatePairStatus();
+    return;
+  }
+
+  promptNextGuidedPair();
+}
+
 function confirmPair() {
   if (!state.activePair || !state.activePair.pixel || !state.activePair.wgs84) {
     return;
@@ -410,33 +477,9 @@ function confirmPair() {
   refreshPairMarkers();
   recalculateCalibration();
 
-  if (state.guidedPairing.pendingToast) {
-    const savedIndex = state.pairs.length - 1;
-    const residual =
-      state.calibration && Array.isArray(state.calibration.residuals)
-        ? state.calibration.residuals[savedIndex]
-        : null;
-    const residualText = residual !== null && residual !== undefined ? `${residual.toFixed(1)} m` : '—';
-    const tone = residual !== null && residual <= 30 ? 'success' : 'info';
-    showToast(`Pair ${savedIndex + 1} saved — residual ${residualText}.`, { tone });
-    state.guidedPairing.pendingToast = false;
-  }
-
-  if (isGuidedActive()) {
-    state.guidedPairing.pairsCompleted += 1;
-    if (state.pairs.length >= state.guidedPairing.targetCount) {
-      setActiveView('photo');
-      stopGuidedPairing('complete');
-      updatePairStatus();
-    } else {
-      state.guidedPairing.step = 'photo';
-      beginPairMode();
-      updatePairStatus();
-      setActiveView('photo');
-      const nextPairNumber = state.pairs.length + 1;
-      showToast(nextPairNumber === 2 ? 'Tap the second point on your photo.' : 'Tap the next point on your photo.');
-    }
-  }
+  const savedIndex = state.pairs.length - 1;
+  showGuidedPairSavedToast(savedIndex);
+  advanceGuidedFlow();
 }
 
 function onPairTableClick(event) {
