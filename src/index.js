@@ -637,11 +637,6 @@ function loadPhotoMap(dataUrl, width, height) {
   state.calibration = null;
   state.lastPosition = null;
   state.userMarker = null;
-  state.guidedPairing.active = false;
-  state.guidedPairing.step = null;
-  state.guidedPairing.pendingToast = false;
-  state.guidedPairing.pairsCompleted = 0;
-  state.guidedPairing.targetCount = GUIDED_PAIR_TARGET;
   if (state.accuracyCircle) {
     state.accuracyCircle.remove();
     state.accuracyCircle = null;
