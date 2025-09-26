@@ -1,134 +1,104 @@
-<!-- For the user stories & requirements see the README.md file -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Decoupled Modules Example with Person Class</title>
-  <!-- Favicon: A white box --> <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23fff'/%3E%3C/svg%3E" type="image/svg+xml">
-  <!-- Use Tailwind CSS for all CSS styling -->
+  <title>Snap2Map</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%233256d1'/%3E%3Cpath d='M25 65 L45 40 L60 55 L75 35' stroke='%23fff' stroke-width='8' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='75' cy='35' r='6' fill='%23fff'/%3E%3C/svg%3E" type="image/svg+xml">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    @view-transition {
-      navigation: auto;
-    }
-    
-    nav a[aria-current="page"]:after {
-      border-color: white;
-      view-transition-name: posts-nav;
-    }
-    
-    /* Old stuff going out */
-    ::view-transition-old(posts-nav) {
-      animation: fade 0.2s linear forwards;
-      height: 100%;
-    }
-    
-    /* New stuff coming in */
-    ::view-transition-new(posts-nav) {
-      animation: fade 0.3s linear reverse;
-      height: 100%;
-    }
-    
-    @keyframes fade {
-      from { opacity: 1; }
-      to { opacity: 0; }
-    }
-  </style>
-  <script>
-    // Only use if browser supports View Transitions
-    if (document.startViewTransition) {
-      window.addEventListener('click', (e) => {
-        // Only handle internal links
-        if (e.target.tagName === 'A' && e.target.origin === window.location.origin) {
-          e.preventDefault();
-          document.startViewTransition(() => {
-            window.location.href = e.target.href;
-          });
-        }
-      });
-    }
-  </script>
-  <script src="src/index.js"></script>
 </head>
-<body class="font-mono p-8 bg-gray-50">
-  <div class="max-w-4xl mx-auto">
-    <header class="mb-8">
-      <h1 class="text-3xl font-bold text-blue-600 mb-4">Template Web App</h1>
-      <nav class="bg-blue-600 text-white p-4 rounded-lg mb-4">
-        <a href="index.html" class="mr-6 hover:underline font-bold relative" aria-current="page">
-          Home
-          <span class="absolute bottom-0 left-0 w-full h-0.5 bg-white"></span>
-        </a>
-        <a href="pages/features.html" class="mr-6 hover:underline">Features</a>
-        <a href="pages/about.html" class="hover:underline">About</a>
-      </nav>
-      <div class="bg-blue-100 border-l-4 border-blue-500 p-4 mb-6">
-        <p class="text-sm text-blue-700">This is a Tailwind CSS demonstration with modular JavaScript.</p>
-      </div>
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+  <div class="max-w-6xl mx-auto px-4 py-10 space-y-8">
+    <header class="space-y-4">
+      <h1 class="text-4xl font-black tracking-tight">Snap2Map</h1>
+      <p class="text-slate-300 max-w-3xl">
+        Photograph any trailboard or printed map, drop a few reference pairs, and watch your live GPS position glide across the photo. Works offline, with OpenStreetMap context when you are connected.
+      </p>
     </header>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-      <!-- Card 1 -->
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-bold mb-4 text-gray-800">Greeting Card</h2>
-        <p class="text-gray-600 mb-4">Click the button below to greet the person.</p>
-        <button id="greetBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
-          Greet
-        </button>
+
+    <section class="bg-slate-900/70 border border-slate-700 rounded-xl p-6 space-y-4">
+      <h2 class="text-xl font-semibold text-slate-100">1. Import map photo</h2>
+      <p class="text-sm text-slate-300">Use a sharp, well-lit image. Snap2Map keeps only an optimized copy on device.</p>
+      <label class="block w-full">
+        <span class="sr-only">Upload map image</span>
+        <input id="mapImageInput" type="file" accept="image/*" capture="environment" class="block w-full text-sm text-slate-200 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500">
+      </label>
+    </section>
+
+    <section class="bg-slate-900/70 border border-slate-700 rounded-xl p-6 space-y-4">
+      <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h2 class="text-xl font-semibold text-slate-100">2. Create reference pairs</h2>
+          <p id="pairStatus" class="text-sm text-slate-300">Tap “Start pair” and select a pixel on the photo followed by its real-world location on the map.</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button id="addPairButton" class="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-500 transition">Start pair</button>
+          <button id="usePositionButton" class="px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-500 transition">Use my position</button>
+          <button id="confirmPairButton" class="px-4 py-2 rounded-lg bg-violet-600 text-white text-sm font-semibold opacity-80 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-violet-500 transition" disabled>Confirm pair</button>
+          <button id="cancelPairButton" class="px-4 py-2 rounded-lg bg-slate-700 text-white text-sm font-semibold opacity-80 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-600 transition" disabled>Cancel</button>
+        </div>
       </div>
-      
-      <!-- Card 2 -->
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-bold mb-4 text-gray-800">Tailwind Features</h2>
-        <ul class="list-disc pl-5 space-y-2 text-gray-600">
-          <li>Responsive design with <span class="font-bold text-blue-500">breakpoints</span></li>
-          <li>Utility-first CSS framework</li>
-          <li>Customizable with configuration</li>
-        </ul>
-        <div class="mt-4">
-          <div class="flex gap-2">
-            <span class="bg-red-200 text-red-800 text-xs p-1 rounded">Tag</span>
-            <span class="bg-green-200 text-green-800 text-xs p-1 rounded">Utility</span>
-            <span class="bg-yellow-200 text-yellow-800 text-xs p-1 rounded">Responsive</span>
+
+      <div class="bg-slate-950/60 border border-slate-700 rounded-lg">
+        <div class="flex">
+          <button id="photoTabButton" class="flex-1 px-4 py-2 text-sm font-semibold bg-blue-600 text-white rounded-tl-lg">Photo</button>
+          <button id="osmTabButton" class="flex-1 px-4 py-2 text-sm font-semibold bg-white/10 text-blue-300 rounded-tr-lg">OpenStreetMap</button>
+        </div>
+        <div class="p-3">
+          <div id="photoView" class="rounded-lg overflow-hidden border border-slate-800">
+            <div id="photoMap" class="h-96"></div>
+          </div>
+          <div id="osmView" class="hidden rounded-lg overflow-hidden border border-slate-800">
+            <div id="osmMap" class="h-96"></div>
           </div>
         </div>
       </div>
-    </div>
-    
-    <div class="bg-white p-6 rounded-lg shadow">
-      <h2 class="text-xl font-bold mb-4 text-gray-800">Interactive Components</h2>
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-          Username
-        </label>
-        <input class="w-full p-2 border rounded text-gray-700 focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username">
+    </section>
+
+    <section class="bg-slate-900/70 border border-slate-700 rounded-xl p-6 space-y-4">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <div class="flex items-center gap-2 text-sm">
+          <span id="calibrationBadge" class="px-2 py-1 rounded text-xs font-semibold bg-gray-200 text-gray-700">No calibration</span>
+          <span id="calibrationStatus" class="text-slate-200">Add at least two reference pairs to calibrate the photo.</span>
+        </div>
+        <div class="text-sm text-slate-300" id="residualSummary"></div>
       </div>
-      <div class="flex justify-between">
-        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none transition">
-          Save
-        </button>
-        <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none transition">
-          Cancel
-        </button>
+      <div id="accuracyDetails" class="text-sm text-blue-200"></div>
+      <div class="text-sm" id="gpsStatus">Import a map photo to get started.</div>
+    </section>
+
+    <section class="bg-slate-900/70 border border-slate-700 rounded-xl p-6">
+      <h2 class="text-xl font-semibold text-slate-100 mb-4">Reference pairs</h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-left" id="pairTable">
+          <thead class="text-xs uppercase tracking-wider text-slate-400 border-b border-slate-700">
+            <tr>
+              <th class="px-3 py-2">Pixel (x, y)</th>
+              <th class="px-3 py-2">World (lat, lon)</th>
+              <th class="px-3 py-2">Residual</th>
+              <th class="px-3 py-2 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="pairTableBody" class="divide-y divide-slate-800"></tbody>
+        </table>
       </div>
-    </div>
+    </section>
   </div>
-  
-  <!-- Load the main module -->
-  <script type="module">
 
-    import { tellBirthday } from './src/utils/utils.js';
-    import { Person } from './src/components/person.js';
+  <div id="toastContainer" class="fixed bottom-6 left-1/2 -translate-x-1/2 md:left-auto md:right-8 md:translate-x-0 z-50 space-y-2 w-[calc(100%-2rem)] max-w-sm pointer-events-none"></div>
 
-    // Create a new Person instance with values defined in the HTML.
-    const person = new Person('Alice', 40);
-    document.getElementById('greetBtn').addEventListener('click', () => {
-      alert(tellBirthday(person));
-    });
-
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "snap2map/index": "./src/index.js",
+        "snap2map/calibrator": "./src/calibration/calibrator.js"
+      }
+    }
   </script>
-
+  <script type="module">
+    import 'snap2map/index';
+  </script>
 </body>
 </html>

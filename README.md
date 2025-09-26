@@ -43,20 +43,23 @@
 ### 3.1 First run
 
 1. **Map Manager (empty state)** → short tutorial → **Import photo** (camera or gallery).
-2. Enter **Pair Mode** to add reference pairs.
+2. Import automatically launches a **guided Pair Mode** session (toasts instruct each step) so the user can capture the minimum viable set of reference pairs.
 3. After ≥2 pairs, **Live** becomes available.
 
 ### 3.2 Pair Mode (add/edit) — explicit mode
 
-* Enter via **FAB “Add pair”** or long-press on an existing marker.
-* **Top status bar** (highlighted): “Pair #n – Step 1/2” (color frame in mode).
-* **Bottom tabs**: **Photo** ↔ **OSM**.
+* Enter via **FAB “Add pair”**, long-press on an existing marker, or automatically right after importing a map photo.
+* **Top status bar** (highlighted): “Pair #n – Step 1/2” (color frame in mode). Guided mode also shows progress pills (“Photo point”, “Map point”) that swap as each step completes.
+* **Bottom tabs**: **Photo** ↔ **OSM**. During guided mode the active tab auto-switches after each placement to keep the workflow hands-free.
 * Flow (active slot):
 
-  * Tap either **Photo** (place pixel pin with loupe) **or** **OSM** (place world pin via map tap or **Use my position**).
-  * Switch to the other tab and place the missing pin → pair completes.
+  * Guided mode opens on **Photo** immediately after import and displays a toast: “Tap the first point on your photo.”
+  * Once the pixel pin is dropped, the UI auto-switches to **OSM**, updates the toast (“Now tap the matching spot on the map”), and enables “Use my position” as a contextual hint.
+  * Manual flow (when initiated later) still allows starting on either side.
+  * After the matching map pin is placed, the pair preview appears. Guided mode automatically toggles back to the **Photo** tab, advances to the next pair, and repeats the instruction cycle until the minimum required pair count (2) is collected. After that the flow switches back to manual control while encouraging the user to add more pairs for accuracy.
 * **Drag & drop** on both sides updates pair live.
 * **Confirm (✓)** applies; **Cancel (←)** discards changes to the active pair only.
+* Guided mode auto-confirms each pair as soon as both pins are placed, surfaces a toast summarizing the residual (“Pair saved — residual 12 m”), and exits once two pairs exist (with a prompt encouraging more for higher accuracy).
 * **Outliers** shown **red**, inliers **green**; residual (m) visible in list and as label on pins.
 * Edit existing pair later via long-press or from the pairs list (secondary screen).
 
@@ -251,7 +254,7 @@ export interface PositionProjector {
 
     * **Photo** (ImageOverlay, anchor pins, heatmap toggle, accuracy ring)
     * **OSM** (standard tiles, user dot, can place map pins)
-  * **Pair Mode** (status bar + amber frame; ✓ Confirm / ← Cancel)
+  * **Pair Mode** (status bar + amber frame; ✓ Confirm / ← Cancel; guided variant adds instruction toasts and auto-tab switching)
   * **Settings/Info** (language: English; tile URL override; export/import; reset)
 * **Anchors**
 
@@ -266,6 +269,7 @@ export interface PositionProjector {
 * **Toasts/banners**
 
   * Version update ready (auto on next open).
+  * Guided pairing script: “Tap the first point on your photo”, “Now tap the matching spot on the map”, “Pair saved — residual ··m. Add another for better accuracy.”
   * Prompts: add more points / refine when thresholds exceeded.
   * Errors: storage full, file too big, permissions denied.
 
