@@ -138,6 +138,32 @@ function buildLinearSystem(pairs, weights, pushRowValues) {
   return { rows, values };
 }
 
+// Normalize the pivot row so the pivot element becomes 1
+function normalizePivotRow(mat, vec, pivot, size) {
+  const pivotValue = mat[pivot][pivot];
+  for (let col = pivot; col < size; col += 1) {
+    mat[pivot][col] /= pivotValue;
+  }
+  vec[pivot] /= pivotValue;
+}
+
+// Eliminate the pivot column from all other rows
+function eliminateOtherRows(mat, vec, pivot, size) {
+  for (let row = 0; row < size; row += 1) {
+    if (row === pivot) {
+      continue;
+    }
+    const factor = mat[row][pivot];
+    if (Math.abs(factor) < TOLERANCE) {
+      continue;
+    }
+    for (let col = pivot; col < size; col += 1) {
+      mat[row][col] -= factor * mat[pivot][col];
+    }
+    vec[row] -= factor * vec[pivot];
+  }
+}
+
 function gaussianElimination(matrix, vector) {
   const size = vector.length;
   const mat = matrix.map((row) => row.slice());
@@ -160,25 +186,8 @@ function gaussianElimination(matrix, vector) {
       [vec[pivot], vec[maxRow]] = [vec[maxRow], vec[pivot]];
     }
 
-    const pivotValue = mat[pivot][pivot];
-    for (let col = pivot; col < size; col += 1) {
-      mat[pivot][col] /= pivotValue;
-    }
-    vec[pivot] /= pivotValue;
-
-    for (let row = 0; row < size; row += 1) {
-      if (row === pivot) {
-        continue;
-      }
-      const factor = mat[row][pivot];
-      if (Math.abs(factor) < TOLERANCE) {
-        continue;
-      }
-      for (let col = pivot; col < size; col += 1) {
-        mat[row][col] -= factor * mat[pivot][col];
-      }
-      vec[row] -= factor * vec[pivot];
-    }
+    normalizePivotRow(mat, vec, pivot, size);
+    eliminateOtherRows(mat, vec, pivot, size);
   }
 
   return vec;

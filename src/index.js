@@ -152,6 +152,7 @@ function updateLivePosition() {
   if (!state.photoMap || !state.calibration || state.calibration.status !== 'ok' || !state.lastPosition) {
     return;
   }
+
   const coords = state.lastPosition.coords;
   const location = { lat: coords.latitude, lon: coords.longitude };
   const pixel = projectLocationToPixel(state.calibration, location);
@@ -160,21 +161,25 @@ function updateLivePosition() {
   }
   const latlng = L.latLng(pixel.y, pixel.x);
 
-  if (!state.userMarker) {
-    state.userMarker = L.circleMarker(latlng, {
-      radius: 6,
-      color: '#2563eb',
-      fillColor: '#2563eb',
-      fillOpacity: 0.9,
-    }).addTo(state.photoMap);
-  } else {
-    state.userMarker.setLatLng(latlng);
+  function ensureUserMarker(latlngLocal) {
+    if (!state.userMarker) {
+      state.userMarker = L.circleMarker(latlngLocal, {
+        radius: 6,
+        color: '#2563eb',
+        fillColor: '#2563eb',
+        fillOpacity: 0.9,
+      }).addTo(state.photoMap);
+    } else {
+      state.userMarker.setLatLng(latlngLocal);
+    }
   }
 
-  const ring = accuracyRingRadiusPixels(state.calibration, location, coords.accuracy || 50);
-  if (ring && ring.pixelRadius) {
+  function updateAccuracyCircle(latlngLocal, ring) {
+    if (!ring || !ring.pixelRadius) {
+      return;
+    }
     if (!state.accuracyCircle) {
-      state.accuracyCircle = L.circle(latlng, {
+      state.accuracyCircle = L.circle(latlngLocal, {
         radius: ring.pixelRadius,
         color: ring.color,
         weight: 1,
@@ -182,11 +187,16 @@ function updateLivePosition() {
         fillOpacity: 0.15,
       }).addTo(state.photoMap);
     } else {
-      state.accuracyCircle.setLatLng(latlng);
+      state.accuracyCircle.setLatLng(latlngLocal);
       state.accuracyCircle.setRadius(ring.pixelRadius);
       state.accuracyCircle.setStyle({ color: ring.color, fillColor: ring.color });
     }
   }
+
+  ensureUserMarker(latlng);
+
+  const ring = accuracyRingRadiusPixels(state.calibration, location, coords.accuracy || 50);
+  updateAccuracyCircle(latlng, ring);
 
   if (dom.accuracyDetails && ring) {
     dom.accuracyDetails.textContent = `Combined accuracy ${ring.sigmaTotal.toFixed(1)} m (GPS ${ring.sigmaGps.toFixed(1)} m, Map ${ring.sigmaMap.toFixed(1)} m)`;
