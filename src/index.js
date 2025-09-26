@@ -131,6 +131,20 @@ function maybeAutoCompleteGuidedPair() {
   }
 }
 
+function finalizeMapSelection() {
+  const guidedMapStep = isGuidedActive() && state.guidedPairing.step === 'osm';
+
+  if (guidedMapStep) {
+    state.guidedPairing.step = 'complete';
+  }
+
+  updatePairStatus();
+
+  if (guidedMapStep) {
+    maybeAutoCompleteGuidedPair();
+  }
+}
+
 function formatLatLon(value, positive, negative) {
   const direction = value >= 0 ? positive : negative;
   return `${value.toFixed(6)}° ${direction}`;
@@ -527,14 +541,7 @@ function handleOsmClick(event) {
   } else {
     state.osmActiveMarker = L.marker(event.latlng, { draggable: false }).addTo(state.osmMap);
   }
-  const guidedMapStep = isGuidedActive() && state.guidedPairing.step === 'osm';
-  if (guidedMapStep) {
-    state.guidedPairing.step = 'complete';
-  }
-  updatePairStatus();
-  if (guidedMapStep) {
-    maybeAutoCompleteGuidedPair();
-  }
+  finalizeMapSelection();
 }
 
 function useCurrentPositionForPair() {
@@ -558,14 +565,7 @@ function useCurrentPositionForPair() {
         state.osmActiveMarker = L.marker(latlng, { draggable: false }).addTo(state.osmMap);
       }
       state.osmMap.setView(latlng, Math.max(state.osmMap.getZoom(), 15));
-      const guidedMapStep = isGuidedActive() && state.guidedPairing.step === 'osm';
-      if (guidedMapStep) {
-        state.guidedPairing.step = 'complete';
-      }
-      updatePairStatus();
-      if (guidedMapStep) {
-        maybeAutoCompleteGuidedPair();
-      }
+      finalizeMapSelection();
     },
     (error) => {
       updateGpsStatus(`Location error: ${error.message}`, true);
