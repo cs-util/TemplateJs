@@ -7,6 +7,8 @@ import {
   accuracyRingRadiusPixels,
 } from 'snap2map/calibrator';
 
+const GUIDED_PAIR_TARGET = 2;
+
 const state = {
   imageDataUrl: null,
   imageSize: null,
@@ -25,12 +27,122 @@ const state = {
   geoWatchId: null,
   lastPosition: null,
   lastGpsUpdate: null,
+  guidedPairing: {
+    active: false,
+    targetCount: GUIDED_PAIR_TARGET,
+    step: null,
+    pairsCompleted: 0,
+    pendingToast: false,
+  },
 };
 
 const dom = {};
 
 function $(id) {
   return document.getElementById(id);
+}
+
+function showToast(message, { duration = 4200, tone = 'info' } = {}) {
+  if (!dom.toastContainer) {
+    return;
+  }
+
+  const toneClass =
+    tone === 'success'
+      ? 'bg-emerald-500/95 text-emerald-950 border border-emerald-300'
+      : tone === 'warning'
+        ? 'bg-amber-500/95 text-amber-950 border border-amber-300'
+        : 'bg-slate-900/95 text-slate-100 border border-slate-700';
+
+  const toast = document.createElement('div');
+  toast.className = `pointer-events-none px-4 py-3 rounded-xl shadow-2xl text-sm font-semibold tracking-tight transition-opacity duration-300 ${toneClass}`;
+  toast.setAttribute('role', 'status');
+  toast.setAttribute('aria-live', 'polite');
+  toast.textContent = message;
+  toast.style.opacity = '0';
+
+  dom.toastContainer.appendChild(toast);
+
+  requestAnimationFrame(() => {
+    toast.style.opacity = '1';
+  });
+
+  const hide = () => {
+    toast.style.opacity = '0';
+    setTimeout(() => {
+      if (toast.parentNode === dom.toastContainer) {
+        dom.toastContainer.removeChild(toast);
+      }
+    }, 320);
+  };
+
+  setTimeout(hide, duration);
+}
+
+function isGuidedActive() {
+  return Boolean(state.guidedPairing && state.guidedPairing.active);
+}
+
+function startGuidedPairing() {
+  state.guidedPairing.active = true;
+  state.guidedPairing.targetCount = GUIDED_PAIR_TARGET;
+  state.guidedPairing.step = 'photo';
+  state.guidedPairing.pairsCompleted = 0;
+  state.guidedPairing.pendingToast = false;
+  beginPairMode();
+  setActiveView('photo');
+  showToast('Tap the first point on your photo.');
+}
+
+function stopGuidedPairing(reason = 'complete') {
+  if (!isGuidedActive()) {
+    return;
+  }
+
+  state.guidedPairing.active = false;
+  state.guidedPairing.step = null;
+  state.guidedPairing.pendingToast = false;
+  state.guidedPairing.pairsCompleted = 0;
+
+  if (dom.addPairButton) {
+    dom.addPairButton.disabled = false;
+  }
+
+  if (reason === 'complete') {
+    showToast('Nice! Two reference pairs captured. Add more for better accuracy.', {
+      duration: 5200,
+      tone: 'success',
+    });
+  } else if (reason === 'cancelled') {
+    showToast('Guided setup cancelled. You can continue adding pairs manually.', {
+      tone: 'warning',
+    });
+  }
+}
+
+function maybeAutoCompleteGuidedPair() {
+  if (!isGuidedActive() || !state.activePair) {
+    return;
+  }
+
+  if (state.activePair.pixel && state.activePair.wgs84) {
+    state.guidedPairing.pendingToast = true;
+    confirmPair();
+  }
+}
+
+function finalizeMapSelection() {
+  const guidedMapStep = isGuidedActive() && state.guidedPairing.step === 'osm';
+
+  if (guidedMapStep) {
+    state.guidedPairing.step = 'complete';
+  }
+
+  updatePairStatus();
+
+  if (guidedMapStep) {
+    maybeAutoCompleteGuidedPair();
+  }
 }
 
 function formatLatLon(value, positive, negative) {
@@ -244,29 +356,70 @@ function clearActivePairMarkers() {
   }
 }
 
+function setIdlePairStatus(guided) {
+  dom.pairStatus.textContent = guided
+    ? 'Guided setup preparing the next pair…'
+    : 'Tap “Start pair” and select a pixel on the photo followed by its real-world location on the map.';
+  dom.confirmPairButton.disabled = true;
+  dom.cancelPairButton.disabled = !guided;
+}
+
+function setGuidedPairStatus({ pairNumber, hasPixel, hasWorld }) {
+  dom.cancelPairButton.disabled = false;
+  dom.confirmPairButton.disabled = true;
+
+  if (!hasPixel) {
+    dom.pairStatus.textContent = `Guided Pair ${pairNumber} — Step 1/2: tap the photo.`;
+    return;
+  }
+
+  if (!hasWorld) {
+    dom.pairStatus.textContent = `Guided Pair ${pairNumber} — Step 2/2: tap the map or use your position.`;
+    return;
+  }
+
+  dom.pairStatus.textContent = `Guided Pair ${pairNumber} — finishing…`;
+}
+
+function setManualPairStatus({ pairNumber, hasPixel, hasWorld }) {
+  dom.cancelPairButton.disabled = false;
+  dom.confirmPairButton.disabled = !(hasPixel && hasWorld);
+
+  if (!hasPixel && !hasWorld) {
+    dom.pairStatus.textContent = `Pair ${pairNumber} — Step 1/2: tap the photo to drop the pixel anchor.`;
+    return;
+  }
+
+  if (hasPixel && !hasWorld) {
+    dom.pairStatus.textContent = `Pair ${pairNumber} — Step 2/2: tap the OpenStreetMap view or use your current position.`;
+    return;
+  }
+
+  dom.pairStatus.textContent = `Pair ${pairNumber} ready — confirm to store it or tap cancel to discard.`;
+}
+
 function updatePairStatus() {
   if (!dom.pairStatus) {
     return;
   }
+
+  const guided = isGuidedActive();
+  const pairNumber = state.pairs.length + 1;
+
   if (!state.activePair) {
-    dom.pairStatus.textContent = 'Tap “Start pair” and select a pixel on the photo followed by its real-world location on the map.';
-    dom.confirmPairButton.disabled = true;
-    dom.cancelPairButton.disabled = true;
+    setIdlePairStatus(guided);
     return;
   }
 
   const hasPixel = Boolean(state.activePair.pixel);
   const hasWorld = Boolean(state.activePair.wgs84);
-  dom.cancelPairButton.disabled = false;
-  dom.confirmPairButton.disabled = !(hasPixel && hasWorld);
 
-  if (!hasPixel && !hasWorld) {
-    dom.pairStatus.textContent = 'Pair # step 1/2 — Tap the photo to drop the pixel anchor.';
-  } else if (hasPixel && !hasWorld) {
-    dom.pairStatus.textContent = 'Pair step 2/2 — Tap the OpenStreetMap view or use your current position.';
-  } else {
-    dom.pairStatus.textContent = 'Pair ready — confirm to store it or tap cancel to discard.';
+  if (guided) {
+    setGuidedPairStatus({ pairNumber, hasPixel, hasWorld });
+    return;
   }
+
+  setManualPairStatus({ pairNumber, hasPixel, hasWorld });
 }
 
 function beginPairMode() {
@@ -280,7 +433,49 @@ function cancelPairMode() {
   state.activePair = null;
   clearActivePairMarkers();
   updatePairStatus();
-  dom.addPairButton.disabled = false;
+  dom.addPairButton.disabled = isGuidedActive();
+}
+
+function showGuidedPairSavedToast(index) {
+  if (!state.guidedPairing.pendingToast) {
+    return;
+  }
+
+  const residual =
+    state.calibration && Array.isArray(state.calibration.residuals)
+      ? state.calibration.residuals[index]
+      : null;
+  const residualText = residual !== null && residual !== undefined ? `${residual.toFixed(1)} m` : '—';
+  const tone = residual !== null && residual <= 30 ? 'success' : 'info';
+  showToast(`Pair ${index + 1} saved — residual ${residualText}.`, { tone });
+  state.guidedPairing.pendingToast = false;
+}
+
+function promptNextGuidedPair() {
+  state.guidedPairing.step = 'photo';
+  beginPairMode();
+  updatePairStatus();
+  setActiveView('photo');
+  const nextPairNumber = state.pairs.length + 1;
+  const message = nextPairNumber === 2 ? 'Tap the second point on your photo.' : 'Tap the next point on your photo.';
+  showToast(message);
+}
+
+function advanceGuidedFlow() {
+  if (!isGuidedActive()) {
+    return;
+  }
+
+  state.guidedPairing.pairsCompleted += 1;
+
+  if (state.pairs.length >= state.guidedPairing.targetCount) {
+    setActiveView('photo');
+    stopGuidedPairing('complete');
+    updatePairStatus();
+    return;
+  }
+
+  promptNextGuidedPair();
 }
 
 function confirmPair() {
@@ -295,6 +490,10 @@ function confirmPair() {
   renderPairList();
   refreshPairMarkers();
   recalculateCalibration();
+
+  const savedIndex = state.pairs.length - 1;
+  showGuidedPairSavedToast(savedIndex);
+  advanceGuidedFlow();
 }
 
 function onPairTableClick(event) {
@@ -320,7 +519,15 @@ function handlePhotoClick(event) {
   } else {
     state.photoActiveMarker = L.marker(event.latlng, { draggable: false }).addTo(state.photoMap);
   }
+  const guidedPhotoStep = isGuidedActive() && state.guidedPairing.step === 'photo';
+  if (guidedPhotoStep) {
+    state.guidedPairing.step = 'osm';
+  }
   updatePairStatus();
+  if (guidedPhotoStep) {
+    setActiveView('osm');
+    showToast('Now tap the matching spot on the map.');
+  }
 }
 
 function handleOsmClick(event) {
@@ -334,7 +541,7 @@ function handleOsmClick(event) {
   } else {
     state.osmActiveMarker = L.marker(event.latlng, { draggable: false }).addTo(state.osmMap);
   }
-  updatePairStatus();
+  finalizeMapSelection();
 }
 
 function useCurrentPositionForPair() {
@@ -358,7 +565,7 @@ function useCurrentPositionForPair() {
         state.osmActiveMarker = L.marker(latlng, { draggable: false }).addTo(state.osmMap);
       }
       state.osmMap.setView(latlng, Math.max(state.osmMap.getZoom(), 15));
-      updatePairStatus();
+      finalizeMapSelection();
     },
     (error) => {
       updateGpsStatus(`Location error: ${error.message}`, true);
@@ -440,7 +647,8 @@ function loadPhotoMap(dataUrl, width, height) {
   renderPairList();
   refreshPairMarkers();
   updateStatusText();
-  updateGpsStatus('Photo loaded. Add reference pairs to calibrate.', false);
+  updateGpsStatus('Photo loaded. Guided pairing active — follow the prompts.', false);
+  startGuidedPairing();
 }
 
 function handleImageImport(event) {
@@ -477,9 +685,9 @@ function setActiveView(view) {
     dom.photoView.classList.remove('hidden');
     dom.osmView.classList.add('hidden');
     dom.photoTabButton.classList.add('bg-blue-600', 'text-white');
-    dom.photoTabButton.classList.remove('bg-white', 'text-blue-600');
+    dom.photoTabButton.classList.remove('bg-white/10', 'text-blue-300');
     dom.osmTabButton.classList.remove('bg-blue-600', 'text-white');
-    dom.osmTabButton.classList.add('bg-white', 'text-blue-600');
+    dom.osmTabButton.classList.add('bg-white/10', 'text-blue-300');
     if (state.photoMap) {
       state.photoMap.invalidateSize();
     }
@@ -487,9 +695,9 @@ function setActiveView(view) {
     dom.photoView.classList.add('hidden');
     dom.osmView.classList.remove('hidden');
     dom.osmTabButton.classList.add('bg-blue-600', 'text-white');
-    dom.osmTabButton.classList.remove('bg-white', 'text-blue-600');
+    dom.osmTabButton.classList.remove('bg-white/10', 'text-blue-300');
     dom.photoTabButton.classList.remove('bg-blue-600', 'text-white');
-    dom.photoTabButton.classList.add('bg-white', 'text-blue-600');
+    dom.photoTabButton.classList.add('bg-white/10', 'text-blue-300');
     state.osmMap.invalidateSize();
   }
 }
@@ -520,12 +728,19 @@ function cacheDom() {
   dom.photoTabButton = $('photoTabButton');
   dom.osmTabButton = $('osmTabButton');
   dom.pairTable = $('pairTable');
+  dom.toastContainer = $('toastContainer');
 }
 
 function setupEventHandlers() {
   dom.mapImageInput.addEventListener('change', handleImageImport);
   dom.addPairButton.addEventListener('click', beginPairMode);
-  dom.cancelPairButton.addEventListener('click', cancelPairMode);
+  dom.cancelPairButton.addEventListener('click', () => {
+    const wasGuided = isGuidedActive();
+    cancelPairMode();
+    if (wasGuided) {
+      stopGuidedPairing('cancelled');
+    }
+  });
   dom.confirmPairButton.addEventListener('click', confirmPair);
   dom.usePositionButton.addEventListener('click', useCurrentPositionForPair);
   dom.pairTableBody.addEventListener('click', onPairTableClick);

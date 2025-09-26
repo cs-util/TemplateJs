@@ -56,7 +56,7 @@
   * Guided mode opens on **Photo** immediately after import and displays a toast: “Tap the first point on your photo.”
   * Once the pixel pin is dropped, the UI auto-switches to **OSM**, updates the toast (“Now tap the matching spot on the map”), and enables “Use my position” as a contextual hint.
   * Manual flow (when initiated later) still allows starting on either side.
-  * After the matching map pin is placed, the pair preview appears. Guided mode automatically toggles back to the **Photo** tab, advances to the next pair, and repeats the instruction cycle until the minimum required pair count (2) is collected. Additional pairs beyond the minimum revert to the standard manual flow unless the user explicitly taps “Continue guided setup”.
+  * After the matching map pin is placed, the pair preview appears. Guided mode automatically toggles back to the **Photo** tab, advances to the next pair, and repeats the instruction cycle until the minimum required pair count (2) is collected. After that the flow switches back to manual control while encouraging the user to add more pairs for accuracy.
 * **Drag & drop** on both sides updates pair live.
 * **Confirm (✓)** applies; **Cancel (←)** discards changes to the active pair only.
 * Guided mode auto-confirms each pair as soon as both pins are placed, surfaces a toast summarizing the residual (“Pair saved — residual 12 m”), and exits once two pairs exist (with a prompt encouraging more for higher accuracy).
