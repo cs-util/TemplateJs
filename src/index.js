@@ -8,6 +8,7 @@ import {
 } from 'snap2map/calibrator';
 
 const GUIDED_PAIR_TARGET = 2;
+const MAX_PHOTO_DIMENSION = 2048*2; // pixels
 
 const state = {
   imageDataUrl: null,
@@ -658,11 +659,61 @@ function handleImageImport(event) {
   }
   const reader = new FileReader();
   reader.onload = () => {
+    const dataUrl = reader.result;
+    if (typeof dataUrl !== 'string') {
+      return;
+    }
+
     const img = new Image();
     img.onload = () => {
-      loadPhotoMap(reader.result, img.width, img.height);
+      const originalWidth = img.width;
+      const originalHeight = img.height;
+
+      if (!originalWidth || !originalHeight) {
+        loadPhotoMap(dataUrl, originalWidth, originalHeight);
+        return;
+      }
+
+      const scale = Math.min(
+        MAX_PHOTO_DIMENSION / originalWidth,
+        MAX_PHOTO_DIMENSION / originalHeight,
+        1,
+      );
+
+      if (scale < 1) {
+        const targetWidth = Math.round(originalWidth * scale);
+        const targetHeight = Math.round(originalHeight * scale);
+        const canvas = document.createElement('canvas');
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+        const context = canvas.getContext('2d');
+
+        if (context) {
+          context.imageSmoothingEnabled = true;
+          context.imageSmoothingQuality = 'high';
+          context.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+          const preferredType =
+            file.type === 'image/png' || file.type === 'image/webp'
+              ? file.type
+              : 'image/jpeg';
+
+          const optimizedDataUrl =
+            preferredType === 'image/jpeg'
+              ? canvas.toDataURL(preferredType, 0.9)
+              : canvas.toDataURL(preferredType);
+
+          loadPhotoMap(optimizedDataUrl, targetWidth, targetHeight);
+          return;
+        }
+      }
+
+      loadPhotoMap(dataUrl, originalWidth, originalHeight);
     };
-    img.src = reader.result;
+    img.onerror = () => {
+      console.warn('Failed to load the selected image.');
+    };
+    img.src = dataUrl;
   };
   reader.readAsDataURL(file);
 }
