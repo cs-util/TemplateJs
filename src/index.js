@@ -25,6 +25,7 @@ const state = {
   osmActiveMarker: null,
   userMarker: null,
   accuracyCircle: null,
+  osmLocateControl: null,
   geoWatchId: null,
   lastPosition: null,
   lastGpsUpdate: null,
@@ -731,6 +732,45 @@ function setupMaps() {
   }).addTo(state.osmMap);
 
   state.osmMap.on('click', handleOsmClick);
+
+  if (L.control && typeof L.control.locate === 'function') {
+    state.osmLocateControl = L.control
+      .locate({
+        position: 'topleft',
+        setView: 'always',
+        flyTo: false,
+        cacheLocation: true,
+        showPopup: false,
+      })
+      .on('locationfound', (event) => {
+        const now = Date.now();
+        state.lastPosition = {
+          coords: {
+            latitude: event.latlng.lat,
+            longitude: event.latlng.lng,
+            accuracy: event.accuracy,
+          },
+          timestamp: now,
+        };
+        state.lastGpsUpdate = now;
+        updateGpsStatus(`Live position · accuracy ±${Math.round(event.accuracy)} m`, false);
+        updateStatusText();
+        updateLivePosition();
+      })
+      .on('locationerror', (error) => {
+        updateGpsStatus(`Location error: ${error.message}`, true);
+      })
+      .addTo(state.osmMap);
+
+    try {
+      updateGpsStatus('Locating your position…', false);
+      state.osmLocateControl.start();
+    } catch (error) {
+      console.warn('Failed to start locate control', error);
+    }
+  } else {
+    console.warn('Leaflet locate control plugin not available.');
+  }
 }
 
 function centerOsmOnLatLon(lat, lon) {
@@ -741,6 +781,15 @@ function centerOsmOnLatLon(lat, lon) {
 }
 
 function requestAndCenterOsmOnUser() {
+  if (state.osmLocateControl) {
+    try {
+      state.osmLocateControl.start();
+    } catch (error) {
+      console.warn('Failed to trigger locate control', error);
+    }
+    return;
+  }
+
   if (!navigator.geolocation) return;
   updateGpsStatus('Locating your position…', false);
   navigator.geolocation.getCurrentPosition(
@@ -757,14 +806,24 @@ function requestAndCenterOsmOnUser() {
 }
 
 function maybePromptGeolocationForOsm() {
-  if (!navigator.geolocation) return;
-
   // If we already have a recent position, prefer that immediately
   if (state.lastPosition && Date.now() - (state.lastGpsUpdate || 0) <= 5_000) {
     const { latitude, longitude } = state.lastPosition.coords;
     centerOsmOnLatLon(latitude, longitude);
+    // continue so we also keep the locate control active for future updates
+  }
+
+  if (state.osmLocateControl) {
+    state.osmGeoPrompted = true;
+    try {
+      state.osmLocateControl.start();
+    } catch (error) {
+      console.warn('Failed to restart locate control', error);
+    }
     return;
   }
+
+  if (!navigator.geolocation) return;
 
   const shouldPrompt = !state.osmGeoPrompted;
 
@@ -880,3 +939,10 @@ function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+export const __testables = {
+  setupMaps,
+  state,
+  maybePromptGeolocationForOsm,
+  requestAndCenterOsmOnUser,
+};
