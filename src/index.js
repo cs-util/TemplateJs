@@ -147,6 +147,8 @@ function finalizeMapSelection() {
 
   if (guidedMapStep) {
     maybeAutoCompleteGuidedPair();
+  } else if (!isGuidedActive()) {
+    showToast('Pair ready — tap "Confirm pair" to save it.');
   }
 }
 
@@ -432,6 +434,9 @@ function beginPairMode() {
   clearActivePairMarkers();
   updatePairStatus();
   dom.addPairButton.disabled = true;
+  if (!isGuidedActive()) {
+    showToast('Tap the photo to drop the pixel anchor.');
+  }
 }
 
 function cancelPairMode() {
@@ -497,6 +502,15 @@ function confirmPair() {
   recalculateCalibration();
 
   const savedIndex = state.pairs.length - 1;
+  if (!isGuidedActive()) {
+    const residual =
+      state.calibration && Array.isArray(state.calibration.residuals)
+        ? state.calibration.residuals[savedIndex]
+        : null;
+    const residualText = residual !== null && residual !== undefined ? `${residual.toFixed(1)} m` : '—';
+    const tone = residual !== null && residual <= 30 ? 'success' : 'info';
+    showToast(`Pair ${savedIndex + 1} saved — residual ${residualText}.`, { tone });
+  }
   showGuidedPairSavedToast(savedIndex);
   advanceGuidedFlow();
 }
@@ -532,6 +546,8 @@ function handlePhotoClick(event) {
   if (guidedPhotoStep) {
     setActiveView('osm');
     showToast('Now tap the matching spot on the map.');
+  } else if (!isGuidedActive()) {
+    showToast('Switch to the OpenStreetMap tab and tap the matching spot.');
   }
 }
 
@@ -944,6 +960,7 @@ function init() {
   setActiveView('photo');
   updateStatusText();
   updateGpsStatus('Import a map photo to get started.', false);
+  showToast('Import a map photo to get started.');
   registerServiceWorker();
 }
 
