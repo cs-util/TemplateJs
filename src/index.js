@@ -28,6 +28,8 @@ const state = {
   geoWatchId: null,
   lastPosition: null,
   lastGpsUpdate: null,
+  // Prompt geolocation when OSM tab opened the first time
+  osmGeoPrompted: false,
   guidedPairing: {
     active: false,
     targetCount: GUIDED_PAIR_TARGET,
@@ -731,6 +733,72 @@ function setupMaps() {
   state.osmMap.on('click', handleOsmClick);
 }
 
+function centerOsmOnLatLon(lat, lon) {
+  if (!state.osmMap) return;
+  const latlng = L.latLng(lat, lon);
+  const targetZoom = Math.max(state.osmMap.getZoom() || 0, 15);
+  state.osmMap.setView(latlng, targetZoom);
+}
+
+function requestAndCenterOsmOnUser() {
+  if (!navigator.geolocation) return;
+  updateGpsStatus('Locating your position…', false);
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      updateGpsStatus(`Centered on your location (±${Math.round(pos.coords.accuracy)} m)`, false);
+      centerOsmOnLatLon(pos.coords.latitude, pos.coords.longitude);
+    },
+    () => {
+      // ignore errors – keep default view
+      updateGpsStatus('Could not get your location right now.', true);
+    },
+    { enableHighAccuracy: true, maximumAge: 5000, timeout: 30000 },
+  );
+}
+
+function maybePromptGeolocationForOsm() {
+  if (!navigator.geolocation) return;
+
+  // If we already have a recent position, prefer that immediately
+  if (state.lastPosition && Date.now() - (state.lastGpsUpdate || 0) <= 5_000) {
+    const { latitude, longitude } = state.lastPosition.coords;
+    centerOsmOnLatLon(latitude, longitude);
+    return;
+  }
+
+  const shouldPrompt = !state.osmGeoPrompted;
+
+  // Try Permissions API to avoid unnecessary prompt where already denied/granted
+  const doRequest = () => {
+    if (shouldPrompt) state.osmGeoPrompted = true;
+    requestAndCenterOsmOnUser();
+  };
+
+  if (navigator.permissions && navigator.permissions.query) {
+    try {
+      navigator.permissions
+        .query({ name: 'geolocation' })
+        .then((status) => {
+          if (status.state === 'granted') {
+            // No prompt needed; just center
+            requestAndCenterOsmOnUser();
+          } else if (status.state === 'prompt') {
+            // Only trigger the browser prompt the first time we open OSM
+            if (shouldPrompt) doRequest();
+          }
+          // if denied → do nothing
+        })
+        .catch(() => {
+          if (shouldPrompt) doRequest();
+        });
+    } catch (_) {
+      if (shouldPrompt) doRequest();
+    }
+  } else {
+    if (shouldPrompt) doRequest();
+  }
+}
+
 function setActiveView(view) {
   if (view === 'photo') {
     dom.photoView.classList.remove('hidden');
@@ -750,6 +818,8 @@ function setActiveView(view) {
     dom.photoTabButton.classList.remove('bg-blue-600', 'text-white');
     dom.photoTabButton.classList.add('bg-white/10', 'text-blue-300');
     state.osmMap.invalidateSize();
+    // On first OSM open, immediately ask for location permission and center if available
+    maybePromptGeolocationForOsm();
   }
 }
 
