@@ -26,6 +26,7 @@ const state = {
   userMarker: null,
   accuracyCircle: null,
   osmLocateControl: null,
+  osmLocateHandlersAttached: false,
   geoWatchId: null,
   lastPosition: null,
   lastGpsUpdate: null,
@@ -733,34 +734,42 @@ function setupMaps() {
 
   state.osmMap.on('click', handleOsmClick);
 
+  if (!state.osmLocateHandlersAttached) {
+    const handleLocateFound = (event) => {
+      const now = Date.now();
+      state.lastPosition = {
+        coords: {
+          latitude: event.latlng.lat,
+          longitude: event.latlng.lng,
+          accuracy: event.accuracy,
+        },
+        timestamp: now,
+      };
+      state.lastGpsUpdate = now;
+      updateGpsStatus(`Live position · accuracy ±${Math.round(event.accuracy)} m`, false);
+      updateStatusText();
+      updateLivePosition();
+    };
+
+    const handleLocateError = (error) => {
+      updateGpsStatus(`Location error: ${error.message}`, true);
+    };
+
+    state.osmMap.on('locationfound', handleLocateFound);
+    state.osmMap.on('locationerror', handleLocateError);
+    state.osmLocateHandlersAttached = true;
+  }
+
   if (L.control && typeof L.control.locate === 'function') {
-    state.osmLocateControl = L.control
-      .locate({
-        position: 'topleft',
-        setView: 'always',
-        flyTo: false,
-        cacheLocation: true,
-        showPopup: false,
-      })
-      .on('locationfound', (event) => {
-        const now = Date.now();
-        state.lastPosition = {
-          coords: {
-            latitude: event.latlng.lat,
-            longitude: event.latlng.lng,
-            accuracy: event.accuracy,
-          },
-          timestamp: now,
-        };
-        state.lastGpsUpdate = now;
-        updateGpsStatus(`Live position · accuracy ±${Math.round(event.accuracy)} m`, false);
-        updateStatusText();
-        updateLivePosition();
-      })
-      .on('locationerror', (error) => {
-        updateGpsStatus(`Location error: ${error.message}`, true);
-      })
-      .addTo(state.osmMap);
+    const locateControl = L.control.locate({
+      position: 'topleft',
+      setView: 'always',
+      flyTo: false,
+      cacheLocation: true,
+      showPopup: false,
+    });
+
+    state.osmLocateControl = locateControl.addTo(state.osmMap);
 
     try {
       updateGpsStatus('Locating your position…', false);

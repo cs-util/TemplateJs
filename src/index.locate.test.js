@@ -1,5 +1,5 @@
 describe('OpenStreetMap locate control integration', () => {
-  let locateHandlers;
+  let mapHandlers;
   let locateControlInstance;
   let mapInstance;
   let tileLayerInstance;
@@ -7,9 +7,9 @@ describe('OpenStreetMap locate control integration', () => {
   let state;
   let maybePromptGeolocationForOsm;
 
-  function loadModule() {
+  function loadModule({ includeLocateControlOn = true } = {}) {
     jest.resetModules();
-    locateHandlers = {};
+    mapHandlers = {};
 
     jest.mock('snap2map/calibrator', () => ({
       calibrateMap: jest.fn(),
@@ -20,7 +20,10 @@ describe('OpenStreetMap locate control integration', () => {
 
     mapInstance = {
       setView: jest.fn(() => mapInstance),
-      on: jest.fn(() => mapInstance),
+      on: jest.fn((event, handler) => {
+        mapHandlers[event] = handler;
+        return mapInstance;
+      }),
       getZoom: jest.fn(() => 11),
     };
 
@@ -29,13 +32,13 @@ describe('OpenStreetMap locate control integration', () => {
     };
 
     locateControlInstance = {
-      on: jest.fn((event, handler) => {
-        locateHandlers[event] = handler;
-        return locateControlInstance;
-      }),
       addTo: jest.fn(() => locateControlInstance),
       start: jest.fn(),
     };
+
+    if (includeLocateControlOn) {
+      locateControlInstance.on = jest.fn();
+    }
 
     global.L = {
       map: jest.fn(() => mapInstance),
@@ -72,6 +75,12 @@ describe('OpenStreetMap locate control integration', () => {
     expect(locateControlInstance.addTo).toHaveBeenCalledWith(mapInstance);
     expect(locateControlInstance.start).toHaveBeenCalledTimes(1);
     expect(state.osmLocateControl).toBe(locateControlInstance);
+    expect(mapInstance.on).toHaveBeenCalledWith('locationfound', expect.any(Function));
+    expect(mapInstance.on).toHaveBeenCalledWith('locationerror', expect.any(Function));
+    expect(mapHandlers.locationfound).toBeInstanceOf(Function);
+    expect(mapHandlers.locationerror).toBeInstanceOf(Function);
+    expect(state.osmLocateHandlersAttached).toBe(true);
+    expect(locateControlInstance.on).not.toHaveBeenCalled();
   });
 
   it('updates state when the locate control reports a fix', () => {
@@ -82,7 +91,7 @@ describe('OpenStreetMap locate control integration', () => {
     const fixedNow = 1700000000000;
     jest.spyOn(Date, 'now').mockReturnValue(fixedNow);
 
-    const handler = locateHandlers.locationfound;
+    const handler = mapHandlers.locationfound;
     expect(handler).toBeInstanceOf(Function);
 
     handler({
@@ -101,6 +110,16 @@ describe('OpenStreetMap locate control integration', () => {
     expect(state.lastGpsUpdate).toBe(fixedNow);
 
     Date.now.mockRestore();
+  });
+
+  it('does not rely on the locate control exposing an event API', () => {
+    loadModule({ includeLocateControlOn: false });
+
+    expect(() => setupMaps()).not.toThrow();
+
+    expect(mapHandlers.locationfound).toBeInstanceOf(Function);
+    expect(locateControlInstance.start).toHaveBeenCalledTimes(1);
+    expect(state.osmLocateControl).toBe(locateControlInstance);
   });
 
   it('restarts locating when the OSM view prompts for geolocation', () => {
