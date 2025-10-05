@@ -62,7 +62,7 @@ This template uses a structured approach to organize files and facilitate develo
 - Use structured issue templates for clear agent input
 - Use an agent trigger (e.g., `@claude`, `/cursor start`) on issues to assign them to autonomous agents
 - Review agent-created PRs thoroughly before merging
-- `npm test` automatically runs Prettier on `src`, `pages`, `config`, `docs`, `index.html`, and `README.md` before linting and tests.
+- `npm test` automatically runs Prettier across the full contents of `src`, `pages`, `config`, `docs`, plus `index.html` and `README.md` before linting and tests.
 - Run `npm run validate:all` to ensure all quality gates pass
 
 ## Autonomous Agents

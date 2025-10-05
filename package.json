@@ -4,8 +4,8 @@
   "description": "TemplateJs is a minimal single-page web app template designed for quick deployment.  It follows an AI-assisted iterative development process:",
   "main": "index.js",
   "scripts": {
-    "test": "npm run format && npm run lint && npm run check:all && npm run test:unit",
-    "format": "prettier --write \"src\" \"pages\" \"config\" \"docs\" index.html README.md",
+  "test": "npm run format && npm run lint && npm run check:all && npm run test:unit",
+    "format": "prettier --write --ignore-unknown --no-error-on-unmatched-pattern \"src\" \"pages\" \"config\" \"docs\" index.html README.md",
     "test:unit": "jest --coverage --config config/jest.config.js",
     "lint": "eslint . --config config/eslint.config.js",
     "test:watch": "jest --watch --config config/jest.config.js",
