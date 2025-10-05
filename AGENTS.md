@@ -9,17 +9,17 @@ Canonical instructions for coding agents. Human-facing docs are in `README.md`.
 - Deploy via GitHub Pages from `main` (static assets)
 - Preferred dev env: Codespaces (optional)
 
-## Runbook
-- Before commit: `npm run check:all` then `npm test`
-- Before PR/release: `npm run validate:all` (tests + checks + mutation)
+## Workflow
+- Frequently during development and before each commit: run `npm test` 
+- Before PR/release: `npm run validate:all` (runs `npm test` + mutation tests)
 - Always run commands in a real terminal and include actual output in notes/PRs.
 
 ## Build/Serve
 - Static app; serve `index.html` with a simple static server (e.g., VS Code Live Server)
 
-## Tests
-- Run all tests: `npm test`
-- Tests live near code: `src/**/foo.test.js`, `*.property.test.js`
+### Test layout
+- Unit specs: `*.test.js`
+- Property-based specs: `*.property.test.js`
 - Keep tests deterministic and fast; avoid E2E unless asked
 
 Failure loop
@@ -77,16 +77,7 @@ Follow this lightweight spec-first flow before coding:
 - Only change code directly related to the current task; keep diffs small
 - Preserve existing comments/docs; add concise, long-lived docs where useful and avoid narrating changes via comments
 
-## Quality checks
-- During development: run frequently
-  - `npm run check:all`
-  - `npm test`
-- Before PR: `npm run validate:all` (tests + checks + mutation)
 
-Test structure
-- `*.test.js` — unit
-- `*.property.test.js` — property-based (fast-check)
-- Mutation: `npm run mutation` (CI too); aim >50%
 
 Failure triage loop
 1. Simplest fix first
