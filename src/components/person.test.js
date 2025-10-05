@@ -9,7 +9,9 @@ describe('Person', () => {
 
   test('introduce method should return an introduction message', () => {
     const person = new Person('Test Person', 30);
-    expect(person.introduce()).toBe('Hi, I\'m Test Person and I\'m 30 years old.');
+    expect(person.introduce()).toBe(
+      "Hi, I'm Test Person and I'm 30 years old."
+    );
   });
 
   test('getBirthYear method should return the correct birth year', () => {

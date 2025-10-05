@@ -14,7 +14,9 @@ describe('Utils', () => {
       expect(mockPerson.introduce).toHaveBeenCalled();
       expect(mockPerson.getBirthYear).toHaveBeenCalled();
       const expectedBirthYear = new Date().getFullYear() - 30;
-      expect(message).toBe(`Hi, I'm Test Person and I'm 30 years old. I was born in ${expectedBirthYear}.`);
+      expect(message).toBe(
+        `Hi, I'm Test Person and I'm 30 years old. I was born in ${expectedBirthYear}.`
+      );
     });
 
     test('should throw an error if person object is invalid or missing methods', () => {

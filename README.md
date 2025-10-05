@@ -1,4 +1,5 @@
 # TemplateJs
+
 For AI assistants, see `AGENTS.md`.
 TemplateJs is a minimal single-page web app template designed for quick deployment.
 It follows an AI-assisted iterative development process:
@@ -12,23 +13,25 @@ It follows an AI-assisted iterative development process:
 This approach enables rapid prototyping and structured iteration with minimal human intervention.
 
 ## Using the Template
+
 1.  **Fork and Open in CodeSpaces:** Fork this repository and open your fork using GitHub CodeSpaces.
 2.  **Configure GitHub Pages:** Navigate to your repository's `Settings` -> `Pages`. In the "Branch" section, select the `main` branch to be automatically deployed by GitHub.
 3.  **Set up Autonomous Agents (Optional):** See [`docs/autonomous-agents-setup.md`](docs/autonomous-agents-setup.md) for configuring AI agents that can automatically implement features and fix bugs.
 4.  **Access Your WebApp:** If your fork is `github.com/YourUserName/YourFork`, your WebApp will be live at `YourUserName.github.io/YourFork`.
 5.  **Install Recommended VSCode Extensions (Optional but Recommended):**
-    *   "**Live Server**": Renders the `index.html` page and provides live updates during development.
-    *   "**GitHub Copilot**": Assists with coding tasks within CodeSpaces.
-    *   "**Git Graph**": Helps visualize and manage Git branches.
+    - "**Live Server**": Renders the `index.html` page and provides live updates during development.
+    - "**GitHub Copilot**": Assists with coding tasks within CodeSpaces.
+    - "**Git Graph**": Helps visualize and manage Git branches.
 6.  **Development Workflow:**
-    *   Modify `index.html` for the main page structure.
-    *   Add or edit JavaScript modules in the `src/` directory.
-    *   Place static assets like images or JSON files in `src/assets/`.
-    *   Create new HTML pages in the `pages/` directory if needed.
-    *   Regularly commit and push your changes to the `main` branch to update your live application.
-    *   **Use autonomous agents:** Use an agent trigger (e.g., `@claude`, `/cursor start`) in an issue to have it implemented automatically.
+    - Modify `index.html` for the main page structure.
+    - Add or edit JavaScript modules in the `src/` directory.
+    - Place static assets like images or JSON files in `src/assets/`.
+    - Create new HTML pages in the `pages/` directory if needed.
+    - Regularly commit and push your changes to the `main` branch to update your live application.
+    - **Use autonomous agents:** Use an agent trigger (e.g., `@claude`, `/cursor start`) in an issue to have it implemented automatically.
 
 ## Project Structure
+
 This template uses a structured approach to organize files and facilitate development:
 
 ```
@@ -55,20 +58,24 @@ This template uses a structured approach to organize files and facilitate develo
 ```
 
 ### For Contributors
+
 - Use structured issue templates for clear agent input
 - Use an agent trigger (e.g., `@claude`, `/cursor start`) on issues to assign them to autonomous agents
 - Review agent-created PRs thoroughly before merging
+- `npm test` automatically runs Prettier on `src`, `pages`, `config`, `docs`, `index.html`, and `README.md` before linting and tests.
 - Run `npm run validate:all` to ensure all quality gates pass
 
 ## Autonomous Agents
 
 This repository includes autonomous AI agents that can:
+
 - **Implement features** automatically from issue descriptions
 - **Fix bugs** with proper test coverage
 - **Maintain code quality** through automated monitoring
 - **Create pull requests** with comprehensive descriptions
 
 **Quick Start:**
+
 1. Create an issue using one of the provided templates
 2. Use an agent trigger (e.g., comment `@claude` or use `/cursor start`) to assign it to an agent
 3. The agent will create a branch, implement the feature, and open a PR
@@ -77,4 +84,5 @@ This repository includes autonomous AI agents that can:
 See [`docs/autonomous-agents-setup.md`](docs/autonomous-agents-setup.md) for complete setup and usage instructions.
 
 ## Disclaimer
+
 TemplateJs is provided as-is. It is a general-purpose template and does not include domain-specific functionality. Use and modify as needed.
