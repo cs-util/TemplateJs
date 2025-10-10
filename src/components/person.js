@@ -48,5 +48,3 @@ export class Person {
     return new Person(data.name, data.age);
   }
 }
-
-export default Person;
