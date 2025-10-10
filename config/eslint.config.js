@@ -4,6 +4,9 @@ const js = require('@eslint/js');
 module.exports = [
   {
     ignores: [
+      // Config lives in config/, so eslint resolves globs relative to this file.
+      // Include both parent-relative and repo-root patterns to keep generated artifacts out
+      // regardless of where eslint is launched from.
       '../coverage/**',
       'coverage/**',
       '../reports/**',
