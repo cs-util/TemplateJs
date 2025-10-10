@@ -40,7 +40,8 @@ test.describe('index.html smoke test', () => {
       ).toBeLessThan(400);
     }
 
-    await page.waitForLoadState('networkidle');
+    // Using 'load' avoids timeouts seen when parallel browsers wait for 'networkidle'.
+    await page.waitForLoadState('load');
 
     const heroHeading = page.getByRole('heading', {
       level: 1,
