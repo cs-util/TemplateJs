@@ -1,5 +1,5 @@
 import fc from 'fast-check';
-import Person from './person.js';
+import { Person } from './person.js';
 
 describe('Person Component Tests', () => {
   // Arbitraries for generating valid person data
