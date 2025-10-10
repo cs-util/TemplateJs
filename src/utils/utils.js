@@ -17,5 +17,3 @@ export function add(a, b) {
 export function tellBirthday(person) {
   return `${person.introduce()} I was born in ${person.getBirthYear()}.`;
 }
-
-export default { add, tellBirthday };
