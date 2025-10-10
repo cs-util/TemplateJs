@@ -10,28 +10,18 @@ test.describe('index.html smoke test', () => {
 
     page.on('console', (message) => {
       const type = message.type();
-      if (type === 'warning') {
-        const text = message.text();
+      const text = message.text();
+
+      if (type === 'error') {
+        consoleIssues.push({ type, text });
+      } else if (type === 'warning') {
         const isAllowed = allowedWarningPatterns.some((pattern) =>
           pattern.test(text)
         );
 
-        if (isAllowed) {
-          return;
+        if (!isAllowed) {
+          consoleIssues.push({ type, text });
         }
-
-        consoleIssues.push({
-          type,
-          text,
-        });
-        return;
-      }
-
-      if (type === 'error') {
-        consoleIssues.push({
-          type,
-          text: message.text(),
-        });
       }
     });
 
