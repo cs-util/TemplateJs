@@ -65,6 +65,12 @@ This template uses a structured approach to organize files and facilitate develo
 - `npm test` automatically runs Prettier across the full contents of `src`, `pages`, `config`, `docs`, plus `index.html` and `README.md` before linting and tests.
 - Run `npm run validate:all` to ensure all quality gates pass
 
+## Testing
+
+- Run `npm test` for formatting, linting, dependency checks, and unit tests.
+- Run `npm run test:e2e` to execute the Playwright smoke test that ensures `index.html` renders without console errors.
+- Use `npm run serve:static` to manually serve the app at `http://127.0.0.1:4173` when debugging UI tests locally.
+
 ## Autonomous Agents
 
 This repository includes autonomous AI agents that can:
