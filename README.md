@@ -47,6 +47,9 @@ This template uses a structured approach to organize files and facilitate develo
 ├── playwright-ui-tests/  # Playwright smoke tests verifying the UI shell
 │   ├── index.spec.js
 │   └── playwright.config.js
+├── mutation-testing/     # Stryker config, reports, and markdown generator
+│   ├── stryker.conf.json
+│   └── mutation-report-to-md.js
 └── src/                  # Main source code directory
     ├── index.js          # Primary JavaScript entry point, linked from index.html
     ├── index.test.js     # Tests for index.js

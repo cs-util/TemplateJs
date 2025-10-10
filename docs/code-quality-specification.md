@@ -23,7 +23,7 @@ Objective: ensure that any change (human- or AI-authored) satisfies general corr
 
 ## 3) Tooling (reference only)
 
-Core tools: Jest, fast-check, Stryker, ESLint, jscpd, dependency-cruiser, madge. Use the scripts defined in `package.json` and configurations under `config/`. For exact commands and validation flow, follow `../AGENTS.md`.
+Core tools: Jest, fast-check, Stryker, ESLint, jscpd, dependency-cruiser, madge. Use the scripts defined in `package.json`, the tool configs under `config/`, and the Stryker config in `mutation-testing/stryker.conf.json`. For exact commands and validation flow, follow `../AGENTS.md`.
 
 ---
 
