@@ -4,7 +4,11 @@ const path = require('node:path');
 
 module.exports = {
   rootDir: '../',
-  testPathIgnorePatterns: ['/node_modules/', '/.stryker-tmp/', '/tests/'],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/.stryker-tmp/',
+    '/playwright-ui-tests/',
+  ],
   collectCoverage: true,
   // Include all source files so newly added modules without tests are reported with 0% coverage
   // This ensures gaps (e.g. currently untested audio.js) are visible and will impact thresholds
