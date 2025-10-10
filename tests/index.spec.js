@@ -1,4 +1,4 @@
-const { test, expect } = require('@playwright/test');
+import { test, expect } from '@playwright/test';
 
 test.describe('index.html smoke test', () => {
   test('loads without console warnings or errors', async ({ page }) => {
