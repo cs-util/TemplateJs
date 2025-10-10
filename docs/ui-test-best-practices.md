@@ -1,5 +1,3 @@
-**Primary Assistant:**
-
 # Playwright + GitHub Copilot (incl. Codespaces & CI) — Developer Report (npm + JavaScript)
 
 This report consolidates setup and best-practices for running **Playwright** with **GitHub Copilot** locally in VS Code, inside **GitHub Codespaces**, and in **GitHub Actions**—with specific safeguards to **avoid any blocking/interactive artifacts** (e.g., “Serving HTML report… Press Ctrl+C to quit.”).
@@ -263,9 +261,8 @@ Keep agent-facing guidance centralized in `AGENTS.md`. For Playwright specifics,
 
 ---
 
-**Devil’s Advocate:**
+## 10) Potential risks to look out for
 
-- **Agent/MCP variability**: Copilot agent mode with MCP can be **policy-restricted** in some orgs. Keep a fully functional path where Copilot **only generates** tests and CI runs them (your CLI/Actions flow already does this). ([GitHub Docs][13])
 - **HTML report expectations**: Teams often want a clickable report; uploading the static folder is safe, but people may still run `show-report` locally. Document clearly that `show-report` is **human-only**, never in CI/agents. ([playwright.dev][1])
 - **Noise from GH annotations**: With large matrices, the `github` reporter can flood PRs. Consider using `dot` + JSON/JUnit for PR checks and keep HTML as an artifact for deeper inspection. ([playwright.dev][1])
 - **Security**: UI Mode and HTML/trace reports can include sensitive data. In Codespaces, ports are private by default, but review visibility and sanitize artifacts before sharing. ([playwright.dev][2])
