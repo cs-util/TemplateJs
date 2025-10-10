@@ -1,5 +1,7 @@
 # Stryker Mutation testing
 .stryker-tmp/
+mutation-testing/reports/mutation-report.json
+mutation-testing/reports/html/
 
 # Logs
 logs
