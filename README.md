@@ -44,6 +44,12 @@ This template uses a structured approach to organize files and facilitate develo
 ├── pages/                # Contains additional static HTML pages
 │   ├── about.html
 │   └── features.html
+├── playwright-ui-tests/  # Playwright smoke tests verifying the UI shell
+│   ├── index.spec.js
+│   └── playwright.config.js
+├── mutation-testing/     # Stryker config, reports, and markdown generator
+│   ├── stryker.conf.json
+│   └── mutation-report-to-md.js
 └── src/                  # Main source code directory
     ├── index.js          # Primary JavaScript entry point, linked from index.html
     ├── index.test.js     # Tests for index.js
@@ -64,6 +70,13 @@ This template uses a structured approach to organize files and facilitate develo
 - Review agent-created PRs thoroughly before merging
 - `npm test` automatically runs Prettier across the full contents of `src`, `pages`, `config`, `docs`, plus `index.html` and `README.md` before linting and tests.
 - Run `npm run validate:all` to ensure all quality gates pass
+
+## Testing
+
+- Run `npm test` for formatting, linting, dependency checks, and unit tests.
+- Run `npm run test:e2e` to execute the Playwright smoke test that ensures `index.html` renders without console errors.
+- Run `npm run test:e2e:artifacts` when you need traces, videos, and screenshots for the smoke test (useful for debugging regressions).
+- Use `npm run serve:static` to manually serve the app at `http://127.0.0.1:4173` when debugging UI tests locally.
 
 ## Autonomous Agents
 

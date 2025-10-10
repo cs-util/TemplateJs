@@ -10,12 +10,10 @@
  * - Or: Rename + fully reimplement before production use.
  */
 
-function add(a, b) {
+export function add(a, b) {
   return a + b;
 }
 
-function tellBirthday(person) {
+export function tellBirthday(person) {
   return `${person.introduce()} I was born in ${person.getBirthYear()}.`;
 }
-
-module.exports = { add, tellBirthday };

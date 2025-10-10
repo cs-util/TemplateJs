@@ -1,4 +1,4 @@
-const utils = require('./utils');
+import { tellBirthday } from './utils.js';
 
 describe('Utils', () => {
   describe('tellBirthday', () => {
@@ -9,7 +9,7 @@ describe('Utils', () => {
         getBirthYear: jest.fn(() => new Date().getFullYear() - 30),
       };
 
-      const message = utils.tellBirthday(mockPerson);
+      const message = tellBirthday(mockPerson);
 
       expect(mockPerson.introduce).toHaveBeenCalled();
       expect(mockPerson.getBirthYear).toHaveBeenCalled();
@@ -24,10 +24,10 @@ describe('Utils', () => {
       const personWithoutIntroduce = { getBirthYear: jest.fn() };
       const personWithoutGetBirthYear = { introduce: jest.fn() };
 
-      expect(() => utils.tellBirthday({})).toThrow();
-      expect(() => utils.tellBirthday(null)).toThrow();
-      expect(() => utils.tellBirthday(personWithoutIntroduce)).toThrow();
-      expect(() => utils.tellBirthday(personWithoutGetBirthYear)).toThrow();
+      expect(() => tellBirthday({})).toThrow();
+      expect(() => tellBirthday(null)).toThrow();
+      expect(() => tellBirthday(personWithoutIntroduce)).toThrow();
+      expect(() => tellBirthday(personWithoutGetBirthYear)).toThrow();
     });
   });
 });

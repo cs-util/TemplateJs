@@ -1,4 +1,4 @@
-const Person = require('./person');
+import { Person } from './person.js';
 
 describe('Person', () => {
   test('should create a person with name and age', () => {

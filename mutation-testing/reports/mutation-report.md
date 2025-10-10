@@ -1,8 +1,8 @@
 # 🧬 Mutation Testing Report
 
-> **Generated:** 2025-08-17T10:21:48.695Z  
+> **Generated:** 2025-10-10T06:43:44.679Z  
 > **Mutation Score:** 🟢 **100.0%**  
-> **Coverage Score:** 97.8%  
+> **Coverage Score:** 97.7%  
 > **Total Files Analyzed:** 3
 
 > 💡 **Note:** A human-readable, pretty-printed version of the raw JSON data (that was used to produce this md file here) is available at `mutation-report-pretty.json` for detailed analysis and debugging.
@@ -15,16 +15,16 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| **Total Mutants** | 45 | 100% |
-| **✅ Killed (Good)** | 44 | 97.8% |
+| **Total Mutants** | 44 | 100% |
+| **✅ Killed (Good)** | 43 | 97.7% |
 | **❌ Survived (Bad)** | 0 | 0.0% |
-| **🚫 No Coverage** | 1 | 2.2% |
+| **🚫 No Coverage** | 1 | 2.3% |
 | **⏱️ Timeout** | 0 | 0.0% |
 | **💥 Error** | 0 | 0.0% |
 
 ### Quality Assessment
 - **Mutation Score:** 100.0% (Excellent)
-- **Test Coverage:** 97.8% (Excellent)
+- **Test Coverage:** 97.7% (Excellent)
 
 ---
 
@@ -70,7 +70,6 @@
 | EqualityOperator | 7 | 7 | 0 | 0 | 🟢 100.0% |
 | MethodExpression | 2 | 2 | 0 | 0 | 🟢 100.0% |
 | ArithmeticOperator | 3 | 3 | 0 | 0 | 🟢 100.0% |
-| ObjectLiteral | 1 | 1 | 0 | 0 | 🟢 100.0% |
 
 ### Mutator-Specific Analysis
 
@@ -108,22 +107,22 @@
 ### Test Effectiveness Analysis
 
 #### Overall Test Coverage Insights
-- **Total Mutants Analyzed**: 45
-- **Average Test Coverage per Mutant**: 6.2 tests
+- **Total Mutants Analyzed**: 44
+- **Average Test Coverage per Mutant**: 6.3 tests
 - **Most Tested Mutant**: #1 (covered by 12 tests)
-- **Least Tested Areas**: ObjectLiteral
+- **Least Tested Areas**: 
 
 #### Test Quality Metrics
-- **Mutation Detection Rate**: 97.8%
-- **Test Efficiency**: 102.3% (killed/covered ratio)
-- **Coverage Gaps**: 1 lines not covered by any tests
+- **Mutation Detection Rate**: 97.7%
+- **Test Efficiency**: 100.0% (killed/covered ratio)
+- **Coverage Gaps**: 0 lines not covered by any tests
 
 #### Top Performing Tests
-1. **Test #0**: Killed 8 mutants, covered 23
-2. **Test #12**: Killed 8 mutants, covered 13
+1. **Test #12**: Killed 8 mutants, covered 13
+2. **Test #0**: Killed 7 mutants, covered 23
 3. **Test #13**: Killed 6 mutants, covered 22
-4. **Test #1**: Killed 4 mutants, covered 26
-5. **Test #9**: Killed 4 mutants, covered 21
+4. **Test #1**: Killed 5 mutants, covered 26
+5. **Test #9**: Killed 5 mutants, covered 21
 
 
 ---
@@ -144,19 +143,31 @@
 #### 📄 Source Code with Mutation Analysis
 
 ```javascript
-  1| console.log("Hello from index.js!");
+  1| /**
+  2|  * PLACEHOLDER ENTRY POINT — KEEP OR REMOVE
+  3|  *
+  4|  * Note for developers and LLMs:
+  5|  * This file is a sample/placeholder entry point used for demos and initial setup.
+  6|  * Once real application logic is created, remove this file OR rename it and
+  7|  * rewrite its contents completely to reflect the real application entry point.
+  8|  *
+  9|  * - Remove if not needed.
+ 10|  * - Or: Rename + fully reimplement before production use.
+ 11|  */
+ 12| 
+ 13| console.log('Hello from index.js!');
    🚫 #39: StringLiteral → """" [0 tests]
-  2| 
+ 14| 
 ```
 
 #### 🚫 Coverage Gaps Summary
 
 - **1 uncovered mutants** across 1 lines
-- **Most affected lines**: 1
+- **Most affected lines**: 13
 - **Common uncovered operations**: StringLiteral
 
 ##### Detailed No Coverage Mutants:
-1. **Mutant #39** - Line 1:13-35: `StringLiteral` → `""`
+1. **Mutant #39** - Line 13:13-35: `StringLiteral` → `""`
 
 ---
 
@@ -174,95 +185,104 @@
 #### 📄 Source Code with Mutation Analysis
 
 ```javascript
-  1| // person.js
-  2| class Person {
-  3|     constructor(name, age) {
+  1| /**
+  2|  * PLACEHOLDER COMPONENT — KEEP OR REMOVE
+  3|  *
+  4|  * Note for developers and LLMs:
+  5|  * This file is a sample/placeholder component used for tests and demos.
+  6|  * Once real components are created, remove this file OR rename it and
+  7|  * rewrite its contents completely so it reflects the real component.
+  8|  *
+  9|  * - Remove if not needed.
+ 10|  * - Or: Rename + fully reimplement before production use.
+ 11|  */
+ 12| 
+ 13| export class Person {
+ 14|   constructor(name, age) {
    ✅ #0: BlockStatement → "{}" [12 tests]
-  4|         if (typeof name !== 'string' || name.trim() === '') {
+ 15|     if (typeof name !== 'string' || name.trim() === '') {
    ✅ #1: ConditionalExpression → "true" [12 tests]
    ✅ #2: ConditionalExpression → "false" [12 tests]
    ✅ #3: LogicalOperator → "typeof name !== 'string' && name.trim() === ''" [12 tests]
    ✅ #4: ConditionalExpression → "false" [12 tests]
-   ✅ #6: StringLiteral → """" [12 tests]
    ✅ #5: EqualityOperator → "typeof name === 'string'" [12 tests]
-   ✅ #8: EqualityOperator → "name.trim() !== ''" [12 tests]
+   ✅ #6: StringLiteral → """" [12 tests]
    ✅ #7: ConditionalExpression → "false" [12 tests]
-   ✅ #9: MethodExpression → "name" [12 tests]
+   ✅ #8: EqualityOperator → "name.trim() !== ''" [12 tests]
    ✅ #10: StringLiteral → ""Stryker was here!"" [12 tests]
+   ✅ #9: MethodExpression → "name" [12 tests]
    ✅ #11: BlockStatement → "{}" [1 tests]
-  5|             throw new Error("Invalid name");
+ 16|       throw new Error('Invalid name');
    ✅ #12: StringLiteral → """" [1 tests]
-  6|         }
-  7|         if (typeof age !== 'number' || age < 0) {
-   ✅ #13: ConditionalExpression → "true" [11 tests]
+ 17|     }
+ 18|     if (typeof age !== 'number' || age < 0) {
    ✅ #14: ConditionalExpression → "false" [11 tests]
+   ✅ #13: ConditionalExpression → "true" [11 tests]
    ✅ #15: LogicalOperator → "typeof age !== 'number' && age < 0" [11 tests]
    ✅ #16: ConditionalExpression → "false" [11 tests]
    ✅ #17: EqualityOperator → "typeof age === 'number'" [11 tests]
    ✅ #18: StringLiteral → """" [11 tests]
    ✅ #19: ConditionalExpression → "false" [11 tests]
    ✅ #20: EqualityOperator → "age <= 0" [11 tests]
-   ✅ #21: EqualityOperator → "age >= 0" [11 tests]
    ✅ #22: BlockStatement → "{}" [1 tests]
-  8|             throw new Error("Invalid age");
+   ✅ #21: EqualityOperator → "age >= 0" [11 tests]
+ 19|       throw new Error('Invalid age');
    ✅ #23: StringLiteral → """" [1 tests]
-  9|         }
- 10|         this.name = name.trim();
-   ✅ #24: MethodExpression → "name" [10 tests]
- 11|         this.age = age;
- 12|     }
- 13| 
- 14|     getGreeting() {
-   ✅ #25: BlockStatement → "{}" [1 tests]
- 15|         return `Hello, my name is ${this.name} and I am ${this.age} years old.`;
-   ✅ #26: StringLiteral → "``" [1 tests]
- 16|     }
- 17| 
- 18|     getAgeInMonths() {
-   ✅ #27: BlockStatement → "{}" [1 tests]
- 19|         return this.age * 12;
-   ✅ #28: ArithmeticOperator → "this.age / 12" [1 tests]
  20|     }
- 21| 
- 22|     canVote() {
+ 21|     this.name = name.trim();
+   ✅ #24: MethodExpression → "name" [10 tests]
+ 22|     this.age = age;
+ 23|   }
+ 24| 
+ 25|   getGreeting() {
+   ✅ #25: BlockStatement → "{}" [1 tests]
+ 26|     return `Hello, my name is ${this.name} and I am ${this.age} years old.`;
+   ✅ #26: StringLiteral → "``" [1 tests]
+ 27|   }
+ 28| 
+ 29|   getAgeInMonths() {
+   ✅ #27: BlockStatement → "{}" [1 tests]
+ 30|     return this.age * 12;
+   ✅ #28: ArithmeticOperator → "this.age / 12" [1 tests]
+ 31|   }
+ 32| 
+ 33|   canVote() {
    ✅ #29: BlockStatement → "{}" [3 tests]
- 23|         return this.age >= 18;
+ 34|     return this.age >= 18;
    ✅ #30: ConditionalExpression → "true" [3 tests]
    ✅ #31: ConditionalExpression → "false" [3 tests]
    ✅ #32: EqualityOperator → "this.age > 18" [3 tests]
    ✅ #33: EqualityOperator → "this.age < 18" [3 tests]
- 24|     }
- 25| 
- 26|     introduce() {
+ 35|   }
+ 36| 
+ 37|   introduce() {
    ✅ #34: BlockStatement → "{}" [1 tests]
- 27|         return `Hi, I'm ${this.name} and I'm ${this.age} years old.`;
+ 38|     return `Hi, I'm ${this.name} and I'm ${this.age} years old.`;
    ✅ #35: StringLiteral → "``" [1 tests]
- 28|     }
- 29| 
- 30|     getBirthYear() {
-   ✅ #36: BlockStatement → "{}" [1 tests]
- 31|         const currentYear = new Date().getFullYear();
- 32|         return currentYear - this.age;
-   ✅ #37: ArithmeticOperator → "currentYear + this.age" [1 tests]
- 33|     }
- 34| 
- 35|     static fromJSON(json) {
-   ✅ #38: BlockStatement → "{}" [1 tests]
- 36|         const data = JSON.parse(json);
- 37|         return new Person(data.name, data.age);
- 38|     }
- 39| }
+ 39|   }
  40| 
- 41| module.exports = Person;
- 42| 
+ 41|   getBirthYear() {
+   ✅ #36: BlockStatement → "{}" [1 tests]
+ 42|     const currentYear = new Date().getFullYear();
+ 43|     return currentYear - this.age;
+   ✅ #37: ArithmeticOperator → "currentYear + this.age" [1 tests]
+ 44|   }
+ 45| 
+ 46|   static fromJSON(json) {
+   ✅ #38: BlockStatement → "{}" [1 tests]
+ 47|     const data = JSON.parse(json);
+ 48|     return new Person(data.name, data.age);
+ 49|   }
+ 50| }
+ 51| 
 ```
 
 #### ✅ Successfully Killed Mutants Summary
 
 - **39 mutants killed** by tests
 - **Average tests per mutant**: 1.0
-- **Most effective test**: 0 (killed 8 mutants)
-- **Top mutator types killed**: ConditionalExpression, BlockStatement, StringLiteral
+- **Most effective test**: 12 (killed 8 mutants)
+- **Top mutator types killed**: ConditionalExpression, BlockStatement, EqualityOperator
 
 ---
 
@@ -272,34 +292,43 @@
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| ✅ Killed | 5 | 100.0% |
+| ✅ Killed | 4 | 100.0% |
 | ❌ Survived | 0 | 0.0% |
 | 🚫 No Coverage | 0 | 0.0% |
-| **Total** | **5** | **100%** |
+| **Total** | **4** | **100%** |
 
 #### 📄 Source Code with Mutation Analysis
 
 ```javascript
-  1| function add(a, b) {
+  1| /**
+  2|  * PLACEHOLDER UTILITY FUNCTIONS — KEEP OR REMOVE
+  3|  *
+  4|  * Note for developers and LLMs:
+  5|  * This file contains sample/placeholder utility functions used for tests and demos.
+  6|  * Once real utility functions are needed, remove this file OR rename it and
+  7|  * rewrite its contents completely to reflect real utility functions.
+  8|  *
+  9|  * - Remove if not needed.
+ 10|  * - Or: Rename + fully reimplement before production use.
+ 11|  */
+ 12| 
+ 13| export function add(a, b) {
    ✅ #40: BlockStatement → "{}" [2 tests]
-  2|     return a + b;
+ 14|   return a + b;
    ✅ #41: ArithmeticOperator → "a - b" [2 tests]
-  3| }
-  4| 
-  5| function tellBirthday(person) {
+ 15| }
+ 16| 
+ 17| export function tellBirthday(person) {
    ✅ #42: BlockStatement → "{}" [2 tests]
-  6|     return `${person.introduce()} I was born in ${person.getBirthYear()}.`;
+ 18|   return `${person.introduce()} I was born in ${person.getBirthYear()}.`;
    ✅ #43: StringLiteral → "``" [2 tests]
-  7| }
-  8| 
-  9| module.exports = { add, tellBirthday };
-   ✅ #44: ObjectLiteral → "{}" [0 tests]
- 10| 
+ 19| }
+ 20| 
 ```
 
 #### ✅ Successfully Killed Mutants Summary
 
-- **5 mutants killed** by tests
+- **4 mutants killed** by tests
 - **Average tests per mutant**: 1.0
 - **Most effective test**: 7 (killed 2 mutants)
 - **Top mutator types killed**: BlockStatement, ArithmeticOperator, StringLiteral
@@ -458,7 +487,7 @@ npm run test:mutation:changed-files
 *For questions or issues, consult your development team or the Stryker documentation.*
 
 **Report Generation Details**
-- Generated: 2025-08-17T10:21:48.698Z
+- Generated: 2025-10-10T06:43:44.682Z
 - Stryker Version: Latest
 - Analysis Includes: Source code, test coverage, mutant details, recommendations
 - Interactive Version: Available at `html/index.html`

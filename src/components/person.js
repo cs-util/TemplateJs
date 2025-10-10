@@ -9,8 +9,8 @@
  * - Remove if not needed.
  * - Or: Rename + fully reimplement before production use.
  */
-// person.js
-class Person {
+
+export class Person {
   constructor(name, age) {
     if (typeof name !== 'string' || name.trim() === '') {
       throw new Error('Invalid name');
@@ -48,5 +48,3 @@ class Person {
     return new Person(data.name, data.age);
   }
 }
-
-module.exports = Person;
