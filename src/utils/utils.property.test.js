@@ -1,5 +1,5 @@
-const fc = require('fast-check');
-const { add } = require('./utils');
+import fc from 'fast-check';
+import { add } from './utils.js';
 
 // Property-Based Test Example
 describe('Property-based tests for utils', () => {

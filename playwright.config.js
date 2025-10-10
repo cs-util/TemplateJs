@@ -5,6 +5,8 @@ const { defineConfig, devices } = require('@playwright/test');
  * Playwright configuration focused on a single smoke test that assures the
  * static `index.html` page renders without console errors.
  */
+const captureArtifacts = process.env.PLAYWRIGHT_CAPTURE === '1';
+
 module.exports = defineConfig({
   testDir: './tests',
   fullyParallel: true,
@@ -20,9 +22,9 @@ module.exports = defineConfig({
     : [['list'], ['html', { open: 'never' }]],
   use: {
     baseURL: 'http://127.0.0.1:4173',
-    trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
+    trace: captureArtifacts ? 'on' : 'on-first-retry',
+    screenshot: captureArtifacts ? 'on' : 'only-on-failure',
+    video: captureArtifacts ? 'on' : 'retain-on-failure',
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },

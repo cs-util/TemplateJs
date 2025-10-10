@@ -69,6 +69,7 @@ This template uses a structured approach to organize files and facilitate develo
 
 - Run `npm test` for formatting, linting, dependency checks, and unit tests.
 - Run `npm run test:e2e` to execute the Playwright smoke test that ensures `index.html` renders without console errors.
+- Run `npm run test:e2e:artifacts` when you need traces, videos, and screenshots for the smoke test (useful for debugging regressions).
 - Use `npm run serve:static` to manually serve the app at `http://127.0.0.1:4173` when debugging UI tests locally.
 
 ## Autonomous Agents

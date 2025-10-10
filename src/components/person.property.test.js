@@ -1,5 +1,5 @@
-const fc = require('fast-check');
-const Person = require('./person');
+import fc from 'fast-check';
+import Person from './person.js';
 
 describe('Person Component Tests', () => {
   // Arbitraries for generating valid person data
