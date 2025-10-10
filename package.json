@@ -16,10 +16,10 @@
     "check:all": "npm run check:dup && npm run check:cycles && npm run check:boundaries",
     "validate:all": "npm run test && npm run mutation",
     "serve:static": "serve -l 4173 .",
-    "test:e2e": "playwright test",
-    "test:e2e:artifacts": "PLAYWRIGHT_CAPTURE=1 playwright test",
-    "test:e2e:headed": "playwright test --headed",
-    "test:e2e:ui": "playwright test --ui"
+  "test:e2e": "playwright test --config playwright-ui-tests/playwright.config.js",
+  "test:e2e:artifacts": "PLAYWRIGHT_CAPTURE=1 playwright test --config playwright-ui-tests/playwright.config.js",
+  "test:e2e:headed": "playwright test --config playwright-ui-tests/playwright.config.js --headed",
+  "test:e2e:ui": "playwright test --config playwright-ui-tests/playwright.config.js --ui"
   },
   "keywords": [],
   "author": "",

@@ -8,7 +8,7 @@ This report consolidates setup and best-practices for running **Playwright** wit
 
 - **Never call** `npx playwright show-report` in automated flows (CI, agent runs, LLM tools); it starts a local server and blocks the process. Instead, **upload the HTML folder as an artifact** or consume **JSON/JUnit** reports. The HTML report auto-open behavior can be disabled via config or env var (see §2 and §4). ([playwright.dev][1])
 - Force HTML report behavior to **not open** in any environment by setting either:
-  - `reporter: [['html', { open: 'never' }]]` in `playwright.config.js`, or
+  - `reporter: [['html', { open: 'never' }]]` in `playwright-ui-tests/playwright.config.js`, or
   - `PLAYWRIGHT_HTML_OPEN=never` in the environment. ([playwright.dev][1])
 
 - Prefer non-interactive reporters in pipelines/agent runs: `github`, `json`, `junit`, or `dot/line`. ([playwright.dev][1])
@@ -41,6 +41,8 @@ npx playwright install
 ```
 
 ### `playwright.config.js` (JavaScript, safe defaults)
+
+> In this repository, the config file lives at `playwright-ui-tests/playwright.config.js`; adjust paths if you copy these defaults.
 
 ```js
 // playwright.config.js

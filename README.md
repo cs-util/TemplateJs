@@ -45,7 +45,8 @@ This template uses a structured approach to organize files and facilitate develo
 │   ├── about.html
 │   └── features.html
 ├── playwright-ui-tests/  # Playwright smoke tests verifying the UI shell
-│   └── index.spec.js
+│   ├── index.spec.js
+│   └── playwright.config.js
 └── src/                  # Main source code directory
     ├── index.js          # Primary JavaScript entry point, linked from index.html
     ├── index.test.js     # Tests for index.js
