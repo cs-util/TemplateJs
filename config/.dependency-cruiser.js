@@ -3,6 +3,7 @@ module.exports = {
   options: {
     doNotFollow: { path: 'node_modules' },
     includeOnly: 'src',
+    exclude: { path: '(^|\\/)\\.stryker-tmp/' },
     reporterOptions: { dot: { collapsePattern: 'node_modules/[^/]*' } },
   },
   forbidden: [

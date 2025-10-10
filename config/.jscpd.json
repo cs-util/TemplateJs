@@ -7,6 +7,7 @@
     "**/node_modules/**",
     "**/dist/**",
     "**/coverage/**",
+    "**/.stryker-tmp/**",
     "**/*.test.js",
     "**/*.property.test.js"
   ],
@@ -14,6 +15,7 @@
     "**/node_modules/**",
     "**/dist/**",
     "**/coverage/**",
+    "**/.stryker-tmp/**",
     "**/*.test.js",
     "**/*.property.test.js"
   ],
