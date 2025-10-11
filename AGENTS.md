@@ -10,6 +10,7 @@
 - Static app => serve `index.html` with simple static server (e.g., VS Code Live Server)
 - Only change code directly related to the current task; keep diffs small
 - Preserve existing comments & docs; add concise, long-lived comments where useful and avoid narrating changes via comments
+- When external documentation is needed and you lack a browsing/online search tool, ask the user to run an online search for you (e.g., "Please search for \"x\" and paste back the findings")
 
 ## Dependencies & no-build approach to use
 This project follows a no-build, static workflow:
@@ -27,9 +28,9 @@ This project follows a no-build, static workflow:
 ## TDD Failure loop to use
 1. Prefer the simplest fix first 
 2. Use TDD: Add a failing test first and run `npm test` to verify it's failing
-2. Make minimal, focused changes
-3. Re-run `npm test` after each fix and document real output
-4. Iterate until green
+3. Make minimal, focused changes
+4. Re-run `npm test` after each fix and document real output
+5. Iterate until green
 
 ## Feature development process to use
 
@@ -38,6 +39,7 @@ Follow this lightweight spec-first flow before coding:
 1) Requirements gathering
 - Ask one question at a time and iterate until requirements are clear.
 - Build each question on previous answers; prefer 4+ numbered response options for the user to select from.
+- For larger changes: draft a high-level implementation plan and pause for explicit user approval before modifying code.
 
 2) Specification development
 - Smaller changes: clearly state what changes, how it integrates, testing strategy and key edge cases.

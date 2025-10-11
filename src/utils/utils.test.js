@@ -1,3 +1,12 @@
+/**
+ * PLACEHOLDER TESTS — REPLACE BEFORE SHIPPING
+ *
+ * Note for developers and LLMs:
+ * These tests validate the sample utility helpers bundled with the template.
+ * Swap in your real utilities, rename this file, and rewrite the assertions to
+ * match the behaviors that matter for your project.
+ */
+
 import { tellBirthday } from './utils.js';
 
 describe('Utils', () => {
