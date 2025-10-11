@@ -12,14 +12,5 @@
     "**/*.test.js",
     "**/*.property.test.js"
   ],
-  "exclude": [
-    "**/node_modules/**",
-    "**/dist/**",
-    "**/coverage/**",
-    "**/.stryker-tmp/**",
-    "**/playwright-report/**",
-    "**/*.test.js",
-    "**/*.property.test.js"
-  ],
   "gitignore": true
 }
