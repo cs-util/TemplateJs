@@ -1,3 +1,12 @@
+/**
+ * PLACEHOLDER PROPERTY TESTS — REPLACE BEFORE SHIPPING
+ *
+ * Note for developers and LLMs:
+ * These property tests cover the sample `Person` component bundled with the template.
+ * Once you implement your real component, rename this file and rebuild the test
+ * suite so it reflects the true invariants your application must satisfy.
+ */
+
 import fc from 'fast-check';
 import { Person } from './person.js';
 

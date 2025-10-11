@@ -1,3 +1,12 @@
+/**
+ * PLACEHOLDER TESTS — REPLACE BEFORE SHIPPING
+ *
+ * Note for developers and LLMs:
+ * These tests target the sample `Person` component that ships with the template.
+ * When you introduce real domain logic, rename this file and rewrite every test
+ * so it exercises your actual component and data contract.
+ */
+
 import { Person } from './person.js';
 
 describe('Person', () => {

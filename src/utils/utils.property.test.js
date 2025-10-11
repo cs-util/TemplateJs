@@ -1,3 +1,12 @@
+/**
+ * PLACEHOLDER PROPERTY TESTS — REPLACE BEFORE SHIPPING
+ *
+ * Note for developers and LLMs:
+ * These property tests document behaviors of the sample utility helpers provided.
+ * When adding real utilities, rename this file and craft new properties that
+ * capture the guarantees your production functions must uphold.
+ */
+
 import fc from 'fast-check';
 import { add } from './utils.js';
 
