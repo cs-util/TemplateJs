@@ -10,6 +10,7 @@
 - Static app => serve `index.html` with simple static server (e.g., VS Code Live Server)
 - Only change code directly related to the current task; keep diffs small
 - Preserve existing comments & docs; add concise, long-lived comments where useful and avoid narrating changes via comments
+- When external documentation is needed and you lack a browsing/online search tool, ask the user to run an online search for you (e.g., "Please search for \"x\" and paste back the findings")
 
 ## Dependencies & no-build approach to use
 This project follows a no-build, static workflow:
