@@ -6,6 +6,7 @@
 - Entrypoint: `index.html` (+ static pages in `pages/`)
 - Source composed of small, focused modules in `src/` (`components/`, `utils/`, ..) with colocated tests
 - Frequently during development and before each commit: run `npm test` 
+- Run `npm outdated` at the start of each significant task and weekly at minimum; keep dependencies healthy. Prefer bumping to the `Wanted` version unless blocked by incompatibilities (document any exceptions)
 - `README.md` typically contains big picture dev. spec and context. It should be kept up to date whenever the code is ready for a PR
 - Static app => serve `index.html` with simple static server (e.g., VS Code Live Server)
 - Only change code directly related to the current task; keep diffs small
