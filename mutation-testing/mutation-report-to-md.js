@@ -109,7 +109,8 @@ function calculateOverallStats(report) {
     });
   });
 
-  const mutationScore = totalMutants > 0 ? ((killedMutants / (totalMutants - noCoverageMutants)) * 100) : 0;
+  const coveredMutants = totalMutants - noCoverageMutants;
+  const mutationScore = coveredMutants > 0 ? ((killedMutants / coveredMutants) * 100) : 0;
   const coverageScore = totalMutants > 0 ? (((totalMutants - noCoverageMutants) / totalMutants) * 100) : 0;
 
   return {
