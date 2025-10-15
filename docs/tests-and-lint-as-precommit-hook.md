@@ -1,10 +1,13 @@
-Instructions to add a **native Git pre-commit hook** that blocks commits unless **lint** and **tests** pass:
+Instructions to add a **native Git pre-push hook** that blocks pushes unless your selected test command succeeds.
 
 ---
 
 ## 0) Prereqs (once)
 
-Ensure `package.json` has lint and test scripts defined.
+Confirm the command you plan to run (default `npm test`) already covers the checks you want to enforce before pushing.
+
+- In this template, `npm test` runs `test:core` (format + lint + dependency checks + unit/property tests) followed by `test:e2e:index` (Playwright).
+- If you only want the lighter core suite at push time, swap in `npm run test:core --silent` in Step 2.
 
 ---
 
@@ -15,83 +18,28 @@ mkdir -p .githooks
 git config core.hooksPath .githooks
 ```
 
-> This tells Git to use `.githooks/` (which is tracked in the repo) instead of the untracked `.git/hooks/`.
+This tells Git to use the tracked `.githooks/` directory instead of `.git/hooks/`.
 
 ---
 
-## 2) Create the pre-commit hook
+## 2) Create the pre-push hook
 
-Create `.githooks/pre-commit` with the following content:
-
-```bash
-#!/usr/bin/env sh
-# Abort the commit if lint or tests fail.
-# Works on macOS/Linux and in Git Bash on Windows.
-
-set -eu
-
-echo "🔎 Linting..."
-npm run -s lint || { echo "❌ Lint failed"; exit 1; }
-
-echo "🧪 Running tests..."
-npm test --silent || { echo "❌ Tests failed"; exit 1; }
-
-echo "✅ Pre-commit checks passed"
-```
-
-Make it executable (choose one):
-
-```bash
-# Portable way (works on Windows too):
-git update-index --chmod=+x .githooks/pre-commit
-
-# Or the POSIX way:
-chmod +x .githooks/pre-commit
-```
-
-Commit the hook:
-
-```bash
-git add .githooks/pre-commit
-git commit -m "chore: add native pre-commit hook for lint and tests"
-```
-
----
-
-## 3) Quick self-test
-
-```bash
-git commit --allow-empty -m "test hook"
-# Expect the hook to run; commit only succeeds if lint & tests pass.
-```
-
----
-
-## Additional Notes
-
-- Developers can bypass local hooks with `--no-verify`, so keep CI with required checks as the final gate.
-- For faster commits, consider moving long-running suites to a `pre-push` hook or to CI.
-
----
-
-## Add a pre-push hook that runs `npm test`
-
-If you prefer to keep commits fast but block pushes when the suite fails, add `.githooks/pre-push`:
+Create `.githooks/pre-push` with the following content:
 
 ```bash
 #!/usr/bin/env sh
 set -eu
 
-echo "🧪 Running npm test before push..."
+echo "Running npm test before push..."
 npm test --silent || {
-	echo "❌ npm test failed; push aborted."
-	exit 1
+  echo "npm test failed; push aborted."
+  exit 1
 }
 
-echo "✅ npm test passed; proceeding with push."
+echo "npm test passed; proceeding with push."
 ```
 
-Then mark it executable (choose one):
+Mark it executable (choose one):
 
 ```bash
 git update-index --chmod=+x .githooks/pre-push
@@ -99,10 +47,20 @@ git update-index --chmod=+x .githooks/pre-push
 chmod +x .githooks/pre-push
 ```
 
-Quickly verify the hook runs:
+---
+
+## 3) Quick self-test
 
 ```bash
 ./.githooks/pre-push
 ```
 
-Remember to ensure `core.hooksPath` points at `.githooks/` (step 1 above) on every machine so Git picks up the hook before pushes.
+Running the hook manually should execute the same checks Git will run before a push.
+
+---
+
+## Additional Notes
+
+- Developers can bypass local hooks with `--no-verify`, so keep CI as the final gate.
+- If you want a lighter-weight push check, swap `npm test --silent` for `npm run test:core --silent` to skip e2e tests.
+- Re-run the `git config core.hooksPath .githooks` command on every machine or clone so Git picks up the tracked hooks.
