@@ -42,8 +42,9 @@ test.describe('index.html smoke test', () => {
 
     // Prefer networkidle so the check works for any static page; fall back to load if idle never fires.
     try {
+      await page.waitForTimeout(1000);
       await page.waitForLoadState('networkidle', { timeout: 10000 });
-    } catch (error) {
+    } catch {
       await page.waitForLoadState('load');
     }
 
