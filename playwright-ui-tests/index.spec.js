@@ -44,7 +44,7 @@ test.describe('index.html smoke test', () => {
     try {
       await page.waitForTimeout(1000);
       await page.waitForLoadState('networkidle', { timeout: 10000 });
-    } catch (error) {
+    } catch {
       await page.waitForLoadState('load');
     }
 
