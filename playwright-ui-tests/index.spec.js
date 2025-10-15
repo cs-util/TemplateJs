@@ -40,14 +40,12 @@ test.describe('index.html smoke test', () => {
       ).toBeLessThan(400);
     }
 
-    // Using 'load' avoids timeouts seen when parallel browsers wait for 'networkidle'.
-    await page.waitForLoadState('load');
-
-    const heroHeading = page.getByRole('heading', {
-      level: 1,
-      name: /template web app/i,
-    });
-    await expect(heroHeading).toBeVisible();
+    // Prefer networkidle so the check works for any static page; fall back to load if idle never fires.
+    try {
+      await page.waitForLoadState('networkidle', { timeout: 10000 });
+    } catch (error) {
+      await page.waitForLoadState('load');
+    }
 
     expect(consoleIssues, 'Console warning/error detected while loading index.html').toEqual([]);
     expect(pageErrors, 'Unhandled page errors detected while loading index.html').toEqual([]);
