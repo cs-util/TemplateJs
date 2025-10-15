@@ -71,3 +71,38 @@ git commit --allow-empty -m "test hook"
 
 - Developers can bypass local hooks with `--no-verify`, so keep CI with required checks as the final gate.
 - For faster commits, consider moving long-running suites to a `pre-push` hook or to CI.
+
+---
+
+## Add a pre-push hook that runs `npm test`
+
+If you prefer to keep commits fast but block pushes when the suite fails, add `.githooks/pre-push`:
+
+```bash
+#!/usr/bin/env sh
+set -eu
+
+echo "🧪 Running npm test before push..."
+npm test --silent || {
+	echo "❌ npm test failed; push aborted."
+	exit 1
+}
+
+echo "✅ npm test passed; proceeding with push."
+```
+
+Then mark it executable (choose one):
+
+```bash
+git update-index --chmod=+x .githooks/pre-push
+# or
+chmod +x .githooks/pre-push
+```
+
+Quickly verify the hook runs:
+
+```bash
+./.githooks/pre-push
+```
+
+Remember to ensure `core.hooksPath` points at `.githooks/` (step 1 above) on every machine so Git picks up the hook before pushes.
