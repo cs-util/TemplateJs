@@ -3,7 +3,7 @@
 - The readme.md contains the full spec of the application. Read it end-to-end to understand the full context.
 - You must follow the instructions in the agent.md file while working on your task and regularly review if you are still aligned with these instructions and the spec.
 - Do not stop until every acceptance criterion is implemented, verified locally and prepared for review.
-- **Co-locate docs**: every code file must have a matching `*.md` sidecar that explains it in detail.
+- **Co-locate docs**: every code file must have a matching `*.md` sidecar next to it, that explains the component in detail. The goal of the sidecar is to make purpose, API, invariants, examples and test strategy of the component obvious to agents and humans.
 
 - This is a minimal local first web app (static HTML + modular JS). Prefer tailwind over custom CSS.
 - Entrypoint: `index.html` (+ static pages in `pages/` if any needed)
@@ -31,14 +31,14 @@ Do requirements gathering before implementation
 - Build questions on previous responses
 - Provide numbered response options for the user to select from
 
-# Relying on tests as your central tool for all development
+# Validating Assumptions via Tests
 
 - Never submit code whose hypothesis is not captured by a test.
 - Reduce risks from assumptions (no matter how sure you are) by **proving these assumptions with tests**.
   Do not throw away the produced tests after you did the validation, because they often serve as useful documentation of a behavior. Make sure their comments explain their purpose.
 - **TDD by default.** Interfaces emerge from tests.
 
-## TDD Loop (repeat)
+## TDD Loop
 
 1. **State a hypothesis** (behavior/API).
 2. **Write a failing test** for it.
@@ -51,5 +51,5 @@ Do requirements gathering before implementation
 
 - Unit specs: `*.test.js`
 - Property-based specs: `*.property.test.js`
-- Property-based tests are important, don't omit them for important components
+- Property-based tests are important, don't omit them for any components
 - Keep tests deterministic and fast; avoid E2E unless asked
