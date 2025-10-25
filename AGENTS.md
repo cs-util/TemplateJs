@@ -53,5 +53,6 @@ Do requirements gathering before implementation
 ## Test layout
 
 - Unit specs: `*.test.js`
-- Property-based specs: `*.property.test.js` - Property-based tests are important, don't omit them for any components
+- Property-based specs: `*.property.test.js`
+- Property-based tests are important, don't omit them for any components
 - Keep tests deterministic and fast; avoid E2E unless asked
