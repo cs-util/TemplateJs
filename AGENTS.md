@@ -1,7 +1,7 @@
 # General
 
-- The readme.md contains the full spec of the application. Read it end-to-end to understand the full context.
-- You must follow the instructions in the agent.md file while working on your task and regularly review if you are still aligned with these instructions and the spec.
+- The `README.md` contains the full spec of the application. Read it end-to-end to understand the full context. It should be kept up to date whenever the code is ready for a PR
+- You must follow the instructions in the `AGENTS.md` file while working on your task and regularly review if you are still aligned with these instructions and the spec.
 - Do not stop until every acceptance criterion is implemented, verified locally and prepared for review.
 - **Co-locate docs**: every code file must have a matching `*.md` sidecar next to it, that explains the component in detail. The goal of the sidecar is to make purpose, API, invariants, examples and test strategy of the component obvious to agents and humans.
 
@@ -9,7 +9,6 @@
 - Entrypoint: `index.html` (+ static pages in `pages/` if any needed)
 - The code is composed of small, focused modules in `src/` (`components/`, `utils/`, ..) with colocated tests
 - Run `npm test` and `npm outdated` at the start and end of each significant task and weekly at minimum; keep dependencies healthy. Prefer bumping to the `Wanted` version unless blocked by incompatibilities (document any exceptions). Also run `npm audit` to catch security issues even when versions are current
-- `README.md` typically contains big picture dev. spec and context. It should be kept up to date whenever the code is ready for a PR
 - Only change code directly related to the current task; keep diffs small!
 - Preserve existing comments & docs; add concise, long-lived comments where useful and avoid narrating changes via comments
 - When external documentation could be consulted, do so to validate your plan makes sense. If you lack a browsing/online search tool, ask the user to run an online search for you (e.g., "Please search for \"x\" and paste back the findings")
